@@ -1,11 +1,10 @@
 <%-- 
     Document   : CreateUser
-    Created on : 25 oct. 2013, 19:56:35
+    Created on : 30 oct. 2013, 17:12:07
     Author     : kelto
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <!DOCTYPE html>
 <html>
     <head>
@@ -23,7 +22,7 @@
     </table>
     <input type="submit" id="CreateRecord" value="CreateRecord" />
     </form>
-<a href="ListPerson"><strong>Go to List of persons</strong></a>
+<a href="ListUser"><strong>Go to List of users</strong></a>
         
     </body>
 </html>

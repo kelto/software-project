@@ -91,7 +91,7 @@ public class CreateUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-
+        
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
         try {
@@ -100,18 +100,18 @@ public class CreateUserServlet extends HttpServlet {
 
 
 
-            /*
+            
             String pseudo=request.getParameter("pseudo");
             String email=request.getParameter("email");
-            String password=request.getParameter("passwd");
+            String password=request.getParameter("pass");
             String address=request.getParameter("adress");
-            */
+            
             //Create a person instance out of it
             User user = new User();
-            user.setPseudo("kelto");
-            user.setPassword("pass");
-            user.setAddress("somewhere");
-            user.setEmail("kelto@kelto.com");
+            user.setPseudo(pseudo);
+            user.setPassword(password);
+            user.setAddress(address);
+            user.setEmail(email);
             
             //begin a transaction
             utx.begin();
@@ -136,6 +136,7 @@ public class CreateUserServlet extends HttpServlet {
                 em.close();
             }
         }
+        
     }
 
     /**

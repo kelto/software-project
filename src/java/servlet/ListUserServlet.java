@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelto
  */
-@WebServlet(name = "ListUserServlet", urlPatterns = {"/ListUsers"})
+@WebServlet(name = "ListUserServlet", urlPatterns = {"/ListUser"})
 public class ListUserServlet extends HttpServlet {
 
     @PersistenceUnit
@@ -48,7 +48,7 @@ public class ListUserServlet extends HttpServlet {
             request.setAttribute("userList",users);
             
             //Forward to the jsp page for rendering
-            request.getRequestDispatcher("ListUsers.jsp").forward(request, response);
+            request.getRequestDispatcher("ListUser.jsp").forward(request, response);
         } catch (Exception ex) {
             throw new ServletException(ex);
         } finally {
