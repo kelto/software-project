@@ -48,11 +48,11 @@ public class ListProductServlet extends HttpServlet {
             em = emf.createEntityManager();
 
             //query for all the persons in database
-            List users = em.createQuery("select u from User u").getResultList();
-            request.setAttribute("userList",users);
+            List products = em.createQuery("select p from Product p").getResultList();
+            request.setAttribute("productList",products);
             
             //Forward to the jsp page for rendering
-            request.getRequestDispatcher("ListUser.jsp").forward(request, response);
+            request.getRequestDispatcher("ListProduct.jsp").forward(request, response);
         } catch (Exception ex) {
             throw new ServletException(ex);
         } finally {
