@@ -1,14 +1,14 @@
 Software-project
 ================
 
-Module done :
+##Module done :
 
-##User :
+###User :
      done :
           - Sign up
      todo :
      	  - Login (Session / cookie implementation)
-##Product :
+###Product :
 	done : 
 	     - Listing product
 
