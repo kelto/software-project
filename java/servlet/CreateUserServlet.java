@@ -6,8 +6,11 @@ package servlet;
 
 
 import entity.User;
+import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -31,6 +34,9 @@ public class CreateUserServlet extends HttpServlet {
     private EntityManagerFactory emf;
     @Resource
     private UserTransaction utx;
+    
+    public static final String USER = "user",
+            FORM = "form";
 
     /**
      * Processes requests for both HTTP
@@ -94,49 +100,41 @@ public class CreateUserServlet extends HttpServlet {
         
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
-        try {
+        FormUser form = new FormUser();
+        User user = form.create(request);
+        request.setAttribute(USER, user);
+        request.setAttribute(FORM, form);
+        if(!form.hasError())
+        {
+            try
+            {
 
-            //Get the data from user's form
-
-
-
-            
-            String pseudo=request.getParameter("pseudo");
-            String email=request.getParameter("email");
-            String password=request.getParameter("pass");
-            String address=request.getParameter("adress");
-            
-            //Create a person instance out of it
-            User user = new User();
-            user.setPseudo(pseudo);
-            user.setPassword(password);
-            user.setAddress(address);
-            user.setEmail(email);
-            
-            //begin a transaction
-            utx.begin();
-            //create an em. 
-            //Since the em is created inside a transaction, it is associsated with 
-            //the transaction
-            em = emf.createEntityManager();
-            //persist the person entity
-            em.persist(user);
-            //commit transaction which will trigger the em to 
-            //commit newly created entity into database
-            utx.commit();
+                //begin a transaction
+                utx.begin();
+                //create an em. 
+                //Since the em is created inside a transaction, it is associsated with 
+                //the transaction
+                em = emf.createEntityManager();
+                //persist the person entity
+                em.persist(user);
+                //commit transaction which will trigger the em to 
+                //commit newly created entity into database
+                utx.commit();
 
             //Forward to ListUser servlet to list persons along with the newly
             //created user above
-            request.getRequestDispatcher("ListUser").forward(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        } finally {
-            //close the em to release any resources held up by the persistebce provider
-            if (em != null) {
-                em.close();
+            //request.getRequestDispatcher("ListUser").forward(request, response);
+            } catch (Exception ex) {
+                throw new ServletException(ex);
+            } finally {
+                //close the em to release any resources held up by the persistebce provider
+                if (em != null) {
+                    em.close();
+                }
             }
         }
         
+        request.getRequestDispatcher("CreateUser.jsp").forward(request, response);
     }
 
     /**
@@ -148,4 +146,8 @@ public class CreateUserServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+   
+    
+    
 }
