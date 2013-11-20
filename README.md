@@ -1,18 +1,22 @@
 Software-project
 ================
 
-Module done :
-User :
-     done :
-          - Sign up
-     todo :
-     	  - Login (Session / cookie implementation)
-Product :
-	done : 
-	     - Listing product
+Functionalities : (order by importance ! )
 
-	todo :
-	     - Listing product by criteria
-	     - Adding new product
+  
+     	  - Login (Session / cookie 
+	  - Sign up
+	  - Add to basket
+	  - remove from basket
+	  - Order from basket
+	  - Listing product by criteria
+	  - Adding new product
+	  - Remove product
+	  - Change product prices
+	  - Add comments
+	  - admin comments
+	  - List Users
+
+	  
 
 
