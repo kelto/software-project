@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	
+	<script src="jquery.js" type="text/javascript"></script>
+	
+	
+	</head>
+	
+	<body onload="init()">
+	<canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;"> </canvas>
+	
+	<form name="test">
+	<input type="text" name="score"><br>
+	<!--<input type="text" name="columns"><br>
+	<input type="text" name="ball"><br>
+	<input type="text" name="brick"><br>
+	<input type="text" name="a"><br>-->
+	</form>
+	
+	<script>	
+		var padPosX;
+		var padPosY;
+		var padWidth;
+		
+		var ballPosX;
+		var ballPosY;
+		var ballSize;
+		var ballspeed;
+		var ballDx;
+		var ballDy;
+	
+		var canvasWidth = 600;
+		var canvasHeight = 600;
+	
+		var c;
+		var ctx;
+		var img;
+
+		rightDown = false;
+		leftDown = false;
+		
+		var myInterval;
+		
+		var bricks;
+		var brickRows = 3;
+		var brickCols = 8;
+		var brickWidth = 50;
+		var brickHeight = 10;
+		var space = 20;
+		var i= brickwidth+space;
+		
+		var row;
+		var col;
+		var color;
+		
+		var playerScore;
+		
+		
+		function init() {
+			
+			c=document.getElementById("myCanvas");
+			ctx=c.getContext("2d");
+			//img=document.getElementById("background.jpg");
+			
+			<!-- Draws the pad -->
+			ctx.fillStyle="#00FA00";
+			ctx.fillRect(300,550,70,10);
+			padPosX=300;
+			padPosY=550;
+			padWidth=70;
+			
+			<!-- Draws the ball -->			
+			ctx.fillStyle = "#0000FA";
+			ctx.arc(300, 520, 5, 0, Math.PI*2, true); 
+			ctx.fill();
+			ballSize=5;
+			ballPosX=300;
+			ballPosY=520;
+			ballSpeed=3;
+			ballDy= ballSpeed*Math.sin(Math.PI/4);
+			ballDx= ballSpeed*Math.cos(Math.PI/4);
+			
+			playerScore=0;
+			document.test.score.value = "Score: " + playerScore;	
+			
+			initBricks();
+			
+			myInterval = setInterval(draw, 10);
+			$(document).keydown(onKeyDown);
+			$(document).keyup(onKeyUp);
+		}
+		
+		function initBricks(){	
+		bricks = new Array(brickRows);
+		
+			for (i=0; i < brickRows; i++) {
+				bricks[i] = new Array(brickCols);
+					for (j=0; j < brickCols; j++) {
+						bricks[i][j] = 1;
+					}		
+			}
+		}		
+		
+		function draw() {
+			ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+			if (rightDown && padPosX<=530) padPosX += 4;
+			else if (leftDown && padPosX>=0) padPosX -= 4;
+			
+			drawBricks();
+			moveBall();
+			
+			<!-- Draws the pad -->
+			ctx.fillStyle="#00FA00";
+			ctx.fillRect(padPosX,padPosY,70,10);
+			
+			<!-- Draws the ball -->			
+			ctx.fillStyle = "#0000FA";
+			ctx.beginPath();
+			ctx.arc(ballPosX, ballPosY, 5, 0, Math.PI*2, true); 
+			ctx.closePath();
+			ctx.fill();
+		}
+		
+		function drawBricks(){
+			
+			for (i=0; i < brickRows; i++) {
+				for (j=0; j < brickCols; j++) {
+					//Okay this is not my proudest moment as a programmer...but it gets the work done!
+					if(j==0)ctx.fillStyle="000000"; 		else if(j==1)ctx.fillStyle="0000FF"; else if(j==2)ctx.fillStyle="00FF00";
+					else if(j==3)ctx.fillStyle="00FFFF";	else if(j==4)ctx.fillStyle="FF0000"; else if(j==5)ctx.fillStyle="FF00FF";
+					else if(j==6)ctx.fillStyle="FFFF00";	else if(j==7)ctx.fillStyle="AAAAAA"; else ctx.fillStyle="000000";
+					
+					if(bricks[i][j]==1)
+						ctx.fillRect(j*(brickWidth + space), i*(brickHeight+space) , brickWidth, brickHeight);
+				}
+			}
+		}
+		
+		function brickHit(){
+			row = Math.floor(ballPosY/(brickHeight+space));
+			col = Math.floor(ballPosX/(brickWidth+space));
+				
+			if(col<=brickCols-1 && row<=brickRows-1){
+				if(ballPosX>col*(brickWidth+space) && ballPosX<col*(brickWidth+space)+brickWidth){
+					if(ballPosY>(row*(brickHeight+space)) && ballPosY<(row*(brickHeight+space)+brickHeight)){
+						if(bricks[row][col]==1){
+							ballDy = -ballDy;				
+							bricks[row][col]=0;
+							playerScore += 100;
+							document.test.score.value = "Score: " + playerScore;	
+						}
+					}
+				}
+			}
+		
+		}
+		
+		function moveBall(){
+		brickHit();
+		
+		if(ballPosY<=5)
+			ballDy = Math.abs(ballDy);
+		if(ballPosY>padPosY+20){
+			window.clearInterval(myInterval);
+			gameOver();
+			}
+		if(ballPosX<=5)
+			ballDx = Math.abs(ballDx);
+		if(ballPosX>=595)
+			ballDx = -Math.abs(ballDx);
+		
+		//Three cases of hitting the pad
+		//Left side
+		if(padPosX<=ballPosX && ballPosX<=(padPosX+padWidth*1/3) && ballPosY >= padPosY && ballPosY<(padPosY+5)){
+			ballDy = -ballSpeed*Math.sin(Math.PI/6);
+			ballDx = -ballSpeed*Math.cos(Math.PI/6);
+		}
+		
+		//Middle
+		if(padPosX+padWidth*1/3<=ballPosX && ballPosX<=(padPosX+padWidth*2/3) && ballPosY >= padPosY && ballPosY<(padPosY+5)){
+			ballDy = -ballSpeed*Math.sin(Math.PI/4);		
+		}
+		
+		//Right side
+		if(padPosX+padWidth*2/3<=ballPosX && ballPosX<=(padPosX+padWidth) && ballPosY >= padPosY && ballPosY<(padPosY+5)){
+			ballDy = -ballSpeed*Math.sin(Math.PI/6);
+			ballDx = ballSpeed*Math.cos(Math.PI/6);
+		}
+		
+		ballPosY += ballDy;
+		ballPosX += ballDx;
+		}
+		
+		function gameOver(){
+		//Print gameover!
+		}
+		function onKeyDown(evt) {
+			
+		  if (evt.keyCode == 39) rightDown = true;
+		  else if (evt.keyCode == 37) leftDown = true;
+		}
+		
+		//and unset them when the right or left key is released
+		function onKeyUp(evt) {
+		  if (evt.keyCode == 39) rightDown = false;
+		  else if (evt.keyCode == 37) leftDown = false;
+		}
+		//This section comes from http://billmill.org/static/canvastutorial/paddle.html
+		
+		alert("yo !");
+		//set rightDown or leftDown if the right or left keys are down
+		
+		</script>
+	</body>
+</html>
+
+
+
+<!-- 	fillstyle 	= color of pencil
+		beginpath 	= puts pencil to canvas
+		closepath 	= lifts pencil from canvas
+		fill		= fills the drawed path with the color chosen in fillstyle
+
+
+ -->
