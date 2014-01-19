@@ -4,13 +4,10 @@
  */
 package servlet;
 
-
+import databaseChecker.UserChecker;
 import entity.User;
-import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,8 +23,8 @@ import javax.transaction.UserTransaction;
  *
  * @author kelto
  */
-@WebServlet(name = "CreateUserServlet", urlPatterns = {"/CreateUser"})
-public class CreateUserServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
+public class LoginServlet extends HttpServlet {
 
     @PersistenceUnit
     //The emf corresponding to 
@@ -35,9 +32,6 @@ public class CreateUserServlet extends HttpServlet {
     @Resource
     private UserTransaction utx;
     
-    public static final String USER = "user",
-            FORM = "form";
-
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -51,20 +45,17 @@ public class CreateUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateUserServlet</title>");
+            out.println("<title>Servlet LoginServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
-            out.close();
         }
     }
 
@@ -81,7 +72,8 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
     }
 
     /**
@@ -96,35 +88,23 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
-        FormUser form = new FormUser();
-        User user = form.create(request);
-        request.setAttribute(USER, user);
-        request.setAttribute(FORM, form);
-        if(!form.hasError())
+        try 
         {
-            try
-            {
-
-                //begin a transaction
-                utx.begin();
-                //create an em. 
-                //Since the em is created inside a transaction, it is associsated with 
-                //the transaction
-                em = emf.createEntityManager();
-                //persist the person entity
-                em.persist(user);
-                //commit transaction which will trigger the em to 
-                //commit newly created entity into database
-                utx.commit();
-
-            //Forward to ListUser servlet to list persons along with the newly
-            //created user above
-            //request.getRequestDispatcher("ListUser").forward(request, response);
-            } catch (Exception ex) {
+            em = emf.createEntityManager();
+            String userPath = request.getServletPath();
+            //query for all the persons in database
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
+            UserChecker checker = new UserChecker();
+            User user = null;
+            if(checker.loadUser(request,em,login,password))
+                user = checker.getUser();
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("WEB-INF/printUser.jsp").forward(request, response);
+              
+        } catch (ServletException | IOException ex) {
                 throw new ServletException(ex);
             } finally {
                 //close the em to release any resources held up by the persistebce provider
@@ -132,9 +112,7 @@ public class CreateUserServlet extends HttpServlet {
                     em.close();
                 }
             }
-        }
         
-        request.getRequestDispatcher("WEB-INF/CreateUser.jsp").forward(request, response);
     }
 
     /**
@@ -146,8 +124,4 @@ public class CreateUserServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-   
-    
-    
 }

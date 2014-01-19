@@ -4,39 +4,21 @@
  */
 package servlet;
 
-
-import entity.User;
-import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.UserTransaction;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "CreateUserServlet", urlPatterns = {"/CreateUser"})
-public class CreateUserServlet extends HttpServlet {
-
-    @PersistenceUnit
-    //The emf corresponding to 
-    private EntityManagerFactory emf;
-    @Resource
-    private UserTransaction utx;
-    
-    public static final String USER = "user",
-            FORM = "form";
+@WebServlet(name = "TestParam", urlPatterns = {"/TestParam/*"},initParams = @WebInitParam( name = "chemin", value = "/fichiers/" ))
+public class TestParam extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -57,13 +39,23 @@ public class CreateUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CreateUserServlet</title>");
+            out.println("<title>Servlet TestParam</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CreateUserServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TestParam at " + request.getContextPath() + "</h1>");
+            String params[] = request.getRequestURI().split("/TestParam/");
+            
+            
+            if(params.length == 1)
+                out.println("No param !");
+            else
+            {
+                String param = params[1].trim();
+                out.println("param yi = "+param);
+            }
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -96,45 +88,7 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        assert emf != null;  //Make sure injection went through correctly.
-        EntityManager em = null;
-        FormUser form = new FormUser();
-        User user = form.create(request);
-        request.setAttribute(USER, user);
-        request.setAttribute(FORM, form);
-        if(!form.hasError())
-        {
-            try
-            {
-
-                //begin a transaction
-                utx.begin();
-                //create an em. 
-                //Since the em is created inside a transaction, it is associsated with 
-                //the transaction
-                em = emf.createEntityManager();
-                //persist the person entity
-                em.persist(user);
-                //commit transaction which will trigger the em to 
-                //commit newly created entity into database
-                utx.commit();
-
-            //Forward to ListUser servlet to list persons along with the newly
-            //created user above
-            //request.getRequestDispatcher("ListUser").forward(request, response);
-            } catch (Exception ex) {
-                throw new ServletException(ex);
-            } finally {
-                //close the em to release any resources held up by the persistebce provider
-                if (em != null) {
-                    em.close();
-                }
-            }
-        }
-        
-        request.getRequestDispatcher("WEB-INF/CreateUser.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -146,8 +100,4 @@ public class CreateUserServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-   
-    
-    
 }

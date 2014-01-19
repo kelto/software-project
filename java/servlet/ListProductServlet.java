@@ -46,13 +46,17 @@ public class ListProductServlet extends HttpServlet {
         EntityManager em = null;
         try {
             em = emf.createEntityManager();
-
+            String userPath = request.getServletPath();
             //query for all the persons in database
-            List products = em.createQuery("select p from Product p").getResultList();
+            
+            String query = "SELECT * From Product";
+             if (userPath.equals("/ListProduct/price"))
+                query+=" order by price";
+            List products = em.createQuery(query).getResultList();
             request.setAttribute("productList",products);
             
             //Forward to the jsp page for rendering
-            request.getRequestDispatcher("ListProduct.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/ListProduct.jsp").forward(request, response);
         } catch (Exception ex) {
             throw new ServletException(ex);
         } finally {
