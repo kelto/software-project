@@ -48,9 +48,9 @@ public class Bill implements Serializable {
     @Column(name = "date_payment")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePayment;
-    @JoinColumn(name = "order", referencedColumnName = "idOrder")
+    @JoinColumn(name = "command", referencedColumnName = "idCommand")
     @ManyToOne
-    private Order1 order1;
+    private Command command;
 
     public Bill() {
     }
@@ -91,12 +91,12 @@ public class Bill implements Serializable {
         this.datePayment = datePayment;
     }
 
-    public Order1 getOrder1() {
-        return order1;
+    public Command getCommand() {
+        return command;
     }
 
-    public void setOrder1(Order1 order1) {
-        this.order1 = order1;
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     @Override

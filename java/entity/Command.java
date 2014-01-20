@@ -27,43 +27,43 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author kelto
  */
 @Entity
-@Table(name = "Order")
+@Table(name = "Command")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Order1.findAll", query = "SELECT o FROM Order1 o"),
-    @NamedQuery(name = "Order1.findByIdOrder", query = "SELECT o FROM Order1 o WHERE o.idOrder = :idOrder"),
-    @NamedQuery(name = "Order1.findByStatus", query = "SELECT o FROM Order1 o WHERE o.status = :status")})
-public class Order1 implements Serializable {
+    @NamedQuery(name = "Command.findAll", query = "SELECT c FROM Command c"),
+    @NamedQuery(name = "Command.findByIdCommand", query = "SELECT c FROM Command c WHERE c.idCommand = :idCommand"),
+    @NamedQuery(name = "Command.findByStatus", query = "SELECT c FROM Command c WHERE c.status = :status")})
+public class Command implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idOrder")
-    private Integer idOrder;
+    @Column(name = "idCommand")
+    private Integer idCommand;
     @Size(max = 45)
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "order1")
-    private Collection<Bill> billCollection;
     @JoinColumn(name = "user", referencedColumnName = "idUser")
     @ManyToOne
     private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order1")
-    private Collection<OrderProduct> orderProductCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "command1")
+    private Collection<CommandProduct> commandProductCollection;
+    @OneToMany(mappedBy = "command")
+    private Collection<Bill> billCollection;
 
-    public Order1() {
+    public Command() {
     }
 
-    public Order1(Integer idOrder) {
-        this.idOrder = idOrder;
+    public Command(Integer idCommand) {
+        this.idCommand = idCommand;
     }
 
-    public Integer getIdOrder() {
-        return idOrder;
+    public Integer getIdCommand() {
+        return idCommand;
     }
 
-    public void setIdOrder(Integer idOrder) {
-        this.idOrder = idOrder;
+    public void setIdCommand(Integer idCommand) {
+        this.idCommand = idCommand;
     }
 
     public String getStatus() {
@@ -72,15 +72,6 @@ public class Order1 implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @XmlTransient
-    public Collection<Bill> getBillCollection() {
-        return billCollection;
-    }
-
-    public void setBillCollection(Collection<Bill> billCollection) {
-        this.billCollection = billCollection;
     }
 
     public User getUser() {
@@ -92,29 +83,38 @@ public class Order1 implements Serializable {
     }
 
     @XmlTransient
-    public Collection<OrderProduct> getOrderProductCollection() {
-        return orderProductCollection;
+    public Collection<CommandProduct> getCommandProductCollection() {
+        return commandProductCollection;
     }
 
-    public void setOrderProductCollection(Collection<OrderProduct> orderProductCollection) {
-        this.orderProductCollection = orderProductCollection;
+    public void setCommandProductCollection(Collection<CommandProduct> commandProductCollection) {
+        this.commandProductCollection = commandProductCollection;
+    }
+
+    @XmlTransient
+    public Collection<Bill> getBillCollection() {
+        return billCollection;
+    }
+
+    public void setBillCollection(Collection<Bill> billCollection) {
+        this.billCollection = billCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idOrder != null ? idOrder.hashCode() : 0);
+        hash += (idCommand != null ? idCommand.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Order1)) {
+        if (!(object instanceof Command)) {
             return false;
         }
-        Order1 other = (Order1) object;
-        if ((this.idOrder == null && other.idOrder != null) || (this.idOrder != null && !this.idOrder.equals(other.idOrder))) {
+        Command other = (Command) object;
+        if ((this.idCommand == null && other.idCommand != null) || (this.idCommand != null && !this.idCommand.equals(other.idCommand))) {
             return false;
         }
         return true;
@@ -122,7 +122,7 @@ public class Order1 implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Order1[ idOrder=" + idOrder + " ]";
+        return "entity.Command[ idCommand=" + idCommand + " ]";
     }
     
 }

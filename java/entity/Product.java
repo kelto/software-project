@@ -6,7 +6,6 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,8 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,8 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
     @NamedQuery(name = "Product.findByProductStock", query = "SELECT p FROM Product p WHERE p.productStock = :productStock"),
     @NamedQuery(name = "Product.findBySellingPrice", query = "SELECT p FROM Product p WHERE p.sellingPrice = :sellingPrice"),
-    @NamedQuery(name = "Product.findByDate", query = "SELECT p FROM Product p WHERE p.date = :date"),
-    @NamedQuery(name = "Product.findByNumberSell", query = "SELECT p FROM Product p WHERE p.numberSell = :numberSell")})
+    @NamedQuery(name = "Product.findByNumberSold", query = "SELECT p FROM Product p WHERE p.numberSold = :numberSold")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -60,28 +56,20 @@ public class Product implements Serializable {
     private String productName;
     @Column(name = "product_stock")
     private Integer productStock;
-    @Size(max = 45)
     @Column(name = "selling_price")
-    private String sellingPrice;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "number_sell")
-    private int numberSell;
-    @JoinColumn(name = "brand", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Brand brand;
-    @JoinColumn(name = "tag", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    private Integer sellingPrice;
+    @Column(name = "number_sold")
+    private Integer numberSold;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product1")
+    private Collection<CommandProduct> commandProductCollection;
+    @JoinColumn(name = "tag", referencedColumnName = "idTag")
+    @ManyToOne
     private Tag tag;
+    @JoinColumn(name = "brand", referencedColumnName = "idBrand")
+    @ManyToOne
+    private Brand brand;
     @OneToMany(mappedBy = "product")
     private Collection<Comment> commentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product1")
-    private Collection<OrderProduct> orderProductCollection;
     @OneToMany(mappedBy = "product")
     private Collection<BasketProduct> basketProductCollection;
 
@@ -90,12 +78,6 @@ public class Product implements Serializable {
 
     public Product(Integer idProduct) {
         this.idProduct = idProduct;
-    }
-
-    public Product(Integer idProduct, Date date, int numberSell) {
-        this.idProduct = idProduct;
-        this.date = date;
-        this.numberSell = numberSell;
     }
 
     public Integer getIdProduct() {
@@ -138,36 +120,29 @@ public class Product implements Serializable {
         this.productStock = productStock;
     }
 
-    public String getSellingPrice() {
+    public Integer getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(String sellingPrice) {
+    public void setSellingPrice(Integer sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public Date getDate() {
-        return date;
+    public Integer getNumberSold() {
+        return numberSold;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setNumberSold(Integer numberSold) {
+        this.numberSold = numberSold;
     }
 
-    public int getNumberSell() {
-        return numberSell;
+    @XmlTransient
+    public Collection<CommandProduct> getCommandProductCollection() {
+        return commandProductCollection;
     }
 
-    public void setNumberSell(int numberSell) {
-        this.numberSell = numberSell;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    public void setCommandProductCollection(Collection<CommandProduct> commandProductCollection) {
+        this.commandProductCollection = commandProductCollection;
     }
 
     public Tag getTag() {
@@ -178,6 +153,14 @@ public class Product implements Serializable {
         this.tag = tag;
     }
 
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
     @XmlTransient
     public Collection<Comment> getCommentCollection() {
         return commentCollection;
@@ -185,15 +168,6 @@ public class Product implements Serializable {
 
     public void setCommentCollection(Collection<Comment> commentCollection) {
         this.commentCollection = commentCollection;
-    }
-
-    @XmlTransient
-    public Collection<OrderProduct> getOrderProductCollection() {
-        return orderProductCollection;
-    }
-
-    public void setOrderProductCollection(Collection<OrderProduct> orderProductCollection) {
-        this.orderProductCollection = orderProductCollection;
     }
 
     @XmlTransient
