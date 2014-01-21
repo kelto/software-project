@@ -2,6 +2,7 @@ package databaseChecker;
 
 import entity.User;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,18 +38,21 @@ public class UserChecker {
     //(have to check this, just in case ....)
     public boolean loadUser(HttpServletRequest request,EntityManager em, String login, String password)
     {
-        String query = "SELECT u From User u ";
-        // testing the paramater login : avoiding the SQL injection
-        if(true)
-            query+="WHERE login='"+login+"'";
-        if(true) // testing the password parameter : avoiding the SQL injection
-            query+=" AND password='"+password+"'";
-             
         
         Query q = em.createQuery("select u From User u where u.pseudo = :login and u.password = :pass");
         q.setParameter("login",login);
         q.setParameter("pass",password);
-        this.user = (User) q.getResultList().get(0);
+        
+        // not using this one, because if not result are found
+        try
+        {
+            this.user = (User) q.getSingleResult();
+        } catch(NoResultException e)
+        {
+            
+        }
+        //this.user = (User) q.getResultList().get(0);
+        
         if(user !=null)
         {
             error = "No error";
@@ -56,7 +60,7 @@ public class UserChecker {
         }
         else
         {
-            error = "Have to do something here ... will see, but got an error ! ";
+            this.error = "Login failed. Username and/or Password incorrect.";
             return false;
         }
     }

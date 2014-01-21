@@ -4,8 +4,10 @@
  */
 package servlet;
 
-import databaseChecker.UserChecker;
+import entity.Basket;
+import entity.Product;
 import entity.User;
+import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.annotation.Resource;
@@ -17,26 +19,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
+import static servlet.CreateUserServlet.FORM;
+import static servlet.CreateUserServlet.USER;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "ConnectionServlet", urlPatterns = {"/ConnectionServlet"})
-public class ConnectionServlet extends HttpServlet {
+@WebServlet(name = "AddToBasketServlet", urlPatterns = {"/AddToBasketServlet"})
+public class AddToBasketServlet extends HttpServlet {
 
-    public static final String ATT_SESSION_USER = "user";
-    public static final String ACCESS_CONNECTION = "/ConnectionServlet";
-
-    @PersistenceUnit
+     @PersistenceUnit
     //The emf corresponding to 
     private EntityManagerFactory emf;
     @Resource
     private UserTransaction utx;
-
-    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -56,10 +54,10 @@ public class ConnectionServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ConnectionServlet</title>");            
+            out.println("<title>Servlet AddToBasketServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ConnectionServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddToBasketServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -80,9 +78,46 @@ public class ConnectionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        HttpSession session;
-        request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
+        assert emf != null;  //Make sure injection went through correctly.
+        EntityManager em = null;
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+            
+            try
+            {
+            
+                //begin a transaction
+                utx.begin();
+                //create an em. 
+                //Since the em is created inside a transaction, it is associsated with 
+                //the transaction
+                em = emf.createEntityManager();
+                User user = em.find(User.class,0);
+                    
+                Product product = em.find(Product.class,1);
+                
+                    //persist the person entity
+                Basket basket = user.getBasket();
+                basket.addBasketProduct(product);
+                em.persist(basket);
+                //commit transaction which will trigger the em to 
+                //commit newly created entity into database
+                utx.commit();
+
+            //Forward to ListUser servlet to list persons along with the newly
+            //created user above
+            //request.getRequestDispatcher("ListUser").forward(request, response);
+            } catch (Exception ex) {
+                throw new ServletException(ex);
+            } finally {
+                //close the em to release any resources held up by the persistebce provider
+                if (em != null) {
+                    em.close();
+                }
+            }
+           
+        
+        //request.getRequestDispatcher("WEB-INF/CreateUser.jsp").forward(request, response);
     }
 
     /**
@@ -94,31 +129,39 @@ public class ConnectionServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //processRequest(request, response);
+        
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
-        try 
-        {
-            em = emf.createEntityManager();
-            String userPath = request.getServletPath();
-            //query for all the persons in database
-            String login = request.getParameter("login");
-            String password = request.getParameter("password");
-            UserChecker checker = new UserChecker();
-            User user = null;
-            HttpSession session = request.getSession();
-            if(checker.loadUser(request,em,login,password))
+        
+        
+            try
             {
-                user = checker.getUser();
-                session.setAttribute(ATT_SESSION_USER, user);
-                request.getRequestDispatcher("WEB-INF/printUser.jsp").forward(request, response);
-            }
-            request.setAttribute("error", checker.error());
-            request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);
-              
-        } catch (ServletException | IOException ex) {
+
+                //begin a transaction
+                utx.begin();
+                //create an em. 
+                //Since the em is created inside a transaction, it is associsated with 
+                //the transaction
+                em = emf.createEntityManager();
+                Product product = em.find(Product.class,0);
+                //persist the person entity
+                User user = em.find(User.class,0);
+                Basket basket = user.getBasket();
+                basket.addBasketProduct(product);
+                em.persist(basket);
+                //commit transaction which will trigger the em to 
+                //commit newly created entity into database
+                utx.commit();
+
+            //Forward to ListUser servlet to list persons along with the newly
+            //created user above
+            //request.getRequestDispatcher("ListUser").forward(request, response);
+            } catch (Exception ex) {
                 throw new ServletException(ex);
             } finally {
                 //close the em to release any resources held up by the persistebce provider
@@ -127,7 +170,10 @@ public class ConnectionServlet extends HttpServlet {
                 }
             }
         
+        
+        request.getRequestDispatcher("WEB-INF/CreateUser.jsp").forward(request, response);
     }
+
 
     /**
      * Returns a short description of the servlet.
