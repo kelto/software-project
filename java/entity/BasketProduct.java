@@ -41,7 +41,7 @@ public class BasketProduct implements Serializable {
     @JoinColumn(name = "product", referencedColumnName = "idProduct")
     @ManyToOne
     private Product product;
-    @JoinColumn(name = "basket", referencedColumnName = "idBasket", insertable = false, updatable = false)
+    @JoinColumn(name = "basket", referencedColumnName = "user", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Basket basket1;
 

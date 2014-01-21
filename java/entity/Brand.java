@@ -7,11 +7,8 @@ package entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,49 +28,42 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Brand.findAll", query = "SELECT b FROM Brand b"),
-    @NamedQuery(name = "Brand.findById", query = "SELECT b FROM Brand b WHERE b.id = :id"),
-    @NamedQuery(name = "Brand.findByName", query = "SELECT b FROM Brand b WHERE b.name = :name")})
+    @NamedQuery(name = "Brand.findByIdBrand", query = "SELECT b FROM Brand b WHERE b.idBrand = :idBrand"),
+    @NamedQuery(name = "Brand.findByBrandName", query = "SELECT b FROM Brand b WHERE b.brandName = :brandName")})
 public class Brand implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "name")
-    private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
+    @Column(name = "idBrand")
+    private Integer idBrand;
+    @Size(max = 45)
+    @Column(name = "brand_name")
+    private String brandName;
+    @OneToMany(mappedBy = "brand")
     private Collection<Product> productCollection;
 
     public Brand() {
     }
 
-    public Brand(Integer id) {
-        this.id = id;
+    public Brand(Integer idBrand) {
+        this.idBrand = idBrand;
     }
 
-    public Brand(Integer id, String name) {
-        this.id = id;
-        this.name = name;
+    public Integer getIdBrand() {
+        return idBrand;
     }
 
-    public Integer getId() {
-        return id;
+    public void setIdBrand(Integer idBrand) {
+        this.idBrand = idBrand;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getBrandName() {
+        return brandName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
     @XmlTransient
@@ -88,7 +78,7 @@ public class Brand implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (idBrand != null ? idBrand.hashCode() : 0);
         return hash;
     }
 
@@ -99,7 +89,7 @@ public class Brand implements Serializable {
             return false;
         }
         Brand other = (Brand) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.idBrand == null && other.idBrand != null) || (this.idBrand != null && !this.idBrand.equals(other.idBrand))) {
             return false;
         }
         return true;
@@ -107,7 +97,7 @@ public class Brand implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Brand[ id=" + id + " ]";
+        return "entity.Brand[ idBrand=" + idBrand + " ]";
     }
     
 }

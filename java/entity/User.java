@@ -10,14 +10,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,8 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "idUser")
     private Integer idUser;
     @Size(max = 45)
@@ -57,10 +56,10 @@ public class User implements Serializable {
     @Column(name = "address")
     private String address;
     @OneToMany(mappedBy = "user")
-    private Collection<Comment> commentCollection;
+    private Collection<Command> commandCollection;
     @OneToMany(mappedBy = "user")
-    private Collection<Order1> order1Collection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Collection<Comment> commentCollection;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user1")
     private Basket basket;
 
     public User() {
@@ -111,21 +110,21 @@ public class User implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Command> getCommandCollection() {
+        return commandCollection;
+    }
+
+    public void setCommandCollection(Collection<Command> commandCollection) {
+        this.commandCollection = commandCollection;
+    }
+
+    @XmlTransient
     public Collection<Comment> getCommentCollection() {
         return commentCollection;
     }
 
     public void setCommentCollection(Collection<Comment> commentCollection) {
         this.commentCollection = commentCollection;
-    }
-
-    @XmlTransient
-    public Collection<Order1> getOrder1Collection() {
-        return order1Collection;
-    }
-
-    public void setOrder1Collection(Collection<Order1> order1Collection) {
-        this.order1Collection = order1Collection;
     }
 
     public Basket getBasket() {

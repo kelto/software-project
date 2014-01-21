@@ -15,30 +15,30 @@ import javax.validation.constraints.NotNull;
  * @author kelto
  */
 @Embeddable
-public class OrderProductPK implements Serializable {
+public class CommandProductPK implements Serializable {
     @Basic(optional = false)
     @NotNull
-    @Column(name = "order")
-    private int order;
+    @Column(name = "command")
+    private int command;
     @Basic(optional = false)
     @NotNull
     @Column(name = "product")
     private int product;
 
-    public OrderProductPK() {
+    public CommandProductPK() {
     }
 
-    public OrderProductPK(int order, int product) {
-        this.order = order;
+    public CommandProductPK(int command, int product) {
+        this.command = command;
         this.product = product;
     }
 
-    public int getOrder() {
-        return order;
+    public int getCommand() {
+        return command;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setCommand(int command) {
+        this.command = command;
     }
 
     public int getProduct() {
@@ -52,7 +52,7 @@ public class OrderProductPK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) order;
+        hash += (int) command;
         hash += (int) product;
         return hash;
     }
@@ -60,11 +60,11 @@ public class OrderProductPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OrderProductPK)) {
+        if (!(object instanceof CommandProductPK)) {
             return false;
         }
-        OrderProductPK other = (OrderProductPK) object;
-        if (this.order != other.order) {
+        CommandProductPK other = (CommandProductPK) object;
+        if (this.command != other.command) {
             return false;
         }
         if (this.product != other.product) {
@@ -75,7 +75,7 @@ public class OrderProductPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.OrderProductPK[ order=" + order + ", product=" + product + " ]";
+        return "entity.CommandProductPK[ command=" + command + ", product=" + product + " ]";
     }
     
 }

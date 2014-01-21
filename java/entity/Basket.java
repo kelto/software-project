@@ -5,14 +5,19 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -27,55 +32,64 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Basket.findAll", query = "SELECT b FROM Basket b"),
-    @NamedQuery(name = "Basket.findByIdBasket", query = "SELECT b FROM Basket b WHERE b.idBasket = :idBasket")})
+    @NamedQuery(name = "Basket.findByUser", query = "SELECT b FROM Basket b WHERE b.user = :user")})
 public class Basket implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idBasket")
-    private Integer idBasket;
-    @JoinColumn(name = "idBasket", referencedColumnName = "idUser", insertable = false, updatable = false)
+    @Column(name = "user")
+    private Integer user;
+    @JoinColumn(name = "user", referencedColumnName = "idUser", insertable = false, updatable = false)
     @OneToOne(optional = false)
-    private User user;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "basket1")
-    private BasketProduct basketProduct;
-
+    private User user1;
+    @JoinTable(name="Command_Product")
+    @ManyToMany
+    private Collection<Product> productCollection;
+    /*
+    @ToMany(cascade = CascadeType.ALL, mappedBy = "basket1")
+    private List<BasketProduct> basketProduct;
+    * */
+    
     public Basket() {
     }
 
-    public Basket(Integer idBasket) {
-        this.idBasket = idBasket;
-    }
-
-    public Integer getIdBasket() {
-        return idBasket;
-    }
-
-    public void setIdBasket(Integer idBasket) {
-        this.idBasket = idBasket;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public Basket(Integer user) {
         this.user = user;
     }
 
-    public BasketProduct getBasketProduct() {
-        return basketProduct;
+    public Integer getUser() {
+        return user;
     }
 
-    public void setBasketProduct(BasketProduct basketProduct) {
-        this.basketProduct = basketProduct;
+    public void setUser(Integer user) {
+        this.user = user;
+    }
+
+    public User getUser1() {
+        return user1;
+    }
+
+    public void setUser1(User user1) {
+        this.user1 = user1;
+    }
+
+    public Collection<Product> getBasketProduct() {
+        return productCollection;
+    }
+
+    public void setBasketProduct(Collection<Product> productCollection) {
+        this.productCollection = productCollection;
+    }
+    
+    public void addBasketProduct(Product product) {
+        this.productCollection.add(product);
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idBasket != null ? idBasket.hashCode() : 0);
+        hash += (user != null ? user.hashCode() : 0);
         return hash;
     }
 
@@ -86,7 +100,7 @@ public class Basket implements Serializable {
             return false;
         }
         Basket other = (Basket) object;
-        if ((this.idBasket == null && other.idBasket != null) || (this.idBasket != null && !this.idBasket.equals(other.idBasket))) {
+        if ((this.user == null && other.user != null) || (this.user != null && !this.user.equals(other.user))) {
             return false;
         }
         return true;
@@ -94,7 +108,7 @@ public class Basket implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Basket[ idBasket=" + idBasket + " ]";
+        return "entity.Basket[ user=" + user + " ]";
     }
     
 }
