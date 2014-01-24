@@ -2,13 +2,12 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+
 -- -----------------------------------------------------
 -- Table `User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `User` ;
-
 CREATE  TABLE IF NOT EXISTS `User` (
-  `idUser` INT NULL ,
+  `idUser` INT NULL AUTO_INCREMENT ,
   `pseudo` VARCHAR(45) NULL ,
   `email` VARCHAR(45) NULL ,
   `password` VARCHAR(45) NULL ,
@@ -22,10 +21,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `Brand`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Brand` ;
-
 CREATE  TABLE IF NOT EXISTS `Brand` (
-  `idBrand` INT NOT NULL ,
+  `idBrand` INT NOT NULL AUTO_INCREMENT ,
   `brand_name` VARCHAR(45) NULL ,
   PRIMARY KEY (`idBrand`) )
 ENGINE = InnoDB;
@@ -34,10 +31,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Tag` ;
-
 CREATE  TABLE IF NOT EXISTS `Tag` (
-  `idTag` INT NOT NULL ,
+  `idTag` INT NOT NULL AUTO_INCREMENT ,
   `tag_name` VARCHAR(45) NULL ,
   PRIMARY KEY (`idTag`) )
 ENGINE = InnoDB;
@@ -46,10 +41,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Product`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Product` ;
-
 CREATE  TABLE IF NOT EXISTS `Product` (
-  `idProduct` INT NOT NULL ,
+  `idProduct` INT NOT NULL AUTO_INCREMENT ,
   `product_description` TEXT NULL ,
   `buying_price` DECIMAL(10,0) NULL ,
   `product_name` VARCHAR(45) NULL ,
@@ -79,10 +72,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `Comment`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Comment` ;
-
 CREATE  TABLE IF NOT EXISTS `Comment` (
-  `idComment` INT NOT NULL ,
+  `idComment` INT NOT NULL AUTO_INCREMENT ,
   `comment` TEXT NULL ,
   `score` INT NULL ,
   `user` INT NULL ,
@@ -108,10 +99,8 @@ COLLATE = utf8_unicode_ci;
 -- -----------------------------------------------------
 -- Table `Command`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Command` ;
-
 CREATE  TABLE IF NOT EXISTS `Command` (
-  `idCommand` INT NOT NULL ,
+  `idCommand` INT NOT NULL AUTO_INCREMENT ,
   `user` INT NULL ,
   `status` VARCHAR(45) NULL ,
   PRIMARY KEY (`idCommand`) ,
@@ -127,10 +116,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Bill`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Bill` ;
-
 CREATE  TABLE IF NOT EXISTS `Bill` (
-  `idBill` INT NOT NULL ,
+  `idBill` INT NOT NULL AUTO_INCREMENT ,
   `command` INT NULL ,
   `total_price` DOUBLE NULL ,
   `ispaid` TINYINT(1) NULL ,
@@ -148,8 +135,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Command_Product`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Command_Product` ;
-
 CREATE  TABLE IF NOT EXISTS `Command_Product` (
   `command` INT NULL ,
   `product` INT NULL ,
@@ -173,36 +158,18 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `Basket`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Basket` ;
-
 CREATE  TABLE IF NOT EXISTS `Basket` (
   `user` INT NOT NULL ,
-  PRIMARY KEY (`user`) ,
+  `product` INT NOT NULL ,
+  `amount_product` INT UNSIGNED NULL ,
+  PRIMARY KEY (`user`, `product`) ,
+  INDEX `fk_Basket_2_idx` (`product` ASC) ,
   CONSTRAINT `fk_Basket_1`
     FOREIGN KEY (`user` )
     REFERENCES `User` (`idUser` )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Basket_Product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `Basket_Product` ;
-
-CREATE  TABLE IF NOT EXISTS `Basket_Product` (
-  `basket` INT NOT NULL ,
-  `product` INT NULL ,
-  `amount` INT NULL ,
-  PRIMARY KEY (`basket`) ,
-  INDEX `fk_Basket_Product_2_idx` (`product` ASC) ,
-  CONSTRAINT `fk_Basket_Product_1`
-    FOREIGN KEY (`basket` )
-    REFERENCES `Basket` (`user` )
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Basket_Product_2`
+  CONSTRAINT `fk_Basket_2`
     FOREIGN KEY (`product` )
     REFERENCES `Product` (`idProduct` )
     ON DELETE NO ACTION
