@@ -36,7 +36,8 @@ public class CreateUserServlet extends HttpServlet {
     private UserTransaction utx;
     
     public static final String USER = "user",
-            FORM = "form";
+            FORM = "form",
+            VIEW = "WEB-INF/CreateUser.jsp";
 
     /**
      * Processes requests for both HTTP
@@ -81,7 +82,7 @@ public class CreateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -100,7 +101,9 @@ public class CreateUserServlet extends HttpServlet {
         
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
+        em = emf.createEntityManager();
         FormUser form = new FormUser();
+        form.setEntityManager(em);
         User user = form.create(request);
         request.setAttribute(USER, user);
         request.setAttribute(FORM, form);
@@ -114,7 +117,7 @@ public class CreateUserServlet extends HttpServlet {
                 //create an em. 
                 //Since the em is created inside a transaction, it is associsated with 
                 //the transaction
-                em = emf.createEntityManager();
+                
                 //persist the person entity
                 em.persist(user);
                 //commit transaction which will trigger the em to 
@@ -134,7 +137,7 @@ public class CreateUserServlet extends HttpServlet {
             }
         }
         
-        request.getRequestDispatcher("WEB-INF/CreateUser.jsp").forward(request, response);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**

@@ -40,8 +40,8 @@ public class UserChecker {
     {
         
         Query q = em.createNamedQuery("User.findByLogin");
-        q.setParameter(":username",login);
-        q.setParameter(":password",password);
+        q.setParameter("username",login);
+        q.setParameter("password",password);
         
         // not using this one, because if not result are found
         try

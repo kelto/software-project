@@ -118,8 +118,8 @@ public class FormUser extends Form<User> {
         if(this.em != null)
         {
             User user = null;
-            Query q = em.createNamedQuery("User.findByLogin");
-            q.setParameter(":username",username);
+            Query q = em.createNamedQuery("User.findByUsername");
+            q.setParameter("username",username);
             try
             {
                 user = (User) q.getSingleResult();
@@ -127,9 +127,11 @@ public class FormUser extends Form<User> {
             {
                 
             }
-            if(user == null)
+            if(user != null)
                 throw new Exception("username already exists please choose another one");
         }
+        if(this.em == null)
+            throw new Exception("Can't check if user exist");
         
     }
     

@@ -15,20 +15,15 @@
         <h1>Hello World!</h1>
         <form id="CreateUserForm" action="CreateUser" method="post">
     
-        <label for="username">username</label><input type="text" id = "username" name="username" /> <span class="erreur">${form.errors['username']}</span>
-        <label for="password">password</label><input type="text" id = "password" name="password" />
-        <label for="password_conf">password</label><input type="text" id = "password_conf" name="password_conf" />
-        <label for="email">email</label><input type="text" id = "email" name="email" />
-        <label for="address">address</label><input type="text" id = "address" name="address" />
+        <label for="username">username</label><input type="text" id = "username" name="username" /> <span class="erreur">${form.errors['username']}</span><br />
+        <label for="password">password</label><input type="text" id = "password" name="password" /><span class="erreur">${form.errors['password']}</span><br />
+        <label for="password_conf">password</label><input type="text" id = "password_conf" name="password_conf" /><span class="erreur">${form.errors['password_conf']}</span><br />
+        <label for="email">email</label><input type="text" id = "email" name="email" /><span class="erreur">${form.errors['email']}</span><br />
+        <label for="address">address</label><input type="text" id = "address" name="address" /><span class="erreur">${form.errors['address']}</span><br />
     
     <input type="submit" id="CreateRecord" value="CreateRecord" />
     </form>
         <p class="result">${form.result}</p>
-        <span>${form.errors['login']}</span>
-        <span>${form.errors['email']}</span>
-        <span>${form.errors['address']}</span>
-        <span>${form.errors['pass']}</span>
-        <span>${form.errors['login']}</span>
 <a href="ListUser"><strong>Go to List of users</strong></a>
         
     </body>
