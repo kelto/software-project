@@ -39,9 +39,9 @@ public class UserChecker {
     public boolean loadUser(HttpServletRequest request,EntityManager em, String login, String password)
     {
         
-        Query q = em.createQuery("select u From User u where u.pseudo = :login and u.password = :pass");
-        q.setParameter("login",login);
-        q.setParameter("pass",password);
+        Query q = em.createNamedQuery("User.findByLogin");
+        q.setParameter(":username",login);
+        q.setParameter(":password",password);
         
         // not using this one, because if not result are found
         try

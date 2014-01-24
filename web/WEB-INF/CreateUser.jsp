@@ -14,13 +14,13 @@
     <body>
         <h1>Hello World!</h1>
         <form id="CreateUserForm" action="CreateUser" method="post">
-    <table>
-        <tr><td>pseudo</td><td><input type="text" id = "login" name="login" /></td></tr>
-        <tr><td>pass</td><td><input type="text" id = "pass" name="pass" /></td></tr>
-        <tr><td>conf</td><td><input type="text" id = "pass_conf" name="pass_conf" /></td></tr>
-        <tr><td>email</td><td><input type="text" id = "email" name="email" /></td></tr>
-        <tr><td>adress</td><td><input type="text" id = "address" name="address" /></td></tr>
-    </table>
+    
+        <label for="username">username</label><input type="text" id = "username" name="username" /> <span class="erreur">${form.errors['username']}</span>
+        <label for="password">password</label><input type="text" id = "password" name="password" />
+        <label for="password_conf">password</label><input type="text" id = "password_conf" name="password_conf" />
+        <label for="email">email</label><input type="text" id = "email" name="email" />
+        <label for="address">address</label><input type="text" id = "address" name="address" />
+    
     <input type="submit" id="CreateRecord" value="CreateRecord" />
     </form>
         <p class="result">${form.result}</p>

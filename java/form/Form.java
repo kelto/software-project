@@ -6,6 +6,7 @@ package form;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import sun.util.calendar.CalendarDate;
 
@@ -17,10 +18,16 @@ public abstract class Form<T> {
     
     protected String result;
     private Map<String, String> errors;
+    protected EntityManager em;
  
     public Form()
     {
         errors = new HashMap<String,String>();
+    }
+    
+    public void setEntityManager(EntityManager em)
+    {
+        this.em = em;
     }
     
     public String getResult()

@@ -5,6 +5,8 @@
 package form;
 
 import entity.User;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -13,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class FormUser extends Form<User> {
 
-    public final static String LOGIN="login",EMAIL="email",PASS="pass",
-            PASS_CONF="pass_conf",
+    public final static String USERNAME="username",EMAIL="email",PASS="password",
+            PASS_CONF="password_conf",
             ADDRESS="address";
     @Override
     public User create(HttpServletRequest request)
     {
-        String login= getValue(request,LOGIN);
+        String username= getValue(request,USERNAME);
         String email=getValue(request, EMAIL);
         String password=getValue(request, PASS);
         String conf=getValue(request, PASS_CONF);
@@ -27,13 +29,13 @@ public class FormUser extends Form<User> {
         User user = new User();
         try
             {
-                loginValidation(login);
+                usernameValidation(username);
             }
             catch(Exception e)
             {
-                addErrors(LOGIN, e.getMessage());
+                addErrors(USERNAME, e.getMessage());
             }
-        user.setPseudo(login);
+        user.setUsername(username);
         try
             {
                 passwordValidation(password,conf);
@@ -103,12 +105,32 @@ public class FormUser extends Form<User> {
             throw new Exception("The password and/or confirmation entry is empty.");
     }
     
-    private void loginValidation(String login) throws Exception
+    private void usernameValidation(String username) throws Exception
     {
-        if(login == null)
-            throw new Exception("Login entry is empty.");
-        else if(login.length()<3)
-            throw new Exception("The Login should have at least 3 characters");
+        if(username == null)
+            throw new Exception("username entry is empty.");
+        else if(username.length()<3)
+            throw new Exception("The username should have at least 3 characters");
+        
+        
+        //check if EntityManager present to test the presence of user with same
+        // username
+        if(this.em != null)
+        {
+            User user = null;
+            Query q = em.createNamedQuery("User.findByLogin");
+            q.setParameter(":username",username);
+            try
+            {
+                user = (User) q.getSingleResult();
+            } catch(NoResultException e)
+            {
+                
+            }
+            if(user == null)
+                throw new Exception("username already exists please choose another one");
+        }
+        
     }
     
 }

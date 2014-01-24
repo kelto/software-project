@@ -5,22 +5,14 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,38 +24,55 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Basket.findAll", query = "SELECT b FROM Basket b"),
-    @NamedQuery(name = "Basket.findByUser", query = "SELECT b FROM Basket b WHERE b.user = :user")})
+    @NamedQuery(name = "Basket.findByUser", query = "SELECT b FROM Basket b WHERE b.basketPK.user = :user"),
+    @NamedQuery(name = "Basket.findByProduct", query = "SELECT b FROM Basket b WHERE b.basketPK.product = :product"),
+    @NamedQuery(name = "Basket.findByAmountProduct", query = "SELECT b FROM Basket b WHERE b.amountProduct = :amountProduct")})
 public class Basket implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "user")
-    private Integer user;
+    @EmbeddedId
+    protected BasketPK basketPK;
+    @Column(name = "amount_product")
+    private Integer amountProduct;
+    @JoinColumn(name = "product", referencedColumnName = "idProduct", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Product product1;
     @JoinColumn(name = "user", referencedColumnName = "idUser", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private User user1;
-    @JoinTable(name="Command_Product")
-    @ManyToMany
-    private Collection<Product> productCollection;
-    /*
-    @ToMany(cascade = CascadeType.ALL, mappedBy = "basket1")
-    private List<BasketProduct> basketProduct;
-    * */
-    
+
     public Basket() {
     }
 
-    public Basket(Integer user) {
-        this.user = user;
+    public Basket(BasketPK basketPK) {
+        this.basketPK = basketPK;
     }
 
-    public Integer getUser() {
-        return user;
+    public Basket(int user, int product) {
+        this.basketPK = new BasketPK(user, product);
     }
 
-    public void setUser(Integer user) {
-        this.user = user;
+    public BasketPK getBasketPK() {
+        return basketPK;
+    }
+
+    public void setBasketPK(BasketPK basketPK) {
+        this.basketPK = basketPK;
+    }
+
+    public Integer getAmountProduct() {
+        return amountProduct;
+    }
+
+    public void setAmountProduct(Integer amountProduct) {
+        this.amountProduct = amountProduct;
+    }
+
+    public Product getProduct1() {
+        return product1;
+    }
+
+    public void setProduct1(Product product1) {
+        this.product1 = product1;
     }
 
     public User getUser1() {
@@ -74,22 +83,10 @@ public class Basket implements Serializable {
         this.user1 = user1;
     }
 
-    public Collection<Product> getBasketProduct() {
-        return productCollection;
-    }
-
-    public void setBasketProduct(Collection<Product> productCollection) {
-        this.productCollection = productCollection;
-    }
-    
-    public void addBasketProduct(Product product) {
-        this.productCollection.add(product);
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (user != null ? user.hashCode() : 0);
+        hash += (basketPK != null ? basketPK.hashCode() : 0);
         return hash;
     }
 
@@ -100,7 +97,7 @@ public class Basket implements Serializable {
             return false;
         }
         Basket other = (Basket) object;
-        if ((this.user == null && other.user != null) || (this.user != null && !this.user.equals(other.user))) {
+        if ((this.basketPK == null && other.basketPK != null) || (this.basketPK != null && !this.basketPK.equals(other.basketPK))) {
             return false;
         }
         return true;
@@ -108,7 +105,7 @@ public class Basket implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Basket[ user=" + user + " ]";
+        return "entity.Basket[ basketPK=" + basketPK + " ]";
     }
     
 }
