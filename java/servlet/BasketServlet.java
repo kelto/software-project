@@ -118,13 +118,16 @@ public class BasketServlet extends HttpServlet {
             int amount = Integer.parseInt(request.getParameter("amount"));
             Product product = em.find(Product.class, itemId);
             //what it should do. No add method though...
-            basket.addProduct(product, amount);
+            basket = addProduct(user,product, amount);
+            //basket.addProduct(product, amount);
+            em.persist(basket);
         }
        
         else if (userPath.equals("/removeFromBasket")) {
             int itemId = Integer.parseInt(request.getParameter("itemId"));
            //what it should do. No remove method though...
-            basket.removeItem(itemId);
+            Product product = em.find(Product.class, itemId);
+            em.remove(product);
         }
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
@@ -148,4 +151,12 @@ public class BasketServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
+    public Basket addProduct(User user,Product product, int amount)
+    {
+        Basket basket = new Basket();
+        basket.setUser1(user);
+        ha7gup
+        
+        return basket;
+    }
 }
