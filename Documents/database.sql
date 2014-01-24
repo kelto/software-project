@@ -8,7 +8,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `User` (
   `idUser` INT NULL AUTO_INCREMENT ,
-  `pseudo` VARCHAR(45) NULL ,
+  `username` VARCHAR(45) NULL ,
   `email` VARCHAR(45) NULL ,
   `password` VARCHAR(45) NULL ,
   `address` VARCHAR(45) NULL ,
