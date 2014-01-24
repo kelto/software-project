@@ -16,6 +16,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,7 +39,9 @@ public class Brand implements Serializable {
     @Basic(optional = false)
     @Column(name = "idBrand")
     private Integer idBrand;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "brand_name")
     private String brandName;
     @OneToMany(mappedBy = "brand")
@@ -49,6 +52,11 @@ public class Brand implements Serializable {
 
     public Brand(Integer idBrand) {
         this.idBrand = idBrand;
+    }
+
+    public Brand(Integer idBrand, String brandName) {
+        this.idBrand = idBrand;
+        this.brandName = brandName;
     }
 
     public Integer getIdBrand() {
