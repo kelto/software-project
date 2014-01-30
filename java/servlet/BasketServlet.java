@@ -11,14 +11,19 @@ import databaseChecker.BasketChecker;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -40,8 +45,14 @@ public class BasketServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    EntityManagerFactory emf=(EntityManagerFactory)getServletContext().getAttribute("emf");
-    EntityManager em = emf.createEntityManager();
+    //EntityManagerFactory emf=(EntityManagerFactory)getServletContext().getAttribute("emf");
+    //EntityManager em = emf.createEntityManager();
+    
+    @PersistenceUnit
+    //The emf corresponding to
+    private EntityManagerFactory emf;
+    @Resource
+    private UserTransaction utx;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -78,16 +89,17 @@ public class BasketServlet extends HttpServlet {
         HttpSession session = request.getSession();
         // if category page is requested
         if (userPath.equals("/viewBasket")) {
-            User user = (User) session.getAttribute(ConnectionServlet.ATT_SESSION_USER);
+           // User user = (User) session.getAttribute(ConnectionServlet.ATT_SESSION_USER);
+            User user = (User)request.getAttribute("user");
             assert user != null ;
-        /*    Basket basket = user.getBasket();
+            Basket basket = user.getBasket();
             request.setAttribute("basket",basket);
             request.getRequestDispatcher("ShowBasket.jsp").forward(request, response);
-        */
+            */
         }
         
         // use RequestDispatcher to forward request internally
-        String url = "/WEB-INF/view" + userPath + ".jsp";
+        String url = "/WEB-INF/" + userPath + ".jsp";
         try {
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception ex) {
@@ -107,35 +119,54 @@ public class BasketServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //  processRequest(request, response);
+        assert emf != null;
+        EntityManager em = emf.createEntityManager();
+        
         HttpSession session = request.getSession();
         
         String userPath = request.getServletPath();
         
         User user = (User)session.getAttribute(ConnectionServlet.ATT_SESSION_USER);
-      //  Basket basket = user.getBasket();
-     // Collection<Basket> basketCollection = user.getBasketCollection();
+        BasketChecker basketChecker = new BasketChecker(request, em, user);
+        //  Basket basket = user.getBasket();
+        // Collection<Basket> basketCollection = user.getBasketCollection();
         assert(user!=null);
-       // assert(basketCollection!=null);
-       
+        // assert(basketCollection!=null);
+        
         //We create a new basket for every product we want to add
-        if (userPath.equals("/addToBasket")) {     
-            BasketChecker basketChecker = new BasketChecker(request, em, user);
-            int userId = user.getIdUser(); 
-            int itemId = basketChecker.getItemId();
-            int amount = basketChecker.getAmount();
-            Basket basket = basketChecker.createBasket(userId, itemId, amount);                     
-            em.persist(basket);
+        if (userPath.equals("/addToBasket")) {
+            
+            
+            // int userId = user.getIdUser();
+            //  int userId=2;
+            //int itemId = basketChecker.getItemId();
+            //int amount = basketChecker.getAmount();
+            //int itemId=4;
+            //int amount=1;
+            //Basket basket = basketChecker.createBasket(userId, itemId, amount);
+            Basket basket = new Basket(3,2);
+            //  basket.setAmountProduct(4);
+            try{
+                utx.begin();
+                em.persist(basket);
+                utx.commit();
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            BasketPK b = basket.getBasketPK();
+            //  processRequest(request,response);
         }
-       
+        
         else if (userPath.equals("/removeFromBasket")) {
-            int itemId = Integer.parseInt(request.getParameter("itemId"));
-           //what it should do. No remove method though...
+            int itemId = basketChecker.getItemId();
+            //what it should do. No remove method though...
             Product product = em.find(Product.class, itemId);
             em.remove(product);
         }
         // use RequestDispatcher to forward request internally
-        String url = "/WEB-INF/view" + userPath + ".jsp";
-        
+        String url = "/WEB-INF/" + "viewBasket" + ".jsp";
+        request.setAttribute("user", user);
         try {
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception ex) {
@@ -159,7 +190,7 @@ public class BasketServlet extends HttpServlet {
     {
         Basket basket = new Basket();
         basket.setUser1(user);
-      
+        
         
         return basket;
     }
