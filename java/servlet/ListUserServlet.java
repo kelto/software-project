@@ -47,9 +47,12 @@ public class ListUserServlet extends HttpServlet {
 
             //query for all the persons in database
             //em.createQuery("select u from User u").getResultList();
+            /*
             User user = em.find(User.class,0);
             List<User> users = new ArrayList<>();
             users.add(user);
+            */
+            List<User> users = em.createQuery("select u from User u").getResultList();
             request.setAttribute("userList",users);
             
             //Forward to the jsp page for rendering

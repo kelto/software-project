@@ -30,7 +30,7 @@
 <c:forEach var="person" begin="0" items="${requestScope.userList}">
 <tr>
     <td>${person.idUser}&nbsp;&nbsp;</td> 
-    <td>${person.pseudo}&nbsp;&nbsp;</td> 
+    <td>${person.username}&nbsp;&nbsp;</td> 
     <td>${person.password}&nbsp;&nbsp;</td> 
     <td>${person.email}&nbsp;&nbsp;</td> 
     <td>${person.address}&nbsp;&nbsp;</td> 

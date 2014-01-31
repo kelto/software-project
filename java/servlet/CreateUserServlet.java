@@ -9,8 +9,12 @@ import entity.User;
 import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -114,21 +119,25 @@ public class CreateUserServlet extends HttpServlet {
 
                 //begin a transaction
                 utx.begin();
+                // associate the em with the transaction
+                em.joinTransaction();
                 //create an em. 
                 //Since the em is created inside a transaction, it is associsated with 
                 //the transaction
                 
                 //persist the person entity
                 em.persist(user);
+                em.flush();
                 //commit transaction which will trigger the em to 
                 //commit newly created entity into database
                 utx.commit();
-
-            //Forward to ListUser servlet to list persons along with the newly
-            //created user above
-            //request.getRequestDispatcher("ListUser").forward(request, response);
             } catch (Exception ex) {
-                throw new ServletException(ex);
+                try {
+                    utx.rollback();
+                } catch (IllegalStateException | SecurityException | SystemException ex1) {
+                    Logger.getLogger(CreateUserServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+                
             } finally {
                 //close the em to release any resources held up by the persistebce provider
                 if (em != null) {
