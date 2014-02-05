@@ -5,16 +5,17 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,59 +31,73 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByIdUser", query = "SELECT u FROM User u WHERE u.idUser = :idUser"),
-    @NamedQuery(name = "User.findByPseudo", query = "SELECT u FROM User u WHERE u.pseudo = :pseudo"),
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address")})
+    @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idUser")
-    private Integer idUser;
-    @Size(max = 45)
-    @Column(name = "pseudo")
-    private String pseudo;
+    @Size(min = 1, max = 45)
+    @Column(name = "username")
+    private String username;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "email")
     private String email;
-    @Size(max = 45)
-    @Column(name = "password")
-    private String password;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "address")
     private String address;
-    @OneToMany(mappedBy = "user")
-    private Collection<Command> commandCollection;
-    @OneToMany(mappedBy = "user")
-    private Collection<Comment> commentCollection;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Basket basket;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "password")
+    private String password;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    private List<Userorder> userorderList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
+    private List<Comment> commentList;
 
     public User() {
     }
 
-    public User(Integer idUser) {
-        this.idUser = idUser;
+    public User(Integer id) {
+        this.id = id;
     }
 
-    public Integer getIdUser() {
-        return idUser;
+    public User(Integer id, String username, String email, String address, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.address = address;
+        this.password = password;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public Integer getId() {
+        return id;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -93,14 +108,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -109,36 +116,36 @@ public class User implements Serializable {
         this.address = address;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @XmlTransient
-    public Collection<Command> getCommandCollection() {
-        return commandCollection;
+    public List<Userorder> getUserorderList() {
+        return userorderList;
     }
 
-    public void setCommandCollection(Collection<Command> commandCollection) {
-        this.commandCollection = commandCollection;
+    public void setUserorderList(List<Userorder> userorderList) {
+        this.userorderList = userorderList;
     }
 
     @XmlTransient
-    public Collection<Comment> getCommentCollection() {
-        return commentCollection;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public void setCommentCollection(Collection<Comment> commentCollection) {
-        this.commentCollection = commentCollection;
-    }
-
-    public Basket getBasket() {
-        return basket;
-    }
-
-    public void setBasket(Basket basket) {
-        this.basket = basket;
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUser != null ? idUser.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -149,7 +156,7 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -157,7 +164,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ idUser=" + idUser + " ]";
+        return "entity.User[ id=" + id + " ]";
     }
     
 }

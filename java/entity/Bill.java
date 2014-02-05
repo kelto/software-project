@@ -29,58 +29,56 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Bill.findAll", query = "SELECT b FROM Bill b"),
-    @NamedQuery(name = "Bill.findByIdBill", query = "SELECT b FROM Bill b WHERE b.idBill = :idBill"),
-    @NamedQuery(name = "Bill.findByTotalPrice", query = "SELECT b FROM Bill b WHERE b.totalPrice = :totalPrice"),
-    @NamedQuery(name = "Bill.findByIspaid", query = "SELECT b FROM Bill b WHERE b.ispaid = :ispaid"),
+    @NamedQuery(name = "Bill.findById", query = "SELECT b FROM Bill b WHERE b.id = :id"),
+    @NamedQuery(name = "Bill.findByIsPaid", query = "SELECT b FROM Bill b WHERE b.isPaid = :isPaid"),
     @NamedQuery(name = "Bill.findByDatePayment", query = "SELECT b FROM Bill b WHERE b.datePayment = :datePayment")})
 public class Bill implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idBill")
-    private Integer idBill;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "total_price")
-    private Double totalPrice;
-    @Column(name = "ispaid")
-    private Boolean ispaid;
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "isPaid")
+    private boolean isPaid;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "date_payment")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePayment;
-    @JoinColumn(name = "command", referencedColumnName = "idCommand")
-    @ManyToOne
-    private Command command;
+    @JoinColumn(name = "User_order_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Userorder userorderid;
 
     public Bill() {
     }
 
-    public Bill(Integer idBill) {
-        this.idBill = idBill;
+    public Bill(Integer id) {
+        this.id = id;
     }
 
-    public Integer getIdBill() {
-        return idBill;
+    public Bill(Integer id, boolean isPaid, Date datePayment) {
+        this.id = id;
+        this.isPaid = isPaid;
+        this.datePayment = datePayment;
     }
 
-    public void setIdBill(Integer idBill) {
-        this.idBill = idBill;
+    public Integer getId() {
+        return id;
     }
 
-    public Double getTotalPrice() {
-        return totalPrice;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
+    public boolean getIsPaid() {
+        return isPaid;
     }
 
-    public Boolean getIspaid() {
-        return ispaid;
-    }
-
-    public void setIspaid(Boolean ispaid) {
-        this.ispaid = ispaid;
+    public void setIsPaid(boolean isPaid) {
+        this.isPaid = isPaid;
     }
 
     public Date getDatePayment() {
@@ -91,18 +89,18 @@ public class Bill implements Serializable {
         this.datePayment = datePayment;
     }
 
-    public Command getCommand() {
-        return command;
+    public Userorder getUserorderid() {
+        return userorderid;
     }
 
-    public void setCommand(Command command) {
-        this.command = command;
+    public void setUserorderid(Userorder userorderid) {
+        this.userorderid = userorderid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idBill != null ? idBill.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -113,7 +111,7 @@ public class Bill implements Serializable {
             return false;
         }
         Bill other = (Bill) object;
-        if ((this.idBill == null && other.idBill != null) || (this.idBill != null && !this.idBill.equals(other.idBill))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -121,7 +119,7 @@ public class Bill implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Bill[ idBill=" + idBill + " ]";
+        return "entity.Bill[ id=" + id + " ]";
     }
     
 }

@@ -5,19 +5,24 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,157 +37,142 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-    @NamedQuery(name = "Product.findByIdProduct", query = "SELECT p FROM Product p WHERE p.idProduct = :idProduct"),
+    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
+    @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
     @NamedQuery(name = "Product.findByBuyingPrice", query = "SELECT p FROM Product p WHERE p.buyingPrice = :buyingPrice"),
-    @NamedQuery(name = "Product.findByProductName", query = "SELECT p FROM Product p WHERE p.productName = :productName"),
-    @NamedQuery(name = "Product.findByProductStock", query = "SELECT p FROM Product p WHERE p.productStock = :productStock"),
     @NamedQuery(name = "Product.findBySellingPrice", query = "SELECT p FROM Product p WHERE p.sellingPrice = :sellingPrice"),
-    @NamedQuery(name = "Product.findByNumberSold", query = "SELECT p FROM Product p WHERE p.numberSold = :numberSold")})
+    @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
+    @NamedQuery(name = "Product.findByLastUpdate", query = "SELECT p FROM Product p WHERE p.lastUpdate = :lastUpdate")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idProduct")
-    private Integer idProduct;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "product_description")
-    private String productDescription;
+    @Size(min = 1, max = 45)
+    @Column(name = "name")
+    private String name;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "buying_price")
-    private Long buyingPrice;
-    @Size(max = 45)
-    @Column(name = "product_name")
-    private String productName;
-    @Column(name = "product_stock")
-    private Integer productStock;
+    private BigDecimal buyingPrice;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "selling_price")
-    private Integer sellingPrice;
-    @Column(name = "number_sold")
-    private Integer numberSold;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product1")
-    private Collection<CommandProduct> commandProductCollection;
-    @JoinColumn(name = "tag", referencedColumnName = "idTag")
-    @ManyToOne
-    private Tag tag;
-    @JoinColumn(name = "brand", referencedColumnName = "idBrand")
-    @ManyToOne
-    private Brand brand;
-    @OneToMany(mappedBy = "product")
-    private Collection<Comment> commentCollection;
-    @OneToMany(mappedBy = "product")
-    private Collection<BasketProduct> basketProductCollection;
+    private BigDecimal sellingPrice;
+    @Size(max = 255)
+    @Column(name = "description")
+    private String description;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "last_update")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<OrderedProduct> orderedProductList;
+    @JoinColumn(name = "Category_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Category categoryid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productid")
+    private List<Comment> commentList;
 
     public Product() {
     }
 
-    public Product(Integer idProduct) {
-        this.idProduct = idProduct;
+    public Product(Integer id) {
+        this.id = id;
     }
 
-    public Integer getIdProduct() {
-        return idProduct;
+    public Product(Integer id, String name, BigDecimal buyingPrice, BigDecimal sellingPrice, Date lastUpdate) {
+        this.id = id;
+        this.name = name;
+        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
+        this.lastUpdate = lastUpdate;
     }
 
-    public void setIdProduct(Integer idProduct) {
-        this.idProduct = idProduct;
+    public Integer getId() {
+        return id;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public String getName() {
+        return name;
     }
 
-    public Long getBuyingPrice() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getBuyingPrice() {
         return buyingPrice;
     }
 
-    public void setBuyingPrice(Long buyingPrice) {
+    public void setBuyingPrice(BigDecimal buyingPrice) {
         this.buyingPrice = buyingPrice;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public Integer getProductStock() {
-        return productStock;
-    }
-
-    public void setProductStock(Integer productStock) {
-        this.productStock = productStock;
-    }
-
-    public Integer getSellingPrice() {
+    public BigDecimal getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(Integer sellingPrice) {
+    public void setSellingPrice(BigDecimal sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public Integer getNumberSold() {
-        return numberSold;
+    public String getDescription() {
+        return description;
     }
 
-    public void setNumberSold(Integer numberSold) {
-        this.numberSold = numberSold;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @XmlTransient
-    public Collection<CommandProduct> getCommandProductCollection() {
-        return commandProductCollection;
+    public Date getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setCommandProductCollection(Collection<CommandProduct> commandProductCollection) {
-        this.commandProductCollection = commandProductCollection;
-    }
-
-    public Tag getTag() {
-        return tag;
-    }
-
-    public void setTag(Tag tag) {
-        this.tag = tag;
-    }
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     @XmlTransient
-    public Collection<Comment> getCommentCollection() {
-        return commentCollection;
+    public List<OrderedProduct> getOrderedProductList() {
+        return orderedProductList;
     }
 
-    public void setCommentCollection(Collection<Comment> commentCollection) {
-        this.commentCollection = commentCollection;
+    public void setOrderedProductList(List<OrderedProduct> orderedProductList) {
+        this.orderedProductList = orderedProductList;
+    }
+
+    public Category getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(Category categoryid) {
+        this.categoryid = categoryid;
     }
 
     @XmlTransient
-    public Collection<BasketProduct> getBasketProductCollection() {
-        return basketProductCollection;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public void setBasketProductCollection(Collection<BasketProduct> basketProductCollection) {
-        this.basketProductCollection = basketProductCollection;
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idProduct != null ? idProduct.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -193,7 +183,7 @@ public class Product implements Serializable {
             return false;
         }
         Product other = (Product) object;
-        if ((this.idProduct == null && other.idProduct != null) || (this.idProduct != null && !this.idProduct.equals(other.idProduct))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -201,7 +191,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Product[ idProduct=" + idProduct + " ]";
+        return "entity.Product[ id=" + id + " ]";
     }
     
 }

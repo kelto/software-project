@@ -8,14 +8,14 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,41 +28,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-    @NamedQuery(name = "Comment.findByIdComment", query = "SELECT c FROM Comment c WHERE c.idComment = :idComment"),
+    @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c WHERE c.id = :id"),
+    @NamedQuery(name = "Comment.findByComment", query = "SELECT c FROM Comment c WHERE c.comment = :comment"),
     @NamedQuery(name = "Comment.findByScore", query = "SELECT c FROM Comment c WHERE c.score = :score")})
 public class Comment implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "idComment")
-    private Integer idComment;
-    @Lob
-    @Size(max = 65535)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 255)
     @Column(name = "comment")
     private String comment;
     @Column(name = "score")
-    private Integer score;
-    @JoinColumn(name = "product", referencedColumnName = "idProduct")
-    @ManyToOne
-    private Product product;
-    @JoinColumn(name = "user", referencedColumnName = "idUser")
-    @ManyToOne
-    private User user;
+    private Short score;
+    @JoinColumn(name = "Product_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Product productid;
+    @JoinColumn(name = "User_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private User userid;
 
     public Comment() {
     }
 
-    public Comment(Integer idComment) {
-        this.idComment = idComment;
+    public Comment(Integer id) {
+        this.id = id;
     }
 
-    public Integer getIdComment() {
-        return idComment;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdComment(Integer idComment) {
-        this.idComment = idComment;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getComment() {
@@ -73,34 +73,34 @@ public class Comment implements Serializable {
         this.comment = comment;
     }
 
-    public Integer getScore() {
+    public Short getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Short score) {
         this.score = score;
     }
 
-    public Product getProduct() {
-        return product;
+    public Product getProductid() {
+        return productid;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductid(Product productid) {
+        this.productid = productid;
     }
 
-    public User getUser() {
-        return user;
+    public User getUserid() {
+        return userid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserid(User userid) {
+        this.userid = userid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idComment != null ? idComment.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -111,7 +111,7 @@ public class Comment implements Serializable {
             return false;
         }
         Comment other = (Comment) object;
-        if ((this.idComment == null && other.idComment != null) || (this.idComment != null && !this.idComment.equals(other.idComment))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -119,7 +119,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Comment[ idComment=" + idComment + " ]";
+        return "entity.Comment[ id=" + id + " ]";
     }
     
 }
