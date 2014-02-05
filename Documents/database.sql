@@ -3,6 +3,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 
+
 -- -----------------------------------------------------
 -- Table `User`
 -- -----------------------------------------------------
@@ -12,6 +13,11 @@ CREATE  TABLE IF NOT EXISTS `User` (
   `email` VARCHAR(45) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
   `address` VARCHAR(45) NULL ,
+  `last_login` DATETIME NULL ,
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1 ,
+  `confirmation_token` VARCHAR(45) NULL ,
+  `locked` TINYINT(1) NOT NULL DEFAULT 0 ,
+  `created_date` DATETIME NOT NULL ,
   PRIMARY KEY (`idUser`) ,
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
 ENGINE = InnoDB
@@ -121,9 +127,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `Bill` (
   `idBill` INT NOT NULL AUTO_INCREMENT ,
-  `command` INT NULL ,
-  `total_price` DOUBLE NULL ,
-  `ispaid` TINYINT(1) NULL ,
+  `command` INT NOT NULL ,
+  `total_price` DOUBLE NOT NULL ,
+  `ispaid` TINYINT(1) NOT NULL ,
   `date_payment` DATETIME NULL ,
   PRIMARY KEY (`idBill`) ,
   INDEX `fk_Bill_1_idx` (`command` ASC) ,
@@ -141,7 +147,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Command_Product` (
   `command` INT NULL ,
   `product` INT NULL ,
-  `amount_product` INT NULL ,
+  `amount_product` INT NOT NULL ,
   PRIMARY KEY (`command`, `product`) ,
   INDEX `fk_Order_Product_1_idx` (`command` ASC) ,
   INDEX `fk_Order_Product_2_idx` (`product` ASC) ,
@@ -164,7 +170,7 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `Basket` (
   `user` INT NOT NULL ,
   `product` INT NOT NULL ,
-  `amount_product` INT UNSIGNED NULL ,
+  `amount_product` INT UNSIGNED NOT NULL ,
   PRIMARY KEY (`user`, `product`) ,
   INDEX `fk_Basket_2_idx` (`product` ASC) ,
   CONSTRAINT `fk_Basket_1`
@@ -178,7 +184,6 @@ CREATE  TABLE IF NOT EXISTS `Basket` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
