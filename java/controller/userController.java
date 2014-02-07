@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelto
  */
-@WebServlet(name = "userController", urlPatterns = {"/profile", "/cart", "/checkout"})
+@WebServlet(name = "userController", urlPatterns = {"/profile", "/checkout","/edit","/login"})
 public class userController extends HttpServlet {
 
     /**
@@ -62,7 +62,34 @@ public class userController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String userPath = request.getServletPath();
+        if(userPath.equals("/profile"))
+        {
+            //TODO: implements the show profile functionnality
+        }
+        else if(userPath.equals("/checkout"))
+        {
+            //TODO: implement the checkout functionnality
+        }
+        else if(userPath.equals("/purchase"))
+        {
+            //TODO: implement the purchase functionnality
+        }
+        else if(userPath.equals("/login"))
+        {
+            //TODO: implement the purchase functionnality
+        }
+        
+        // use RequestDispatcher to forward request internally
+        String url = "/WEB-INF/view" + userPath + ".jsp";
+
+        try {
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
     }
 
     /**
@@ -77,7 +104,20 @@ public class userController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String userPath = request.getServletPath();
+        if(userPath.equals("/edit"))
+        {
+            //TODO: implements the edit profile functionnality
+        }
+        
+        // use RequestDispatcher to forward request internally
+        String url = "/WEB-INF/view" + userPath + ".jsp";
+
+        try {
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**

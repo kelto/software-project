@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package session;
+package manager;
 
 import cart.ShoppingCartItem;
 import cart.ShoppingCart;
@@ -49,11 +49,21 @@ public class OrderManager {
         }
     }
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public int placeOrder(User user, ShoppingCart cart)
+    {
+         try 
+        {
+            Userorder order = addOrder(user, cart);
+            addOrderedItems(order, cart);
+            return order.getId();
+        } catch (Exception e) {
+            context.setRollbackOnly();
+            return 0;
+        }
+    }
     
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-
+    
     private User addUser(String name, String email, String address, String ccNumber) {
         User user = new User();
         user.setUsername(name);

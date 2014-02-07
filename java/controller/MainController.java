@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import session.CategoryFacade;
-import session.OrderManager;
+import manager.OrderManager;
 import session.ProductFacade;
 import cart.ShoppingCart;
 import entity.Category;
@@ -54,13 +54,10 @@ public class MainController extends HttpServlet {
     public void init() throws ServletException
     {
         //Store category list in servlet context
+        //Should use a singleton session bean
         getServletContext().setAttribute("categories",categoryFacade.findAll());
     }
     
-    public void refresh()
-    {
-        getServletContext().setAttribute("categories",categoryFacade.findAll());
-    }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -180,8 +177,7 @@ public class MainController extends HttpServlet {
 
         // if purchase action is called
         } else if (userPath.equals("/purchase")) {
-            // TODO: Implement purchase action
-
+            
             if (cart != null) {
 
         // extract user data from request
@@ -189,7 +185,8 @@ public class MainController extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         String ccNumber = request.getParameter("creditcard");
-        
+      
+                
         int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
     }
 

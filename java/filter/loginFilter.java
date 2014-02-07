@@ -4,6 +4,7 @@
  */
 package filter;
 
+import entity.User;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -15,27 +16,32 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author kelto
  */
-@WebFilter(filterName = "AdminFilter", urlPatterns = {"/admin/*"})
-public class AdminFilter implements Filter {
+@WebFilter(filterName = "loginFilter", urlPatterns = {"/user/*","/profile","/edit","/purchase","/checkout"})
+public class loginFilter implements Filter {
     
     private static final boolean debug = true;
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
+    private final static String LOGIN = "/login";
+    private final static String USER_ATT = "user";
     
-    public AdminFilter() {
+    public loginFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("AdminFilter:DoBeforeProcessing");
+            log("loginFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -64,7 +70,7 @@ public class AdminFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("AdminFilter:DoAfterProcessing");
+            log("loginFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -102,12 +108,20 @@ public class AdminFilter implements Filter {
             throws IOException, ServletException {
         
         if (debug) {
-            log("AdminFilter:doFilter()");
+            log("loginFilter:doFilter()");
         }
         
         doBeforeProcessing(request, response);
         
         Throwable problem = null;
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute(USER_ATT);
+        if(user == null)
+        {
+            res.sendRedirect( req.getContextPath() + LOGIN);
+        }
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {
@@ -162,7 +176,7 @@ public class AdminFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AdminFilter:Initializing filter");
+                log("loginFilter:Initializing filter");
             }
         }
     }
@@ -173,9 +187,9 @@ public class AdminFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AdminFilter()");
+            return ("loginFilter()");
         }
-        StringBuffer sb = new StringBuffer("AdminFilter(");
+        StringBuffer sb = new StringBuffer("loginFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

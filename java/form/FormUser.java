@@ -5,35 +5,51 @@
 package form;
 
 import entity.User;
+import javax.annotation.Resource;
+import javax.ejb.EJB;
+import javax.ejb.SessionContext;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
+import manager.UserManager;
 
 /**
  *
  * @author kelto
  */
+@Stateless
 public class FormUser extends Form<User> {
 
-    public final static String LOGIN="login",EMAIL="email",PASS="pass",
-            PASS_CONF="pass_conf",
+    public final static String USERNAME="username",EMAIL="email",PASS="password",
+            PASS_CONF="password_conf",
             ADDRESS="address";
+    @EJB
+    private UserManager userManager;
+    @PersistenceContext(unitName = "Software-ProjectPU")
+    private EntityManager em;
+    @Resource
+    private SessionContext context;
+    
     @Override
     public User create(HttpServletRequest request)
     {
-        String login= getValue(request,LOGIN);
+        String username= getValue(request,USERNAME);
         String email=getValue(request, EMAIL);
         String password=getValue(request, PASS);
         String conf=getValue(request, PASS_CONF);
         String address=getValue(request, ADDRESS);
-        User user = new User();
+        User user;
         try
             {
-                loginValidation(login);
+                usernameValidation(username);
             }
             catch(Exception e)
             {
-                addErrors(LOGIN, e.getMessage());
+                addErrors(USERNAME, e.getMessage());
             }
-        user.setPseudo(login);
         try
             {
                 passwordValidation(password,conf);
@@ -42,7 +58,6 @@ public class FormUser extends Form<User> {
             {
                 addErrors(PASS, e.getMessage());
             }
-        user.setPassword(password);
         try
             {
                 emailValidation(email);
@@ -51,7 +66,6 @@ public class FormUser extends Form<User> {
             {
                 addErrors(EMAIL, e.getMessage());
             }
-        user.setEmail(email);
          try
             {
                 addressValidation(address);
@@ -60,11 +74,25 @@ public class FormUser extends Form<User> {
             {
                 addErrors(ADDRESS, e.getMessage());
             }
-        user.setAddress(address);
-        if(hasError())
-            result="Sign up failed.";
-        else
+        
+        if(!hasError())
+        {
             result="Sign up succeed !";
+            try {
+                user = userManager.create(username, password, email, address);
+            } catch (Exception e) {
+                context.setRollbackOnly();
+                user = null;
+                result="Sign up failed.";
+            }
+            
+        }
+        else
+        {
+            result="Sign up failed.";
+            user = null;
+        }
+        
             
         return user;
     }
@@ -82,7 +110,6 @@ public class FormUser extends Form<User> {
         {
             if(!email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)"))
             {
-                email="wrong regex!";
                 throw new Exception("Email invalid format !");
             }
         }
@@ -103,12 +130,34 @@ public class FormUser extends Form<User> {
             throw new Exception("The password and/or confirmation entry is empty.");
     }
     
-    private void loginValidation(String login) throws Exception
+    private void usernameValidation(String username) throws Exception
     {
-        if(login == null)
-            throw new Exception("Login entry is empty.");
-        else if(login.length()<3)
-            throw new Exception("The Login should have at least 3 characters");
+        if(username == null)
+            throw new Exception("username entry is empty.");
+        else if(username.length()<3)
+            throw new Exception("The username should have at least 3 characters");
+        
+        
+        //check if EntityManager present to test the presence of user with same
+        // username
+        if(this.em != null)
+        {
+            User user = null;
+            Query q = em.createNamedQuery("User.findByUsername");
+            q.setParameter("username",username);
+            try
+            {
+                user = (User) q.getSingleResult();
+            } catch(NoResultException e)
+            {
+                
+            }
+            if(user != null)
+                throw new Exception("username already exists please choose another one");
+        }
+        if(this.em == null)
+            throw new Exception("Can't check if user exist");
+        
     }
     
 }

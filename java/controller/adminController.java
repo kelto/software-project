@@ -4,6 +4,7 @@
  */
 package controller;
 
+import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import manager.CategoryManager;
 import session.CategoryFacade;
 
 /**
@@ -35,6 +37,8 @@ public class adminController extends HttpServlet {
     
     @EJB
     private CategoryFacade categoryFacade;
+    @EJB
+    private CategoryManager manager;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -69,10 +73,13 @@ public class adminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
+         String path = request.getPathInfo();
+        if(path.equals("/addCategory"))
         {
-            //TODO: implement addCategory
+            String name = request.getParameter("name");
+            manager.create(name);
+
+           
             getServletContext().setAttribute("categories", categoryFacade.findAll());
         }
     }
