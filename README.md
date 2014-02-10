@@ -20,4 +20,6 @@ Functionalities : (order by importance ! )
 
 	  
 
-
+page functionnality :
+- order by date (last products
+- order by number of sell

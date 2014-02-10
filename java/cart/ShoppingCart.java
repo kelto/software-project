@@ -26,6 +26,8 @@ public class ShoppingCart {
         return items;
     }
     
+    //TODO : this function should update the price so that we don't have
+    //to call calcule() again ...
     public void addItem(Product product)
     {
         boolean newItem = true;
@@ -42,6 +44,7 @@ public class ShoppingCart {
             ShoppingCartItem scItem = new ShoppingCartItem(product);
             items.add(scItem);
         }
+        calcule();
     }
 
     public void setItems(List<ShoppingCartItem> items) {

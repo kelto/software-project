@@ -35,21 +35,6 @@ public class OrderManager {
     @Resource
     private SessionContext context;
 
-    /*
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int placeOrder(String name, String email, String address, String ccNumber,ShoppingCart cart) {
-        try 
-        {
-            User user = addUser(name, email, address, ccNumber);
-            Userorder order = addOrder(user, cart);
-            addOrderedItems(order, cart);
-            return order.getId();
-        } catch (Exception e) {
-            context.setRollbackOnly();
-            return 0;
-        }
-    }
-    * */
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int placeOrder(User user, ShoppingCart cart)

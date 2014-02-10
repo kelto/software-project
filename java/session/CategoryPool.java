@@ -33,4 +33,8 @@ public class CategoryPool {
         this.categories = categories;
     }
 
+    public void remove(Category category) {
+        this.categories.remove(category);
+    }
+
 }

@@ -15,6 +15,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.CategoryFacade;
 import session.CategoryPool;
 
 /**
@@ -31,6 +32,8 @@ public class CategoryManager {
     private SessionContext context;
     @EJB
     private CategoryPool pool;
+    @EJB
+    private CategoryFacade catFacade;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Category create(String name) {
@@ -56,6 +59,14 @@ public class CategoryManager {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+   
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void remove(Short id) { 
+        Category category = catFacade.find(id);
+        catFacade.remove(category);
+        pool.remove(category);       
+    }
 
     
 

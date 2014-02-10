@@ -4,24 +4,20 @@
  */
 package controller;
 
-import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "CategoryListController", urlPatterns = {"/category/*"})
-public class CategoryListController extends HttpServlet {
+@WebServlet(name = "userController", urlPatterns = {"/profile", "/checkout","/edit"})
+public class UserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -33,9 +29,6 @@ public class CategoryListController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @EJB
-    private CategoryFacade categoryFacade;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,13 +38,13 @@ public class CategoryListController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryListController</title>");
+            out.println("<title>Servlet userController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryListController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet userController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -69,22 +62,34 @@ public class CategoryListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        String categoryName = request.getPathInfo();
-        if (categoryName != null && !categoryName.isEmpty()) {
-            // remove the / of the path info 
-            categoryName = categoryName.substring(1);
-            Category category = categoryFacade.findByName(categoryName);
-            if (category != null) {
-                //storing in the session : in case of some post request with the same layout ...
-                session.setAttribute("selectedCategory", category);
-                session.setAttribute("listProducts", category.getProductList());
-               
-            }
+        
+        String userPath = request.getServletPath();
+        if(userPath.equals("/profile"))
+        {
+            request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
+            //TODO: implements the show profile functionnality
         }
-        request.getRequestDispatcher("/WEB-INF/view/category.jsp").forward(request, response);
+        else if(userPath.equals("/checkout"))
+        {
+            //TODO: implement the checkout functionnality
+        }
+        else if(userPath.equals("/purchase"))
+        {
+            //TODO: implement the purchase functionnality
+        }
+        else if(userPath.equals("/login"))
+        {
+            //TODO: implement the purchase functionnality
+        }
+        // use RequestDispatcher to forward request internally
+        String url = "/WEB-INF/view" + userPath + ".jsp";
 
+        try {
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
     }
 
     /**
@@ -99,7 +104,20 @@ public class CategoryListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/category.jsp").forward(request, response);
+        String userPath = request.getServletPath();
+        if(userPath.equals("/edit"))
+        {
+            //TODO: implements the edit profile functionnality
+        }
+        
+        // use RequestDispatcher to forward request internally
+        //String url = "/WEB-INF/view" + userPath + ".jsp";
+        String url = "/WEB-INF/view/cart.jsp";
+        try {
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**

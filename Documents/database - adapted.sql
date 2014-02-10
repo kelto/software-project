@@ -145,3 +145,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 
 INSERT INTO mydb1239.Category (`name`) VALUES ('HDD'),('Laptop'),('accessory'),('Desktop');
+
+-- -----------------------------------------------------
+-- INSERT `Product`
+-- -----------------------------------------------------
+INSERT INTO `Product` ( `name`, `buying_price`, `selling_price`, `description`, `last_update`, `Category_id`) VALUES
+('Asus X36', '350.00', '499.00', 'Ubber laptop !', 2), ( 'HDD - Zaphyre X3', '55.5', '75', 'HDD 1To, brand Zaphyre', CURRENT_TIMESTAMP, '10');

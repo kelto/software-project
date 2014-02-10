@@ -14,6 +14,13 @@
     <body>
         <h1>List Category</h1>
         <h2>${user.username}</h2>
+        <%-- checkout widget 
+        <c:import url="/WEB-INF/jspf/user.jspf">
+            <c:param name="cart" value="<c:url value='viewCart'/>"/>
+            <c:param name="checkout" value="<c:url value='checkout'/>"/>
+        </c:import>
+        --%>
+        <%@include file="/WEB-INF/jspf/user.jspf" %>
         <div id="categoryLeftColumn">
 
     <c:forEach var="category" items="${categoriesPool.categories}">
