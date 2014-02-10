@@ -6,6 +6,7 @@ package manager;
 
 import entity.Category;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -14,6 +15,7 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import session.CategoryPool;
 
 /**
  *
@@ -27,6 +29,8 @@ public class CategoryManager {
     private EntityManager em;
     @Resource
     private SessionContext context;
+    @EJB
+    private CategoryPool pool;
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Category create(String name) {
@@ -35,6 +39,7 @@ public class CategoryManager {
             category = new Category();
         category.setName(name);
         em.persist(category);
+        pool.add(category);
         
         } catch (Exception e) {
             context.setRollbackOnly();

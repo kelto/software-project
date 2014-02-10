@@ -34,7 +34,7 @@ public class FormCategory extends Form<Category> {
         if(!hasError())
         {
             result = "Creation of category succeed";
-            category = manager.create(result);            
+            category = manager.create(name);            
         }
         if(hasError() || category == null)
         {

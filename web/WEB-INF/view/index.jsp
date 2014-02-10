@@ -13,8 +13,9 @@
     </head>
     <body>
         <h1>Hello World!</h1>
+        <h2>${user.username}</h2>
         <c:forEach var="category" items="${categories}">
-        <a href="category?${category.id}">
+        <a href="category/${category.name}">
 
                             <span class="categoryLabelText">${category.name}</span> <br />
         </c:forEach>

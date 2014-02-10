@@ -14,25 +14,25 @@ import session.UserFacade;
  * @author kelto
  */
 @Stateless
-public class UserManager implements UserManagerLocal {
+public class UserManager {
     
     
     @EJB
     private UserFacade userFacade;
 
-    @Override
     public User login(String username, String password) {
         User user = userFacade.findByLogin(username, password);
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return user;
     }
 
-    @Override
     public void logout(User user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public User create(String username, String password, String email, String address) {
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

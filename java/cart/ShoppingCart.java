@@ -69,6 +69,11 @@ public class ShoppingCart {
         }
     }
     
+    public void clear()
+    {
+        this.items.clear();
+        this.total = BigDecimal.ZERO;
+    }
     
     
     

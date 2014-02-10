@@ -13,10 +13,10 @@
     </head>
     <body>
         <h1>List Category</h1>
-        
+        <h2>${user.username}</h2>
         <div id="categoryLeftColumn">
 
-    <c:forEach var="category" items="${categories}">
+    <c:forEach var="category" items="${categoriesPool.categories}">
 
         <c:choose>
             <c:when test="${category.name == selectedCategory.name}">
@@ -27,7 +27,7 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <a href="<c:url value='category?${category.id}'/>" class="categoryButton">
+                <a href="<c:url value='/category/${category.name}'/>" class="categoryButton">
                     <span class="categoryText">
                         ${category.name}
                     </span>

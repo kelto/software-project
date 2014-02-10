@@ -19,12 +19,16 @@ import manager.OrderManager;
 import session.ProductFacade;
 import cart.ShoppingCart;
 import entity.Category;
+import entity.User;
+import form.FormCategory;
+import session.CategoryPool;
+import session.UserFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewCart", "/category", "/addToCart","/view"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewCart", "/addToCart","/view","/addCategory"})
 public class MainController extends HttpServlet {
 
     /**
@@ -39,11 +43,17 @@ public class MainController extends HttpServlet {
      */
     
     @EJB
+    private UserFacade userFacade;
+    @EJB
     private CategoryFacade categoryFacade;
     @EJB
     private OrderManager orderManager;
     @EJB
     private ProductFacade productFacade;
+    @EJB
+    private CategoryPool categoryPool;
+    @EJB
+    private FormCategory formCategory;
     
     
     /**
@@ -55,7 +65,8 @@ public class MainController extends HttpServlet {
     {
         //Store category list in servlet context
         //Should use a singleton session bean
-        getServletContext().setAttribute("categories",categoryFacade.findAll());
+        categoryPool.setCategories(categoryFacade.findAll());
+        getServletContext().setAttribute("categoriesPool",categoryPool);
     }
     
     
@@ -95,23 +106,15 @@ public class MainController extends HttpServlet {
          String userPath = request.getServletPath();
          HttpSession session = request.getSession();
          
-        // if category page is requested
-        if (userPath.equals("/category")) {
-            String categoryId = request.getQueryString();
-            if(categoryId != null)
-            {
-                Category category = categoryFacade.find(Short.parseShort(categoryId));
-                //storing in the session : in case of some post request with the same layout ...
-                session.setAttribute("selectedCategory",category);
-                session.setAttribute("listProducts", category.getProductList());
-                
-                
-            }
-                        
-        // if cart page is requested
-        } else if (userPath.equals("/viewCart")) {
+        if (userPath.equals("/viewCart")) {
             // TODO: Implement cart page request
-            
+            String clear = request.getParameter("clear");
+
+            if ((clear != null) && clear.equals("true")) {
+
+                ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
+                cart.clear();
+            }
             userPath = "/cart";
 
         // if checkout page is requested
@@ -126,6 +129,9 @@ public class MainController extends HttpServlet {
         else if(userPath.equals("/view"))
         {
             userPath = "/index";
+        }else if(userPath.equals("/addCategory"))
+        {
+            
         }
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
@@ -186,13 +192,22 @@ public class MainController extends HttpServlet {
         String address = request.getParameter("address");
         String ccNumber = request.getParameter("creditcard");
       
-                
-        int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
+        
+        //int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
+        User user = (User) session.getAttribute("user");
+        int orderId = orderManager.placeOrder(user, cart);
     }
 
     userPath = "/confirmation";
             
-        }
+        }else if(userPath.equals("/addCategory"))
+        {
+            formCategory.create(request);
+            if(formCategory.hasError())
+            {
+                //do something here ... error page ?
+            }
+        } 
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";

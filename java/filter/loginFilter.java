@@ -117,8 +117,10 @@ public class loginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession session = req.getSession();
+        
         User user = (User) session.getAttribute(USER_ATT);
-        if(user == null)
+        log("[WARRANT] Trying to access : "+ USER_ATT);
+        if(session.getAttribute(USER_ATT) == null)
         {
             res.sendRedirect( req.getContextPath() + LOGIN);
         }

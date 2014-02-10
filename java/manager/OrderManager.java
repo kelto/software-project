@@ -35,6 +35,7 @@ public class OrderManager {
     @Resource
     private SessionContext context;
 
+    /*
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int placeOrder(String name, String email, String address, String ccNumber,ShoppingCart cart) {
         try 
@@ -48,6 +49,7 @@ public class OrderManager {
             return 0;
         }
     }
+    * */
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int placeOrder(User user, ShoppingCart cart)

@@ -20,7 +20,7 @@ import session.CategoryFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin", "/listUsers", "/addCategory", "/addProduct"})
+@WebServlet(name = "adminController", urlPatterns = {"/admin/*"})
 public class adminController extends HttpServlet {
 
     /**
@@ -73,15 +73,17 @@ public class adminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
+        /*
          String path = request.getPathInfo();
         if(path.equals("/addCategory"))
         {
             String name = request.getParameter("name");
             manager.create(name);
-
            
             getServletContext().setAttribute("categories", categoryFacade.findAll());
         }
+        * */
     }
 
     /**
@@ -96,12 +98,15 @@ public class adminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
+        /*
         String userPath = request.getServletPath();
         if(userPath.equals("/addCategory"))
         {
             //TODO: implement addCategory
             getServletContext().setAttribute("categories", categoryFacade.findAll());
         }
+        * */
     }
 
     /**
