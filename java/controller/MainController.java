@@ -21,6 +21,7 @@ import cart.ShoppingCart;
 import entity.User;
 import form.FormCategory;
 import manager.CategoryManager;
+import mock.ProductPool;
 import session.CategoryPool;
 import session.UserFacade;
 
@@ -56,6 +57,8 @@ public class MainController extends HttpServlet {
     private FormCategory formCategory;
     @EJB
     private CategoryManager categoryManager;
+    @EJB
+    private ProductPool productPool;
     
     
     /**
@@ -69,6 +72,7 @@ public class MainController extends HttpServlet {
         //Should use a singleton session bean
         categoryPool.setCategories(categoryFacade.findAll());
         getServletContext().setAttribute("categoriesPool",categoryPool);
+        getServletContext().setAttribute("productPool",productPool);
     }
     
     
