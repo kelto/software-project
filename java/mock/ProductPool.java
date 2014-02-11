@@ -43,8 +43,8 @@ public class ProductPool {
     {
         Product product =  new Product();
         product.setName(name);
-        product.setBuyingPrice(new BigDecimal(buying));
-        product.setSellingPrice(new BigDecimal(selling));
+        product.setBuyingPrice(new BigDecimal(buying).setScale(2, BigDecimal.ROUND_HALF_UP));
+        product.setSellingPrice(new BigDecimal(selling).setScale(2, BigDecimal.ROUND_HALF_UP));
         product.setDescription(description);
         product.setCategoryid(categoryPool.randomCategory());
         return product;

@@ -58,7 +58,7 @@ public class MainController extends HttpServlet {
     @EJB
     private CategoryManager categoryManager;
     @EJB
-    private ProductPool productPool;
+    private ProductPool productsPool;
     
     
     /**
@@ -72,7 +72,7 @@ public class MainController extends HttpServlet {
         //Should use a singleton session bean
         categoryPool.setCategories(categoryFacade.findAll());
         getServletContext().setAttribute("categoriesPool",categoryPool);
-        getServletContext().setAttribute("productPool",productPool);
+        getServletContext().setAttribute("productsPool",productsPool);
     }
     
     

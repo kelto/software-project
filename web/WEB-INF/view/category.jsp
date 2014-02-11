@@ -6,7 +6,31 @@
         <%@include file="/WEB-INF/jspf/header.jspf" %>
         <%@include file="/WEB-INF/jspf/user.jspf" %>
         <div id="categoryLeftColumn">
+            <c:forEach var="product" items="${productsPool.topSell}">
+                <tr>
+                
 
+                <td>
+                    ${product.name}
+                    <br>
+                    <span class="smallText">${product.description}</span>
+                </td>
+
+                <td>&euro; ${product.sellingPrice}</td>
+
+                <td>
+                    <form action="<c:url value='addToCart'/>" method="post">
+                        <input type="hidden"
+                               name="productId"
+                               value="${product.id}">
+                        <input type="submit"
+                               name="submit"
+                               value="add to cart">
+                    </form>
+                </td>
+            </tr>
+                
+            </c:forEach>
     <c:forEach var="category" items="${categoriesPool.categories}">
 
         <c:choose>
