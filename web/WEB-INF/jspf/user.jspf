@@ -1,12 +1,3 @@
-
-<%--
-<%@ page pageEncoding="UTF-8" %>
-<h2>cart</h2>
-<a href="${cart}"/>view cart</a>
-<a href="${checkout}" class="bubble hMargin">proceed to checkout </a>
-<p>cart : ${cart}</p>
-<p>checkout : ${checkout}</p>
---%>
 <h2>cart</h2>
 <a href="<c:url value='/viewCart'/>"/>view cart</a>
 <a href="<c:url value='/checkout'/>" class="bubble hMargin">proceed to checkout </a>
