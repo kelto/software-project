@@ -4,7 +4,11 @@
  */
 package session;
 
+import entity.OrderedProduct;
+import entity.Product;
 import entity.Userorder;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,4 +31,14 @@ public class UserorderFacade extends AbstractFacade<Userorder> {
         super(Userorder.class);
     }
     
+    public List<Product> getProductsFromOrder(Userorder order)
+    {
+        List<Product> list = new ArrayList<>();
+        List<OrderedProduct> listOrdered = order.getOrderedProductList();
+        for(OrderedProduct ordered : listOrdered)
+        {
+            list.add(ordered.getProduct());
+        }
+        return list;
+    }
 }

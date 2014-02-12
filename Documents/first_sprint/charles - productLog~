@@ -10,9 +10,3 @@
 - Creation of the filter for the management of checkout/purchase : since the users have to been authenticated, the filter check for these url if there is a user. 1hour
 - Creation of a new Constraint : EmailValid, taken from a website, and implement it on internet : 40min
 
-
-******************************************
-SPRINT 3
-******************************************
-
-- Creation of a mock class for ProductPool, so that the view can be created more easily. ;40 min

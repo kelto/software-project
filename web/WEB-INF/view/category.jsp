@@ -3,8 +3,12 @@
     Created on : 5 févr. 2014, 20:29:28
     Author     : kelto
 --%>
+        
         <%@include file="/WEB-INF/jspf/header.jspf" %>
         <%@include file="/WEB-INF/jspf/user.jspf" %>
+        <c:if test="${ !empty user}">
+            <%@include file="/WEB-INF/jspf/commentForm.jspf" %>
+        </c:if>
         <div id="categoryLeftColumn">
             <c:forEach var="product" items="${productsPool.topSell}">
                 <tr>
