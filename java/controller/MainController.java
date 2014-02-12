@@ -18,9 +18,10 @@ import session.CategoryFacade;
 import manager.OrderManager;
 import session.ProductFacade;
 import cart.ShoppingCart;
-import entity.Category;
 import entity.User;
 import form.FormCategory;
+import manager.CategoryManager;
+import mock.ProductPool;
 import session.CategoryPool;
 import session.UserFacade;
 
@@ -54,6 +55,10 @@ public class MainController extends HttpServlet {
     private CategoryPool categoryPool;
     @EJB
     private FormCategory formCategory;
+    @EJB
+    private CategoryManager categoryManager;
+    @EJB
+    private ProductPool productsPool;
     
     
     /**
@@ -67,6 +72,7 @@ public class MainController extends HttpServlet {
         //Should use a singleton session bean
         categoryPool.setCategories(categoryFacade.findAll());
         getServletContext().setAttribute("categoriesPool",categoryPool);
+        getServletContext().setAttribute("productsPool",productsPool);
     }
     
     
@@ -173,7 +179,6 @@ public class MainController extends HttpServlet {
             {
                 Product product = productFacade.find(Integer.parseInt(productId));
                 cart.addItem(product);
-                cart.calcule();
             }
             userPath = "/category";
 
@@ -207,7 +212,13 @@ public class MainController extends HttpServlet {
             {
                 //do something here ... error page ?
             }
+        } else if(userPath.equals("/removeCategory"))
+        {       
+            //Need to add controll if category contains products. They will be removed.
+            short id = Short.parseShort(request.getParameter("categoryID"));
+            categoryManager.remove(id);
         } 
+
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";

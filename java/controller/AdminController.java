@@ -13,15 +13,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import manager.CategoryManager;
 import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "CategoryListController", urlPatterns = {"/category/*"})
-public class CategoryListController extends HttpServlet {
+@WebServlet(name = "adminController", urlPatterns = {"/admin/*"})
+public class AdminController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,10 +32,14 @@ public class CategoryListController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+    
     @EJB
     private CategoryFacade categoryFacade;
-
+    @EJB
+    private CategoryManager manager;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -45,13 +49,13 @@ public class CategoryListController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryListController</title>");
+            out.println("<title>Servlet adminController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryListController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -69,22 +73,17 @@ public class CategoryListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-
-        String categoryName = request.getPathInfo();
-        if (categoryName != null && !categoryName.isEmpty()) {
-            // remove the / of the path info 
-            categoryName = categoryName.substring(1);
-            Category category = categoryFacade.findByName(categoryName);
-            if (category != null) {
-                //storing in the session : in case of some post request with the same layout ...
-                session.setAttribute("selectedCategory", category);
-                session.setAttribute("listProducts", category.getProductList());
-               
-            }
+        processRequest(request, response);
+        /*
+         String path = request.getPathInfo();
+        if(path.equals("/addCategory"))
+        {
+            String name = request.getParameter("name");
+            manager.create(name);
+           
+            getServletContext().setAttribute("categories", categoryFacade.findAll());
         }
-        request.getRequestDispatcher("/WEB-INF/view/category.jsp").forward(request, response);
-
+        * */
     }
 
     /**
@@ -99,7 +98,15 @@ public class CategoryListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/category.jsp").forward(request, response);
+        processRequest(request, response);
+        /*
+        String userPath = request.getServletPath();
+        if(userPath.equals("/addCategory"))
+        {
+            //TODO: implement addCategory
+            getServletContext().setAttribute("categories", categoryFacade.findAll());
+        }
+        * */
     }
 
     /**

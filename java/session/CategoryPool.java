@@ -6,6 +6,7 @@ package session;
 
 import entity.Category;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Singleton;
 
 /**
@@ -31,6 +32,17 @@ public class CategoryPool {
     public void setCategories(List<Category> categories)
     {
         this.categories = categories;
+    }
+
+    public void remove(Category category) {
+        this.categories.remove(category);
+    }
+    
+    public Category randomCategory()
+    {
+        Random r = new Random();
+        int index = r.nextInt(categories.size());
+        return categories.get(index);
     }
 
 }

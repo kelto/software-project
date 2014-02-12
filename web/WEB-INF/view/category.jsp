@@ -1,21 +1,36 @@
 <%-- 
     Document   : category
-    Created on : 5 fÃ©vr. 2014, 20:29:28
+    Created on : 5 févr. 2014, 20:29:28
     Author     : kelto
 --%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>List Category</title>
-    </head>
-    <body>
-        <h1>List Category</h1>
-        <h2>${user.username}</h2>
+        <%@include file="/WEB-INF/jspf/header.jspf" %>
+        <%@include file="/WEB-INF/jspf/user.jspf" %>
         <div id="categoryLeftColumn">
+            <c:forEach var="product" items="${productsPool.topSell}">
+                <tr>
+                
 
+                <td>
+                    ${product.name}
+                    <br>
+                    <span class="smallText">${product.description}</span>
+                </td>
+
+                <td>&euro; ${product.sellingPrice}</td>
+
+                <td>
+                    <form action="<c:url value='addToCart'/>" method="post">
+                        <input type="hidden"
+                               name="productId"
+                               value="${product.id}">
+                        <input type="submit"
+                               name="submit"
+                               value="add to cart">
+                    </form>
+                </td>
+            </tr>
+                
+            </c:forEach>
     <c:forEach var="category" items="${categoriesPool.categories}">
 
         <c:choose>
