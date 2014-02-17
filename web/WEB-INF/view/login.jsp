@@ -23,6 +23,7 @@
 
         <p><input type="submit" value="submit"></p>
         <c:if test="${ !empty error}"><p class="error">the username and/or password is incorrect</p></c:if>
+        <p>username : ${username} - password : ${password}</p>
     </div>
 </form>
     </body>

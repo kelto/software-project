@@ -2,22 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import session.UserFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "TestQuery", urlPatterns = {"/TestQuery/*"})
-public class TestQuery extends HttpServlet {
+@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users/*"})
+public class ManageUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -29,6 +32,9 @@ public class TestQuery extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB
+    private UserFacade userFacade;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,16 +44,13 @@ public class TestQuery extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestQuery</title>");            
+            out.println("<title>Servlet DeleteUserController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestQuery at " + request.getContextPath() + "</h1>");
-            out.println(request.getPathInfo());
-            out.println("query : " + request.getQueryString());
-            String arg;
+            out.println("<h1>Servlet DeleteUserController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -65,7 +68,11 @@ public class TestQuery extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        setUsers(request);
+
+        request.getRequestDispatcher("/WEB-INF/view/admin/listUser.jsp");
+
     }
 
     /**
@@ -80,7 +87,22 @@ public class TestQuery extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String path = request.getPathInfo();
+        if (path == null) {
+            setUsers(request);
+            request.getRequestDispatcher("/WEB-INF/view/admin/listUser.jsp");
+        }
+
+        if (path.equals("/delete")) {
+            String query = request.getParameter("user_id");
+            userFacade.remove(userFacade.find(Integer.parseInt(query)));
+        } else if (path.equals("/update")) {
+        }
+    }
+
+    private void setUsers(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("users", userFacade.findAll());
     }
 
     /**

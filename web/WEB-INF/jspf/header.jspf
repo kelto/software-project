@@ -4,11 +4,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>List Category</title>
+        <title>Software-Project</title>
     </head>
     <body>
-        <h1>List Category</h1>
-        <h2>${user.username}</h2>
+        
+        
         <%-- checkout widget 
         <c:import url="/WEB-INF/jspf/user.jspf">
             <c:param name="cart" value="<c:url value='viewCart'/>"/>

@@ -43,12 +43,12 @@ public class Comment implements Serializable {
     private String comment;
     @Column(name = "score")
     private Short score;
-    @JoinColumn(name = "Product_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Product productid;
     @JoinColumn(name = "User_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userid;
+    @JoinColumn(name = "Product_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Product productid;
 
     public Comment() {
     }
@@ -81,20 +81,20 @@ public class Comment implements Serializable {
         this.score = score;
     }
 
-    public Product getProductid() {
-        return productid;
-    }
-
-    public void setProductid(Product productid) {
-        this.productid = productid;
-    }
-
     public User getUserid() {
         return userid;
     }
 
     public void setUserid(User userid) {
         this.userid = userid;
+    }
+
+    public Product getProductid() {
+        return productid;
+    }
+
+    public void setProductid(Product productid) {
+        this.productid = productid;
     }
 
     @Override

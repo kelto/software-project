@@ -39,14 +39,18 @@ public class OrderManager {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int placeOrder(User user, ShoppingCart cart)
     {
+        
          try 
         {
+            
             Userorder order = addOrder(user, cart);
             addOrderedItems(order, cart);
+            em.flush();
             return order.getId();
+            
         } catch (Exception e) {
             context.setRollbackOnly();
-            return 0;
+            return -1;
         }
     }
     

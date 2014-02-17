@@ -2,22 +2,26 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.admin;
 
+import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import manager.CategoryManager;
+import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "TestQuery", urlPatterns = {"/TestQuery/*"})
-public class TestQuery extends HttpServlet {
+@WebServlet(name = "adminController", urlPatterns = {"/admin/*"})
+public class AdminController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -28,7 +32,14 @@ public class TestQuery extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+    
+    @EJB
+    private CategoryFacade categoryFacade;
+    @EJB
+    private CategoryManager manager;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,13 +49,10 @@ public class TestQuery extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestQuery</title>");            
+            out.println("<title>Servlet adminController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestQuery at " + request.getContextPath() + "</h1>");
-            out.println(request.getPathInfo());
-            out.println("query : " + request.getQueryString());
-            String arg;
+            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -66,6 +74,16 @@ public class TestQuery extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        /*
+         String path = request.getPathInfo();
+        if(path.equals("/addCategory"))
+        {
+            String name = request.getParameter("name");
+            manager.create(name);
+           
+            getServletContext().setAttribute("categories", categoryFacade.findAll());
+        }
+        * */
     }
 
     /**
@@ -81,6 +99,14 @@ public class TestQuery extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        /*
+        String userPath = request.getServletPath();
+        if(userPath.equals("/addCategory"))
+        {
+            //TODO: implement addCategory
+            getServletContext().setAttribute("categories", categoryFacade.findAll());
+        }
+        * */
     }
 
     /**

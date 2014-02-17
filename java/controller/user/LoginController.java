@@ -2,22 +2,26 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.user;
 
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import manager.UserManager;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "TestQuery", urlPatterns = {"/TestQuery/*"})
-public class TestQuery extends HttpServlet {
+@WebServlet(name = "LoginController", urlPatterns = {"/login", "/login_check"})
+public class LoginController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -29,6 +33,10 @@ public class TestQuery extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    @EJB
+    private UserManager userManager;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,13 +46,10 @@ public class TestQuery extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet TestQuery</title>");            
+            out.println("<title>Servlet LoginController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet TestQuery at " + request.getContextPath() + "</h1>");
-            out.println(request.getPathInfo());
-            out.println("query : " + request.getQueryString());
-            String arg;
+            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -65,7 +70,13 @@ public class TestQuery extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if(user != null)
+            response.sendRedirect(request.getContextPath());
+        else
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
 
     /**
@@ -80,7 +91,24 @@ public class TestQuery extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+        session.setAttribute("username", username);
+        session.setAttribute("password", password);
+        User user = userManager.login(username, password);
+        
+        if(user != null)
+        {
+            session.setAttribute("user",user);
+            response.sendRedirect(request.getContextPath()+"/category");
+        }
+        else
+        {
+            request.setAttribute("error", true);
+            request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+        }
+       
     }
 
     /**

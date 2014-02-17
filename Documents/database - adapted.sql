@@ -73,7 +73,7 @@ ENGINE = InnoDB;
 -- Table `ordered_product`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ordered_product` (
-  `User_order_id` INT UNSIGNED NOT NULL ,
+  `User_order_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `Product_id` INT UNSIGNED NOT NULL ,
   `quantity` SMALLINT UNSIGNED NOT NULL ,
   PRIMARY KEY (`User_order_id`, `Product_id`) ,

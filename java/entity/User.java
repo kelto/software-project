@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import validate.ValidEmail;
 
 /**
  *
@@ -55,7 +54,6 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "email")
-    @ValidEmail(message="Email must be valid")
     private String email;
     @Basic(optional = false)
     @NotNull

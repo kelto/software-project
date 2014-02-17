@@ -9,6 +9,7 @@
         <c:if test="${ !empty user}">
             <%@include file="/WEB-INF/jspf/commentForm.jspf" %>
         </c:if>
+        <h1>List Category</h1>
         <div id="categoryLeftColumn">
             <c:forEach var="product" items="${productsPool.topSell}">
                 <tr>
@@ -78,7 +79,7 @@
                 <td>&euro; ${product.sellingPrice}</td>
 
                 <td>
-                    <form action="<c:url value='addToCart'/>" method="post">
+                    <form action="<c:url value='/addToCart'/>" method="post">
                         <input type="hidden"
                                name="productId"
                                value="${product.id}">

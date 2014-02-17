@@ -21,15 +21,15 @@ import cart.ShoppingCart;
 import entity.User;
 import form.FormCategory;
 import manager.CategoryManager;
-import mock.ProductPool;
 import session.CategoryPool;
+import session.ProductPool;
 import session.UserFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewCart", "/addToCart","/view","/addCategory"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewCart", "/addToCart","/view","/addCategory","/purchase"})
 public class MainController extends HttpServlet {
 
     /**
@@ -138,6 +138,25 @@ public class MainController extends HttpServlet {
         }else if(userPath.equals("/addCategory"))
         {
             
+        }else if (userPath.equals("/purchase")) {
+            ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");
+            
+            if (cart != null) {
+                
+        
+            //int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
+            User user = (User) session.getAttribute("user");
+            int orderId = orderManager.placeOrder(user, cart);
+        
+            request.setAttribute("orderId", orderId);
+            session.setAttribute("orderId", orderId);
+            String purchaseError = orderId == -1 ? "failed" : "success";
+            session.setAttribute("purchaseError", purchaseError);
+            request.getRequestDispatcher("/WEB-INF/view/done.jsp").forward(request, response);
+    }
+
+    userPath = "/category";
+            
         }
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
@@ -203,7 +222,7 @@ public class MainController extends HttpServlet {
         int orderId = orderManager.placeOrder(user, cart);
     }
 
-    userPath = "/confirmation";
+    userPath = "/category";
             
         }else if(userPath.equals("/addCategory"))
         {

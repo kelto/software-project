@@ -7,6 +7,7 @@ package histogram;
 import entity.OrderedProduct;
 import entity.Product;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -26,12 +27,21 @@ public class HistogramItem implements Comparable<HistogramItem> {
     private static final int FACTOR = 5;
     private long quantity;
     
+    public HistogramItem()
+    {
+        
+    }
     public HistogramItem(OrderedProduct product)
     {
         this.product = product.getProduct();
         this.quantity = product.getQuantity();
         lastTouched = new Date();
         value = quantity*5;
+    }
+    
+    public Date getTime()
+    {
+        return lastTouched;
     }
 
     public Product getProduct() {
@@ -83,5 +93,34 @@ public class HistogramItem implements Comparable<HistogramItem> {
     @Override
     public int compareTo(HistogramItem o) {
         return (int)(o.value-this.value);
+    }
+
+    public void initialize(OrderedProduct product) {
+        this.product = product.getProduct();
+        this.quantity = product.getQuantity();
+        lastTouched = new Date();
+        value = quantity*5;
+    }
+    
+    public static class Comparators
+    {
+        public static Comparator<HistogramItem> LAST_TIME = 
+                new Comparator<HistogramItem>(){
+
+            @Override
+            public int compare(HistogramItem o1, HistogramItem o2) {
+                return o1.lastTouched.compareTo(o2.lastTouched);
+            }
+                    
+                };
+        public static Comparator<HistogramItem> VALUE = 
+                new Comparator<HistogramItem>(){
+
+            @Override
+            public int compare(HistogramItem o1, HistogramItem o2) {
+                return o1.compareTo(o2);
+            }
+                    
+                };
     }
 }
