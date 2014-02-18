@@ -53,6 +53,7 @@ public class Userorder implements Serializable {
     @Column(name = "amount")
     private BigDecimal amount;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;

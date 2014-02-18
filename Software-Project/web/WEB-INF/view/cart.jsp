@@ -49,7 +49,7 @@
                 </c:when>
                 <%-- otherwise send user to welcome page --%>
                 <c:otherwise>
-                    index.jsp
+                    /category
                 </c:otherwise>
             </c:choose>
         </c:set>

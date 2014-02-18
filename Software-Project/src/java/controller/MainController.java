@@ -29,7 +29,7 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewCart", "/addToCart","/view","/addCategory","/purchase"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/index","/viewCart", "/addToCart","/view","/addCategory","/purchase"})
 public class MainController extends HttpServlet {
 
     /**
@@ -131,6 +131,14 @@ public class MainController extends HttpServlet {
         } else if (userPath.equals("/chooseLanguage")) {
             // TODO: Implement language request
 
+        }
+        else if(userPath.equals("/"))
+        {
+            userPath = "/index";
+        }
+        else if(userPath.equals("/index"))
+        {
+            userPath = "/index";
         }
         else if(userPath.equals("/view"))
         {
