@@ -57,6 +57,7 @@ public class Userorder implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "confirmation_number")
     private int confirmationNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userorderid")
