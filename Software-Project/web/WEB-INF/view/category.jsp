@@ -11,7 +11,8 @@
         </c:if>
         <h1>List Category</h1>
         <div id="categoryLeftColumn">
-            <c:forEach var="product" items="${productsPool.topSell}">
+            for(Product product : productsPool.getTopSellMock)
+            <c:forEach var="product" items="${productsPool.topSellMock}">
                 <tr>
                 
 
@@ -24,7 +25,7 @@
                 <td>&euro; ${product.sellingPrice}</td>
 
                 <td>
-                    <form action="<c:url value='addToCart'/>" method="post">
+                    <form action="<c:url value='/addToCart'/>" method="post">
                         <input type="hidden"
                                name="productId"
                                value="${product.id}">
