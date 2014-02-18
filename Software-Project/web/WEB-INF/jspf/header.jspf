@@ -50,7 +50,7 @@
             <div class="top_head"><!-- Defining the top head element -->
                 <div class="logo"><!-- Defining the logo element -->
                     <a href="#">
-                        <img src="/software-project1/img/logo.jpg" title="E-Store" alt="E-Store" />
+                        <img src="/Software-Project/img/logo.jpg" title="E-Store" alt="E-Store" />
                     </a>
                 </div>
 
@@ -61,10 +61,10 @@
                     </form>
 
                     <ul id="social"><!-- Social profiles links -->
-                        <li><a href="#" title="facebook" rel="external nofollow"><img alt="" src="/software-project1/img/facebook.png"></a></li>
-                        <li><a href="#" title="twitter" rel="external nofollow"><img alt="" src="/software-project1/img/twitter.png"></a></li>
-                        <li><a href="#" title="linkedin" rel="external nofollow"><img alt="" src="/software-project1/img/linkedin.png"></a></li>
-                        <li><a href="#" title="rss" rel="external nofollow"><img alt="" src="/software-project1/img/rss.png"></a></li>
+                        <li><a href="#" title="facebook" rel="external nofollow"><img alt="" src="/Software-Project/img/facebook.png"></a></li>
+                        <li><a href="#" title="twitter" rel="external nofollow"><img alt="" src="/Software-Project/img/twitter.png"></a></li>
+                        <li><a href="#" title="linkedin" rel="external nofollow"><img alt="" src="/Software-Project/img/linkedin.png"></a></li>
+                        <li><a href="#" title="rss" rel="external nofollow"><img alt="" src="/Software-Project/img/rss.png"></a></li>
                     </ul>
                 </section>
             </div>
