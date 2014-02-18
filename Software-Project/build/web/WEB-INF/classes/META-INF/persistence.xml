@@ -3,8 +3,6 @@
   <persistence-unit name="Software-ProjectPU" transaction-type="JTA">
     <jta-data-source>jdbc/NUIGProject</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-    <property name="eclipselink.logging.level" value="FINEST"/>
-  </properties>
+    <properties/>
   </persistence-unit>
 </persistence>

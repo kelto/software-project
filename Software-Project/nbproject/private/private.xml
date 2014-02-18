@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/E:/Programming/software-project/Software-Project/src/java/controller/comment/AddCommentController.java</file>
-            <file>file:/E:/Programming/software-project/Software-Project/src/java/controller/admin/ManageUserController.java</file>
-            <file>file:/E:/Programming/software-project/Software-Project/web/WEB-INF/view/category.jsp</file>
-            <file>file:/E:/Programming/software-project/Software-Project/web/WEB-INF/jspf/user.jspf</file>
-            <file>file:/E:/Programming/software-project/Software-Project/web/WEB-INF/view/commentDone.jsp</file>
-            <file>file:/E:/Programming/software-project/Software-Project/src/java/controller/MainController.java</file>
-            <file>file:/E:/Programming/software-project/Software-Project/web/WEB-INF/jspf/commentForm.jspf</file>
-            <file>file:/E:/Programming/software-project/Software-Project/src/java/form/FormComment.java</file>
-            <file>file:/E:/Programming/software-project/Software-Project/src/java/controller/admin/AdminController.java</file>
-            <file>file:/E:/Programming/software-project/Software-Project/web/WEB-INF/view/login.jsp</file>
-        </group>
-    </open-files>
 </project-private>
