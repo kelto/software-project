@@ -3,7 +3,9 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<%@include file="/WEB-INF/jspf/user.jspf" %>
+ <%--<%@include file="/WEB-INF/jspf/user.jspf" %>
+ --%>
+ 
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 
 
@@ -64,13 +66,14 @@
         <div id="main"><!-- Defining submain content section -->
             <section id="content"><!-- Defining the content section #2 -->
                <div id="left">
-                    <h3> <p id="categoryTitle"><fmt:message key="${selectedCategory.name}" /></p></h3>
+                    <h3>Last Product </h3>
                     <ul>
-                        <li>
-                        <c:forEach var="product" items="${listProducts}" varStatus="iter">
-			<div class="${((iter.index % 2) == 0) ? 'lightBlue' : 'white'}">
-			</div>
-                            <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post1.jpg"></a></div>
+                        
+                       
+                        <c:forEach var="product" items="${productsPool.topSellMock}">
+			
+                            <li>
+                            <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post4.jpg"></a></div>
                             <div class="info">
                                 <a class="title" href="#">${product.name}</a>
                                 <p>${product.description}</p>
@@ -86,10 +89,11 @@
                                value="add to cart">
                                  </form>
                             </div>
+                            </li>
                          </c:forEach>
-                        </li>
+                        
 		        </ul>
-                     </div>	
+                     </div>
                 
                 
                 
@@ -98,8 +102,9 @@
     <div id="right">
        <h3>Top sellers</h3>
          <ul>
-          <li>
+          
           <c:forEach var="product" items="${productsPool.topSellMock}">
+              <li>
                             <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post1.jpg"></a></div>
                             <div class="info">
                             
@@ -118,8 +123,10 @@
                                value="add to cart">   
                     </form>
                             </div>
+                            <HR WIDTH="100%" SIZE="3"> 
+                           </li>  
             </c:forEach>
-                       </li>
+                      
                      </ul>
                 </div>
             </section>

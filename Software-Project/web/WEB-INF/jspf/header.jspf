@@ -38,7 +38,7 @@
 
             <nav><!-- Defining the navigation menu -->
                 <ul>
-                    <li class="selected"><a href="#">Home</a></li>
+                    <li class="selected"><a href="<c:url value='/view'/>"/>Home</a></li>
                     <li><a href="#">Specials</a></li>
                     <li><a href="#">Contact us</a></li>
                     <li><a href="#">About</a></li>
@@ -53,6 +53,8 @@
                         <img src="/Software-Project/img/logo.jpg" title="E-Store" alt="E-Store" />
                     </a>
                 </div>
+                
+            
 
                 <section id="search"><!-- Search form -->
                     <form action="#" onsubmit="return false;" method="get">
@@ -66,32 +68,37 @@
                         <li><a href="#" title="linkedin" rel="external nofollow"><img alt="" src="/Software-Project/img/linkedin.png"></a></li>
                         <li><a href="#" title="rss" rel="external nofollow"><img alt="" src="/Software-Project/img/rss.png"></a></li>
                     </ul>
+                    
                 </section>
             </div>
             
             <section id="category"><!-- Defining the sub menu -->
                 <ul>
-                    <li>
-                 <c:forEach var="category" items="${categories}">
-                 <c:choose>
-                  <c:when test="${category.name == selectedCategory.name}">
+                  
+                  <c:forEach var="category" items="${categoriesPool.categories}">
+                      <li>
+        <c:choose>
+            <c:when test="${category.name == selectedCategory.name}">
                 <div class="categoryButton" id="selectedCategory">
                     <span class="categoryText">
-                        <fmt:message key="${category.name}"/>
+                        ${category.name}
                     </span>
                 </div>
             </c:when>
             <c:otherwise>
-                <a href="<c:url value='category?${category.id}'/>" class="categoryButton">
+             <a href="<c:url value='/category/${category.name}'/>" class="categoryButton">
                     <span class="categoryText">
-                        <fmt:message key="${category.name}"/>
+                        ${category.name}
                     </span>
                 </a>
             </c:otherwise>
         </c:choose>
-
+</li>
     </c:forEach>
-    </li>
+
+
+    
+   
     </ul>
     
     </section>
