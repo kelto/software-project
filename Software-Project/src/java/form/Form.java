@@ -46,7 +46,7 @@ public abstract class Form<T> {
     }
     
     public abstract T create(HttpServletRequest request);
-    
+         
     protected String getValue(HttpServletRequest request,String name)
     {
         String value = request.getParameter(name);

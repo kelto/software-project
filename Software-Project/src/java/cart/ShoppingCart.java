@@ -77,6 +77,31 @@ public class ShoppingCart {
         this.items.clear();
         this.total = BigDecimal.ZERO;
     }
+
+    public boolean update(Product product, short quantity) {
+        boolean success = false;
+        ShoppingCartItem item = findItem(product);
+        if(item != null)
+        {
+            success = true;
+            if(quantity<1)
+                success = items.remove(item);
+            else
+                item.setQuantity(quantity);
+        }
+        return success;
+    }
+
+    private ShoppingCartItem findItem(Product product) {
+        for(ShoppingCartItem item : items)
+        {
+            if(item.getProduct().equals(product))
+                return item;
+        }
+        return null;
+    }
+    
+    
     
     
     
