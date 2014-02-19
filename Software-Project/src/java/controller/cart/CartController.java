@@ -120,9 +120,9 @@ public class CartController extends HttpServlet {
         } else if (path.equals("/update")) {
             boolean result = formCartUpdate.create(request);
             
-        } else {
-            request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
-        }
+        } 
+        request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
+        
     }
 
     private void createCart(HttpSession session, ShoppingCart cart) {

@@ -91,7 +91,7 @@
             </td>
 
             <td>
-                <form action="<c:url value='updateCart'/>" method="post">
+                <form action="<c:url value='update'/>" method="post">
                     <input type="hidden"
                            name="productId"
                            value="${product.id}">
