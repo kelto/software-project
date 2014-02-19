@@ -32,13 +32,14 @@ public class FormCartUpdate extends Form<Boolean> {
         int productId = Integer.parseInt(getValue(request, "productId"));
         Product product = null;
         try {
-            product = productIdValidation(productId);
+            product = productIdValidation(getValue(request, "productId"));
         } catch (Exception e) {
             addErrors("productId", e.getMessage());
         }
-        short quantity = Short.parseShort(getValue(request,"quantity"));
+        short quantity = -1;
+        
         try {
-            quantityValidation(quantity);
+            quantity = quantityValidation(getValue(request,"quantity"));
         } catch (Exception e) {
             addErrors("quantity", e.getMessage());
         }
@@ -58,10 +59,16 @@ public class FormCartUpdate extends Form<Boolean> {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 
-    private Product productIdValidation(int productId) throws Exception{
-        if(productId<1)
+    private Product productIdValidation(String productId) throws Exception{
+        int id = -1;
+        try {
+            id = Integer.parseInt(productId);
+        } catch (Exception e) {
+            
+        }
+        if(id<1)
             throw new Exception("Invalid product !");
-        return productValidation(productId);
+        return productValidation(id);
     }
 
     private Product productValidation(int productId) throws Exception {
@@ -73,9 +80,18 @@ public class FormCartUpdate extends Form<Boolean> {
     }
 
     
-    private void quantityValidation(int quantity) throws Exception {
-        if(quantity>100)
+    private short quantityValidation(String quantity) throws Exception {
+        
+        short qty = -1;
+        try
+        {
+            qty = Short.parseShort(quantity);
+        }catch(NumberFormatException ex){
+            throw new Exception("Quantity argument is not a number");
+        }
+        if(qty>100)
             throw new Exception("You can't order more than 100 of the same item");
+        return qty;
     }
 
 }
