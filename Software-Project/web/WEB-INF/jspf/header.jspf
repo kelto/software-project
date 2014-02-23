@@ -1,7 +1,4 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 
@@ -24,7 +21,7 @@
    
     
     
-     <title><fmt:message key='title' /></title>
+     <title>Software Project</title>
 </head>
   
         
@@ -42,32 +39,26 @@
                     <li><a href="#">Specials</a></li>
                     <li><a href="#">Contact us</a></li>
                     <li><a href="#">About</a></li>
-                    
+                     
                 </ul>
             </nav>
 
+                    
 
             <div class="top_head"><!-- Defining the top head element -->
                 <div class="logo"><!-- Defining the logo element -->
-                    <a href="#">
-                        <img src="/Software-Project/img/logo.jpg" title="E-Store" alt="E-Store" />
-                    </a>
+                 <%@include file="/WEB-INF/jspf/user.jspf" %>    
                 </div>
                 
             
-
+                
                 <section id="search"><!-- Search form -->
                     <form action="#" onsubmit="return false;" method="get">
                         <input type="text" onfocus="if (this.value =='Search..' ) this.value=''" onblur="if (this.value=='') this.value='Search..'" value="Search.." name="q">
                         <input type="submit" value="Search">
                     </form>
 
-                    <ul id="social"><!-- Social profiles links -->
-                        <li><a href="#" title="facebook" rel="external nofollow"><img alt="" src="/Software-Project/img/facebook.png"></a></li>
-                        <li><a href="#" title="twitter" rel="external nofollow"><img alt="" src="/Software-Project/img/twitter.png"></a></li>
-                        <li><a href="#" title="linkedin" rel="external nofollow"><img alt="" src="/Software-Project/img/linkedin.png"></a></li>
-                        <li><a href="#" title="rss" rel="external nofollow"><img alt="" src="/Software-Project/img/rss.png"></a></li>
-                    </ul>
+                    
                     
                 </section>
             </div>

@@ -1,32 +1,19 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
-<body>
-<div id="main">
-    <section id="userbar">
-        <div id="left">
-            <ul> 
-                <il>
 <c:choose>
          <c:when test="${! empty user }" >
             <a href="<c:url value='/profile'/>"/>View Your Profile</a>     
-            <h2>user : </h2>
-            ${user.username}
+            <h2>user : ${user.username} </h2>
          </c:when>
          <c:otherwise>
-            <a href="<c:url value='/login'/>"/>Login</a>    
-            <a href="<c:url value='/register'/>"/>Register</a>   
+            <a href="<c:url value='/login'/>"/>Already a customer? Please log in</a>   
+         <br>
+            <a href="<c:url value='/register'/>"/>New to E-store? Create an account</a>   
             
          </c:otherwise>
 </c:choose>
-</il>
-</ul>         
-</div>
-        
 
-        
         
         
  <a href="<c:url value='/viewCart'/>"><img src="/Software-Project/img/cart.png" border="0" alt="View Cart"></a> 
@@ -43,7 +30,3 @@
             <p>Your shopping cart is empty.</p>
         </c:otherwise>
 </c:choose>
-
-</section>     
-</div>
-</body>

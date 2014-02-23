@@ -1,43 +1,7 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
- <%--<%@include file="/WEB-INF/jspf/user.jspf" %>
- --%>
- 
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 
-
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    
-    <meta charset="utf-8">
-	
-	<c:if test="${ !empty user}">
-            <%@include file="/WEB-INF/jspf/commentForm.jspf" %>
-   </c:if>
-
-  <!-- Linking styles -->
-    <link rel="stylesheet" href="/Software-Project/css/reset.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="/Software-Project/css/style.css" type="text/css" media="screen">
-    <link rel="stylesheet" href="/Software-Project/css/nivo-slider.css" type="text/css" media="screen">
-
-    <!-- Linking scripts -->
-    <script src="/Software-Project/js/jquery.js" type="text/javascript"></script>
-    <script src="/Software-Project/js/jquery.nivo.slider.pack.js" type="text/javascript"></script>
-    <script src="/Software-Project/js/main.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/Software-Project/js/html5.js"></script>
-   
-    
-    
-     <title><fmt:message key='title' /></title>
-</head>
-<body>
- <div id="main">
+<div id="main">
  <section id="slider-wrapper">
                 <div id="slider" class="nivoSlider">
                     <img style="display: none;" src="/Software-Project/img/promo1.jpg" alt="" title="#htmlcaption-1">

@@ -1,23 +1,26 @@
-<%-- 
-    Document   : cart
-    Created on : 5 févr. 2014, 20:43:58
-    Author     : kelto
---%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
+
+ <%--<%@include file="/WEB-INF/jspf/user.jspf" %>
+ --%>
+ 
+<%@include file="/WEB-INF/jspf/header.jspf" %>
+
+
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Hello World!</h1>
+<html lang="en"><head>
 
+</head>
+<body>
+    <div id="main">
+        <section id="cart">
 
-<div id="singleColumn">
+ 
 
-    <c:choose>
+      <c:choose>
         <c:when test="${cart.numberItems > 1}">
             <p>Your shopping cart contains ${cart.numberItems} items.</p>
         </c:when>
@@ -113,6 +116,10 @@
       </table>
 
     </c:if>
-</div>
-    </body>
-</html>
+</section>
+    </div>
+</body>        
+        
+        
+                        
+  <%@include file="/WEB-INF/jspf/footer.jspf" %>                      
