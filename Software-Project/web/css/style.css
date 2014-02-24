@@ -33,9 +33,15 @@ header {
     overflow: hidden;
     position: relative;
 }
-.logo {
+.user_info {
     float: left;
-    padding: 5px;
+    padding:40px 0px 0px 50px;
+    
+}
+.cart_info {
+    float:left;
+    padding-left: 190px;
+    text-align: center;
 }
 
 .left {
@@ -74,19 +80,7 @@ header {
     padding: 0;
     width: 64px;
 }
-#social {
-    float:right;
-    list-style:none outside none;
-    margin:0 30px 0 0;
-    padding:0;
-}
-#social li {
-    float:left;
-    padding:0 0 0 5px;
-}
-#social li a:hover img {
-    margin-top:1px;
-}
+
 
 /*navigation menu*/
 nav {
@@ -330,7 +324,7 @@ nav ul li a:hover, nav ul li.selected a {
 #actionBar {
     margin: 30px;
     width: 750px;
-    text-align: center;
+    text-align: right;
 }
 
 #subtotal { margin: 40px 0 20px 430px }
@@ -492,9 +486,8 @@ body, input, textarea {
 input { 
 	width: 60% 
 }
-form { 
-	margin: 30px 0 0 0 
-}
+
+
 input, textarea { 
 	background: none repeat scroll 0 0 #FFFFFF; 
 	border: 1px solid #C9C9C9; 

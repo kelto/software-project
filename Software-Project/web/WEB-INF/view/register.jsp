@@ -1,8 +1,9 @@
-<%-- 
+<%-- /* 
     Document   : register
-    Created on : 17 févr. 2014, 15:37:53
-    Author     : kelto
---%>
+    Created on : 23-Feb-2014, 20:11:35
+    Author     : andrew
+*/--%>
+
 
 <%@include file="/WEB-INF/jspf/header.jspf" %>
         

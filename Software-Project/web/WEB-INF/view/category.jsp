@@ -1,20 +1,17 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- /* 
+    Document   : category
+    Created on : 20-Feb-2014, 18:51:29
+    Author     : andrew
+*/--%>
 
 
 
- <%--<%@include file="/WEB-INF/jspf/user.jspf" %>
- --%>
- 
 <%@include file="/WEB-INF/jspf/header.jspf" %>
-
-
-<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-
 
 <body>
 
 <!DOCTYPE html>
-<div id="main"><!-- Defining submain content section -->
+<div id="main">
             <section id="content"><!-s- Defining the content section #2 -->
                <div id="left">
                     <h3>${selectedCategory.name}</h3>
