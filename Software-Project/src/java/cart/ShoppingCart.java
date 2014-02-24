@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @author kelto
  */
+//TODO: remove the use of BigDecimal and use plain double.
 public class ShoppingCart {
     private List<ShoppingCartItem> items;
     private BigDecimal total;
@@ -77,6 +78,37 @@ public class ShoppingCart {
         this.items.clear();
         this.total = BigDecimal.ZERO;
     }
+
+    public boolean update(Product product, short quantity) {
+        boolean success = false;
+        ShoppingCartItem item = findItem(product);
+        if(item != null)
+        {
+            success = true;
+            this.total = this.total.subtract(item.getTotal());
+            if(quantity<1)
+            {
+                success = items.remove(item);
+            }
+            else
+            {
+                item.setQuantity(quantity);
+                this.total = this.total.add(item.getTotal());
+            }
+        }
+        return success;
+    }
+
+    private ShoppingCartItem findItem(Product product) {
+        for(ShoppingCartItem item : items)
+        {
+            if(item.getProduct().equals(product))
+                return item;
+        }
+        return null;
+    }
+    
+    
     
     
     
