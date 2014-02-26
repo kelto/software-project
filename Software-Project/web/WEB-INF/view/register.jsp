@@ -8,7 +8,7 @@
 <%@include file="/WEB-INF/jspf/header.jspf" %>
         
 <body>
-
+   
     <!--BEGIN #signup-form -->
     <div id="signup-form">
         
@@ -88,3 +88,5 @@
     </div>
 
 </body>
+
+<%@include file="/WEB-INF/jspf/footer.jspf" %>

@@ -101,7 +101,7 @@
                 </section>
             </div>
             
-            <section id="category"><!-- Defining the sub menu -->
+            <section id="category">
                 <ul>
                   
                   <c:forEach var="category" items="${categoriesPool.categories}">
@@ -115,7 +115,7 @@
                 </div>
             </c:when>
             <c:otherwise>
-             <a href="<c:url value='/category/${category.name}'/>" class="categoryButton">
+             <a href="<c:url value='/category/${category.name}'/>" class="categoryButton" >
                     <span class="categoryText">
                         ${category.name}
                     </span>

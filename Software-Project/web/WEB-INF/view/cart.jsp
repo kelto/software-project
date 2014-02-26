@@ -8,6 +8,7 @@
 
 <body>
     <div id="main">
+     
 <div id="singleColumn">
 
    <c:if test="${!empty cart && cart.numberItems != 0}">
@@ -66,10 +67,10 @@
 </div>
         
     <div id="actionBar">
-         <h4 id="subtotal">subtotal: &euro; ${cart.total}</h4>
+         
         <%-- clear cart widget --%>
         <c:if test="${!empty cart && cart.numberItems != 0}">
-
+            <h4 id="subtotal">subtotal: &euro; ${cart.total}</h4>
             <c:url var="url" value="viewCart">
                 <c:param name="clear" value="true"/>
             </c:url>

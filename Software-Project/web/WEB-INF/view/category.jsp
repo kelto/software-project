@@ -12,7 +12,7 @@
 
 <!DOCTYPE html>
 <div id="main">
-            <section id="content"><!-s- Defining the content section #2 -->
+            <section id="content">
                <div id="left">
                     <h3>${selectedCategory.name}</h3>
                     <ul>

@@ -1,22 +1,22 @@
-<%-- 
-    Document   : done
-    Created on : 17 févr. 2014, 16:51:28
-    Author     : kelto
---%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
+
+
+<%@include file="/WEB-INF/jspf/header.jspf" %>
+
     <body>
-        <h1>Purchase done</h1>
+        <div id="main1">
+            <div class="container">
+        <h1>Congratulations your purchase is Complete ! </h1>
+        <legend>Purchase Info</legend>
         <p>id : ${requestScope.orderId}</p>
         <p>id (session) : ${orderId}</p>
         <p>user : ${user.username}</p>
         <p>cart : ${cart}</p>
         <p>error : ${requestScope.purchaseError}</p>
+        </div>
+           </div>           
     </body>
+    
 </html>
+
+
+<%@include file="/WEB-INF/jspf/footer.jspf" %>
