@@ -36,6 +36,6 @@ public class CategoryFacade extends AbstractFacade<Category> {
             category = null;
         }
         return category;
-    }
+    }   
     
 }
