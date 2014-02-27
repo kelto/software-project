@@ -36,7 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.username = :username AND u.password = :password"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findBySalt", query = "SELECT u FROM User u WHERE u.salt = :salt"),
+    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,11 +64,20 @@ public class User implements Serializable {
     private String address;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "salt")
+    private String salt;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "admin")
+    private boolean admin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
-    private List<Userorder> userorderList;
+    private List<UserOrder> userOrderList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userid")
     private List<Comment> commentList;
 
@@ -77,12 +88,14 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String username, String email, String address, String password) {
+    public User(Integer id, String username, String email, String address, String password, String salt, boolean admin) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.address = address;
         this.password = password;
+        this.salt = salt;
+        this.admin = admin;
     }
 
     public Integer getId() {
@@ -125,13 +138,29 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    @XmlTransient
-    public List<Userorder> getUserorderList() {
-        return userorderList;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setUserorderList(List<Userorder> userorderList) {
-        this.userorderList = userorderList;
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    @XmlTransient
+    public List<UserOrder> getUserOrderList() {
+        return userOrderList;
+    }
+
+    public void setUserOrderList(List<UserOrder> userOrderList) {
+        this.userOrderList = userOrderList;
     }
 
     @XmlTransient

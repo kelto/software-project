@@ -32,15 +32,15 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author kelto
  */
 @Entity
-@Table(name = "User_order")
+@Table(name = "User_Order")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Userorder.findAll", query = "SELECT u FROM Userorder u"),
-    @NamedQuery(name = "Userorder.findById", query = "SELECT u FROM Userorder u WHERE u.id = :id"),
-    @NamedQuery(name = "Userorder.findByAmount", query = "SELECT u FROM Userorder u WHERE u.amount = :amount"),
-    @NamedQuery(name = "Userorder.findByDateCreated", query = "SELECT u FROM Userorder u WHERE u.dateCreated = :dateCreated"),
-    @NamedQuery(name = "Userorder.findByConfirmationNumber", query = "SELECT u FROM Userorder u WHERE u.confirmationNumber = :confirmationNumber")})
-public class Userorder implements Serializable {
+    @NamedQuery(name = "UserOrder.findAll", query = "SELECT u FROM UserOrder u"),
+    @NamedQuery(name = "UserOrder.findById", query = "SELECT u FROM UserOrder u WHERE u.id = :id"),
+    @NamedQuery(name = "UserOrder.findByAmount", query = "SELECT u FROM UserOrder u WHERE u.amount = :amount"),
+    @NamedQuery(name = "UserOrder.findByDateCreated", query = "SELECT u FROM UserOrder u WHERE u.dateCreated = :dateCreated"),
+    @NamedQuery(name = "UserOrder.findByConfirmationNumber", query = "SELECT u FROM UserOrder u WHERE u.confirmationNumber = :confirmationNumber")})
+public class UserOrder implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +53,6 @@ public class Userorder implements Serializable {
     @Column(name = "amount")
     private BigDecimal amount;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "date_created")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
@@ -63,20 +62,20 @@ public class Userorder implements Serializable {
     private int confirmationNumber;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userorderid")
     private List<Bill> billList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userorder")
-    private List<OrderedProduct> orderedProductList;
     @JoinColumn(name = "User_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private User userid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userOrder")
+    private List<OrderedProduct> orderedProductList;
 
-    public Userorder() {
+    public UserOrder() {
     }
 
-    public Userorder(Integer id) {
+    public UserOrder(Integer id) {
         this.id = id;
     }
 
-    public Userorder(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber) {
+    public UserOrder(Integer id, BigDecimal amount, Date dateCreated, int confirmationNumber) {
         this.id = id;
         this.amount = amount;
         this.dateCreated = dateCreated;
@@ -124,6 +123,14 @@ public class Userorder implements Serializable {
         this.billList = billList;
     }
 
+    public User getUserid() {
+        return userid;
+    }
+
+    public void setUserid(User userid) {
+        this.userid = userid;
+    }
+
     @XmlTransient
     public List<OrderedProduct> getOrderedProductList() {
         return orderedProductList;
@@ -131,14 +138,6 @@ public class Userorder implements Serializable {
 
     public void setOrderedProductList(List<OrderedProduct> orderedProductList) {
         this.orderedProductList = orderedProductList;
-    }
-
-    public User getUserid() {
-        return userid;
-    }
-
-    public void setUserid(User userid) {
-        this.userid = userid;
     }
 
     @Override
@@ -151,10 +150,10 @@ public class Userorder implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Userorder)) {
+        if (!(object instanceof UserOrder)) {
             return false;
         }
-        Userorder other = (Userorder) object;
+        UserOrder other = (UserOrder) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -163,7 +162,7 @@ public class Userorder implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Userorder[ id=" + id + " ]";
+        return "entity.UserOrder[ id=" + id + " ]";
     }
     
 }

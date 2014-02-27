@@ -9,7 +9,7 @@ import cart.ShoppingCart;
 import entity.OrderedProduct;
 import entity.OrderedProductPK;
 import entity.User;
-import entity.Userorder;
+import entity.UserOrder;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -43,7 +43,7 @@ public class OrderManager {
          try 
         {
             
-            Userorder order = addOrder(user, cart);
+            UserOrder order = addOrder(user, cart);
             addOrderedItems(order, cart);
             em.flush();
             return order.getId();
@@ -67,8 +67,8 @@ public class OrderManager {
         return user;
     }
 
-    private Userorder addOrder(User user, ShoppingCart cart) {
-        Userorder order = new Userorder();
+    private UserOrder addOrder(User user, ShoppingCart cart) {
+        UserOrder order = new UserOrder();
         order.setUserid(user);
         order.setAmount(cart.getTotal());
         
@@ -80,7 +80,7 @@ public class OrderManager {
         return order;
     }
 
-    private void addOrderedItems(Userorder order, ShoppingCart cart) {
+    private void addOrderedItems(UserOrder order, ShoppingCart cart) {
        em.flush();
         List<ShoppingCartItem> items = cart.getItems();
        

@@ -5,22 +5,16 @@
 package controller;
 
 import cart.ShoppingCart;
-import cart.ShoppingCartItem;
-import entity.OrderedProduct;
-import entity.OrderedProductPK;
 import entity.User;
-import entity.Userorder;
+import entity.UserOrder;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,8 +28,6 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -108,7 +100,7 @@ public class TestOrder extends HttpServlet {
             }
 
 
-            Userorder order = new Userorder();
+            UserOrder order = new UserOrder();
             order.setUserid(user);
             order.setAmount(cart.getTotal());
 

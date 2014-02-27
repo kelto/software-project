@@ -6,7 +6,7 @@ package session;
 
 import entity.OrderedProduct;
 import entity.Product;
-import entity.Userorder;
+import entity.UserOrder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,7 +18,7 @@ import javax.persistence.PersistenceContext;
  * @author kelto
  */
 @Stateless
-public class UserorderFacade extends AbstractFacade<Userorder> {
+public class UserOrderFacade extends AbstractFacade<UserOrder> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
 
@@ -27,11 +27,11 @@ public class UserorderFacade extends AbstractFacade<Userorder> {
         return em;
     }
 
-    public UserorderFacade() {
-        super(Userorder.class);
+    public UserOrderFacade() {
+        super(UserOrder.class);
     }
     
-    public List<Product> getProductsFromOrder(Userorder order)
+    public List<Product> getProductsFromOrder(UserOrder order)
     {
         List<Product> list = new ArrayList<>();
         List<OrderedProduct> listOrdered = order.getOrderedProductList();

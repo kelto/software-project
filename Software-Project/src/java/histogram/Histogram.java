@@ -5,7 +5,7 @@ package histogram;
 
 import entity.OrderedProduct;
 import entity.Product;
-import entity.Userorder;
+import entity.UserOrder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +35,7 @@ public class Histogram {
         this.topSell = new ArrayList<>();
     }
     
-    public void recordOrder(Userorder order)
+    public void recordOrder(UserOrder order)
     {
         changeAllValue();
         List<OrderedProduct> list = order.getOrderedProductList();
@@ -55,7 +55,7 @@ public class Histogram {
         Collections.sort((List<HistogramItem>) listItem);
     }
     
-    public void queueRecordOrder(Userorder order)
+    public void queueRecordOrder(UserOrder order)
     {
         List<OrderedProduct> list = order.getOrderedProductList();
         for(OrderedProduct product : list )

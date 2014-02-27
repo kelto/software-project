@@ -50,7 +50,7 @@ public class Bill implements Serializable {
     private Date datePayment;
     @JoinColumn(name = "User_order_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Userorder userorderid;
+    private UserOrder userorderid;
 
     public Bill() {
     }
@@ -89,11 +89,11 @@ public class Bill implements Serializable {
         this.datePayment = datePayment;
     }
 
-    public Userorder getUserorderid() {
+    public UserOrder getUserorderid() {
         return userorderid;
     }
 
-    public void setUserorderid(Userorder userorderid) {
+    public void setUserorderid(UserOrder userorderid) {
         this.userorderid = userorderid;
     }
 
