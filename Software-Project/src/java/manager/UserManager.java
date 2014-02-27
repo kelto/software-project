@@ -5,10 +5,6 @@
 package manager;
 
 import entity.User;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -21,8 +17,8 @@ import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import session.UserFacade;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -55,7 +51,7 @@ public class UserManager {
     }
 
     public void logout(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
