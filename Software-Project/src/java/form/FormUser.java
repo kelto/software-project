@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
+import manager.Encrypter;
 import manager.UserManager;
 
 /**
@@ -27,6 +28,8 @@ public class FormUser extends Form<User> {
             PASS_CONF = "password_conf",
             ADDRESS = "address";
     @EJB
+    private Encrypter encrypter;
+    @EJB
     private UserManager userManager;
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
@@ -35,6 +38,7 @@ public class FormUser extends Form<User> {
 
     @Override
     public User create(HttpServletRequest request) {
+        clear();
         String username = getValue(request, USERNAME);
         String email = getValue(request, EMAIL);
         String password = getValue(request, PASS);
@@ -70,6 +74,41 @@ public class FormUser extends Form<User> {
         result = user == null ? "Sign up failed." : "Sign up succeed !";
 
         return user;
+    }
+    
+    public boolean Update(HttpServletRequest request, User user)
+    {
+        clear();
+        String email = getValue(request, EMAIL);
+        String password = getValue(request, PASS);
+        String conf = getValue(request, PASS_CONF);
+        String address = getValue(request, ADDRESS);
+        try {
+            passwordValidation(password, user);
+        } catch (Exception e) {
+            addErrors(PASS, e.getMessage());
+        }
+        try {
+            emailValidation(email);
+        } catch (Exception e) {
+            addErrors(EMAIL, e.getMessage());
+        }
+        try {
+            addressValidation(address);
+        } catch (Exception e) {
+            addErrors(ADDRESS, e.getMessage());
+        }
+        
+        if (!hasError()) {
+            
+            user.setAddress(address);
+            user.setEmail(email);
+            userManager.update(user);
+            result = "Profile updated";
+            return true;
+        }
+        result = "Failed to update profile";
+        return false;
     }
 
     // need to add some other test on the address, will see later !
@@ -128,5 +167,11 @@ public class FormUser extends Form<User> {
             throw new Exception("Can't check if user exist");
         }
 
+    }
+
+    private void passwordValidation(String password, User user) throws Exception {
+        if(!user.getPassword().equals(encrypter.encrypt(password+user.getSalt())))
+            throw new Exception("Invalid password.");
+                
     }
 }

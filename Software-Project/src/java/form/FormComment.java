@@ -29,6 +29,7 @@ public class FormComment extends Form<Comment>{
 
     @Override
     public Comment create(HttpServletRequest request) {
+        clear();
         String commentText = getValue(request, "comment");
         Short score = Short.parseShort(getValue(request, "score"));
         try {

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelto
  */
-@WebServlet(name = "userController", urlPatterns = { "/checkout","/edit"})
-public class UserController extends HttpServlet {
+@WebServlet(name = "AdminForbiddenController", urlPatterns = {"/forbidden"})
+public class AdminForbiddenController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,10 +38,10 @@ public class UserController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet userController</title>");            
+            out.println("<title>Servlet AdminForbiddenController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet userController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminForbiddenController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -62,29 +62,7 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String userPath = request.getServletPath();
-        if(userPath.equals("/checkout"))
-        {
-            //TODO: implement the checkout functionnality
-        }
-        else if(userPath.equals("/purchase"))
-        {
-            //TODO: implement the purchase functionnality
-        }
-        else if(userPath.equals("/login"))
-        {
-            //TODO: implement the purchase functionnality
-        }
-        // use RequestDispatcher to forward request internally
-        String url = "/WEB-INF/view" + userPath + ".jsp";
-
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        
+        forbidden(request, response);
     }
 
     /**
@@ -99,20 +77,13 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userPath = request.getServletPath();
-        if(userPath.equals("/edit"))
-        {
-            //TODO: implements the edit profile functionnality
-        }
-        
-        // use RequestDispatcher to forward request internally
-        //String url = "/WEB-INF/view" + userPath + ".jsp";
-        String url = "/WEB-INF/view/cart.jsp";
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        forbidden(request, response);
+    }
+    
+    private void forbidden(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/view/error/forbidden.jsp").forward(request, response);
+    
     }
 
     /**

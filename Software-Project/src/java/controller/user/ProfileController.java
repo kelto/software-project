@@ -2,22 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.user;
 
+import entity.User;
+import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import manager.UserManager;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "userController", urlPatterns = { "/checkout","/edit"})
-public class UserController extends HttpServlet {
+@WebServlet(name = "ProfileController", urlPatterns = {"/profile"})
+public class ProfileController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -29,6 +34,11 @@ public class UserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    @EJB
+    private UserManager userManager;
+    @EJB
+    private FormUser formUser;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -38,13 +48,13 @@ public class UserController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet userController</title>");            
+            out.println("<title>Servlet ProfileController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet userController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProfileController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -62,29 +72,7 @@ public class UserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String userPath = request.getServletPath();
-        if(userPath.equals("/checkout"))
-        {
-            //TODO: implement the checkout functionnality
-        }
-        else if(userPath.equals("/purchase"))
-        {
-            //TODO: implement the purchase functionnality
-        }
-        else if(userPath.equals("/login"))
-        {
-            //TODO: implement the purchase functionnality
-        }
-        // use RequestDispatcher to forward request internally
-        String url = "/WEB-INF/view" + userPath + ".jsp";
-
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        
+        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
     }
 
     /**
@@ -99,20 +87,13 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userPath = request.getServletPath();
-        if(userPath.equals("/edit"))
-        {
-            //TODO: implements the edit profile functionnality
-        }
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        formUser.Update(request, user);
+        request.setAttribute("form", formUser);
         
-        // use RequestDispatcher to forward request internally
-        //String url = "/WEB-INF/view" + userPath + ".jsp";
-        String url = "/WEB-INF/view/cart.jsp";
-        try {
-            request.getRequestDispatcher(url).forward(request, response);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+        
     }
 
     /**

@@ -387,12 +387,19 @@ nav ul li a:hover, nav ul li.selected a {
 .box.login
 {
 	height:260px;
-    width:332px;
+        width:332px;
 	position:absolute;
 	left:50%;
 	top:50%;
 	margin:-130px 0 0 -166px;
         top:440px;
+        
+}
+.box.profile
+{
+	
+        width:332px;
+	margin-top: 40px;
         
 }
 
@@ -428,6 +435,7 @@ nav ul li a:hover, nav ul li.selected a {
 	margin-right:10px;
 }
 .box input[type=text],
+.box input[type=email],
 .box input[type=password],
 .txtField,
 .cjComboBox

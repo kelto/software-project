@@ -21,7 +21,7 @@ public class FormCategory extends Form<Category> {
 
     @Override
     public Category create(HttpServletRequest request) {
-        
+        clear();
         String name = getValue(request, "name");
         try {
             nameValidation(name);

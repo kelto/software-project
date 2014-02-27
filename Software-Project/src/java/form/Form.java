@@ -55,5 +55,10 @@ public abstract class Form<T> {
         else
             return value.trim();
     }
+    
+    protected void clear()
+    {
+        this.errors.clear();
+    }
             
 }

@@ -73,6 +73,17 @@ public class UserManager {
         }
 
     }
+    
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void update(User user)
+    {
+        try
+        {
+            userFacade.edit(user);
+        } catch (Exception e) {
+            context.setRollbackOnly();
+        }
+    }
 
     
 }
