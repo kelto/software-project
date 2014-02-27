@@ -36,6 +36,7 @@ public class adminFilter implements Filter {
     private FilterConfig filterConfig = null;
     private final static String LOGIN = "/login";
     private final static String USER_ATT = "user";
+    private final static String FORBIDDEN = "/forbidden";
     
     public adminFilter() {
     }    
@@ -124,26 +125,18 @@ public class adminFilter implements Filter {
         
         User user = (User) session.getAttribute(USER_ATT);
         log("[WARRANT] Trying to access : "+ USER_ATT);
-        List<String> roles = new ArrayList();
-        roles.add("USER");
-        /*
+        
+        
         if(user == null)
         {
-            path = req.getContextPath() + "/category";
+            res.sendRedirect(req.getContextPath() + LOGIN);
             
         }
-        * */
-        if(roles.contains("ADMIN"))
+        else if(!user.getAdmin())
         {
-            path = req.getContextPath()+"/view";
-        }
-        else if(!roles.contains("ADMIN"))
-        {
-            path = req.getContextPath()+"/error";
+            res.sendRedirect(req.getContextPath()+FORBIDDEN);
         }
         
-        if(path != null)
-            res.sendRedirect(path);
         try {
             chain.doFilter(request, response);
         } catch (Throwable t) {
