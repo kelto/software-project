@@ -11,7 +11,9 @@ CREATE  TABLE IF NOT EXISTS `User` (
   `username` VARCHAR(45) NOT NULL ,
   `email` VARCHAR(45) NOT NULL ,
   `address` VARCHAR(45) NOT NULL ,
-  `password` VARCHAR(45) NOT NULL ,
+  `password` VARCHAR(255) NOT NULL ,
+  `salt` VARCHAR(255) NOT NULL ,
+  `admin` TINYINT(1) NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `Usercol_UNIQUE` (`username` ASC) ,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) )
@@ -51,10 +53,10 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `User_order`
+-- Table `User_Order`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `User_order` (
-  `id` INT UNSIGNED NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `User_Order` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `amount` DECIMAL(6,2) NOT NULL ,
   `date_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `confirmation_number` INT UNSIGNED NOT NULL ,
@@ -73,7 +75,7 @@ ENGINE = InnoDB;
 -- Table `ordered_product`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `ordered_product` (
-  `User_order_id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `User_order_id` INT UNSIGNED NOT NULL ,
   `Product_id` INT UNSIGNED NOT NULL ,
   `quantity` SMALLINT UNSIGNED NOT NULL ,
   PRIMARY KEY (`User_order_id`, `Product_id`) ,
@@ -81,7 +83,7 @@ CREATE  TABLE IF NOT EXISTS `ordered_product` (
   INDEX `fk_User_order_has_Product_User_order1_idx` (`User_order_id` ASC) ,
   CONSTRAINT `fk_ordered_product_User_order1`
     FOREIGN KEY (`User_order_id` )
-    REFERENCES `User_order` (`id` )
+    REFERENCES `User_Order` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ordered_product_Product1`
@@ -129,7 +131,7 @@ CREATE  TABLE IF NOT EXISTS `Bill` (
   INDEX `fk_Bill_User_order1_idx` (`User_order_id` ASC) ,
   CONSTRAINT `fk_Bill_User_order1`
     FOREIGN KEY (`User_order_id` )
-    REFERENCES `User_order` (`id` )
+    REFERENCES `User_Order` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -140,14 +142,18 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
+
 -- -----------------------------------------------------
 -- INSERT `Category`
 -- -----------------------------------------------------
+
 
 INSERT INTO mydb1239.Category (`name`) VALUES ('HDD'),('Laptop'),('accessory'),('Desktop');
 
 -- -----------------------------------------------------
 -- INSERT `Product`
 -- -----------------------------------------------------
-INSERT INTO `Product` ( `name`, `buying_price`, `selling_price`, `description`, `last_update`, `Category_id`) VALUES
-('Asus X36', '350.00', '499.00', 'Ubber laptop !', 2), ( 'HDD - Zaphyre X3', '55.5', '75', 'HDD 1To, brand Zaphyre', CURRENT_TIMESTAMP, '10');
+INSERT INTO `Product` ( `name`, `buying_price`, `selling_price`, `description`, `Category_id`) VALUES
+('Asus X36', '350.00', '499.00', 'Ubber laptop !', 2), ( 'HDD - Zaphyre X3', '55.5', '75', 'HDD 1To, brand Zaphyre', '10');
+
+
