@@ -134,7 +134,7 @@ nav ul li a:hover, nav ul li.selected a {
     margin: 0;
     position: relative;
 }
-#category li a {
+#category .categoryButton {
     background: url("/Software-Project/img/smenup.png") no-repeat scroll 0 9px transparent;
     border-right: 1px solid #E0E0E0;
     color: #383838;
@@ -149,6 +149,14 @@ nav ul li a:hover, nav ul li.selected a {
 }
 #category li a:hover {
     background-image: url("/Software-Project/img/smenua.png");
+}
+#selectedCategory
+{
+    background-color: #B3ADAF;
+}
+#selectedCategory span
+{
+    color: white;
 }
 
 /* main section */

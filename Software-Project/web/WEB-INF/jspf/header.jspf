@@ -105,24 +105,28 @@
                 <ul>
                   
                   <c:forEach var="category" items="${categoriesPool.categories}">
-                      <li>
+                      
         <c:choose>
             <c:when test="${category.name == selectedCategory.name}">
-                <div class="categoryButton" id="selectedCategory">
+                <li id="selectedCategory">
+                <span class="categoryButton" >
                     <span class="categoryText">
                         ${category.name}
                     </span>
-                </div>
+                </span>
+                    </li>
             </c:when>
             <c:otherwise>
+                <li>
              <a href="<c:url value='/category/${category.name}'/>" class="categoryButton" >
                     <span class="categoryText">
                         ${category.name}
                     </span>
                 </a>
+                    </li>
             </c:otherwise>
         </c:choose>
-</li>
+
     </c:forEach>
 
 
