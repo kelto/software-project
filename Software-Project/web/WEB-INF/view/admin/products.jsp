@@ -1,17 +1,18 @@
 <%-- 
-    Document   : users
-    Created on : 28 févr. 2014, 02:28:16
+    Document   : products
+    Created on : 28 févr. 2014, 03:38:20
     Author     : kelto
 --%>
+
 <%@include file="/WEB-INF/view/admin/jspf/header.jspf" %>
 <div id="main">
     <section id="content">
         <div id="center">
-            <h3>Users Administration</h3>
-            <c:forEach var="user" items="${users}">
-                <p>${user.username} 
-                <form action="<c:url value='/admin/users/delete'/>" method="post">
-                    <input type="hidden" value="${user.id}" name="user_id">
+            <h3>Products Administration</h3>
+            <c:forEach var="product" items="${products}">
+                <p>${product.name} 
+                <form action="<c:url value='/admin/products/delete'/>" method="post">
+                    <input type="hidden" value="${product.id}" name="product_id">
                     <input type="image" src="/Software-Project/img/delete.png" alt="delete">
                 </form>
                 </p>
