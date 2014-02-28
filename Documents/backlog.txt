@@ -8,3 +8,4 @@ backlog :
 - Shouldn't delete a product, but make it unviewable. Would have problem when deleting products and someone already ordered it : foreign key constraint. Or delete on cascade ... the simple way is on cascade. Will test it.
 - see if the problem for the database come from a bad connection or a pool leak.
 - Create the add product/category in admin panel
+- Make the add product with a transaction.
