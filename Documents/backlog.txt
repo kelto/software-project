@@ -7,4 +7,5 @@ backlog :
 - improve the search functionnality
 - send the page we are looking at in the form for every pages, so that we can stay on the same page. Or just store it in the session ?
 - Shouldn't delete a product, but make it unviewable. Would have problem when deleting products and someone already ordered it : foreign key constraint. Or delete on cascade ... the simple way is on cascade. Will test it.
+- see if the problem for the database come from a bad connection or a pool leak.
 
