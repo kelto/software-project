@@ -20,7 +20,7 @@ import session.CategoryFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/*"})
+@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
 public class AdminController extends HttpServlet {
 
     /**
@@ -73,7 +73,7 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
         /*
          String path = request.getPathInfo();
         if(path.equals("/addCategory"))

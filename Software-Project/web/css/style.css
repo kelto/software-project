@@ -167,11 +167,17 @@ nav ul li a:hover, nav ul li.selected a {
 #content {
     overflow: hidden;
 }
-#content #left, #content #right {
+#content #left, #content #right, #content #center {
     border: 1px solid #E9E9E9;
     float: left;
     margin: 0 2%;
     width: 63%;
+}
+#content #center
+{
+    width: 90%;
+    text-align: center;
+    margin-left: 5%;
 }
 #content #right {
     margin-left: 0;

@@ -19,7 +19,7 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users/*"})
+@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users","/admin/users/delete"})
 public class ManageUserController extends HttpServlet {
 
     /**
@@ -71,7 +71,7 @@ public class ManageUserController extends HttpServlet {
 
         setUsers(request);
 
-        request.getRequestDispatcher("/WEB-INF/view/admin/listUser.jsp");
+        request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp").forward(request, response);
 
     }
 
@@ -87,17 +87,18 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getPathInfo();
+        String path = request.getServletPath();
         if (path == null) {
             setUsers(request);
-            request.getRequestDispatcher("/WEB-INF/view/admin/listUser.jsp");
         }
 
-        if (path.equals("/delete")) {
+        if (path.equals("/admin/users/delete")) {
             String query = request.getParameter("user_id");
             userFacade.remove(userFacade.find(Integer.parseInt(query)));
+            setUsers(request);
         } else if (path.equals("/update")) {
         }
+        request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp").forward(request, response);
     }
 
     private void setUsers(HttpServletRequest request) {
