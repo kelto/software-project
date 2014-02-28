@@ -160,7 +160,7 @@ nav ul li a:hover, nav ul li.selected a {
 }
 
 /* main section */
-#main {
+#main, #submain {
     background-color: #fff;
     padding:20px 0;
 }
