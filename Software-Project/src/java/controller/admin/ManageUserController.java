@@ -91,21 +91,19 @@ public class ManageUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
-        if (path == null) {
-            setUsers(request);
-        }
 
         if (path.equals("/admin/users/delete")) {
             String query = request.getParameter("user_id");
             try {
                 userFacade.remove(userFacade.find(Integer.parseInt(query)));
             } catch (Exception ex) {
-                Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            setUsers(request);
+            
         } else if (path.equals("/update")) {
         }
+        setUsers(request);
         request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp").forward(request, response);
     }
 

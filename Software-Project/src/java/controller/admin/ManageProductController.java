@@ -39,6 +39,7 @@ public class ManageProductController extends HttpServlet {
     private final static int range = 20;
     @EJB
     private ProductFacade productFacade;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -48,13 +49,13 @@ public class ManageProductController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManageProductController</title>");            
+            out.println("<title>Servlet ManageProductController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet ManageProductController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -73,8 +74,7 @@ public class ManageProductController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String query = request.getPathInfo();
-        if (query != null && !query.isEmpty()) 
-        {
+        if (query != null && !query.isEmpty()) {
             query = query.substring(1);
             int page = 0;
             try {
@@ -83,19 +83,21 @@ public class ManageProductController extends HttpServlet {
                 Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
                 page = 0;
             }
-            setProducts(request, page);
+
         }
-        else
-            setProducts(request, 0);
+
+        setProducts(request, 0);
         request.getRequestDispatcher("/WEB-INF/view/admin/products.jsp").forward(request, response);
-        
+
     }
-    private void setProducts(HttpServletRequest request,int page) {
-        
-        request.setAttribute("products", productFacade.findRange(page*range, range));
-        request.setAttribute("nbPages", productFacade.count()/range);
+
+    private void setProducts(HttpServletRequest request, int page) {
+
+        request.setAttribute("products", productFacade.findRange(page * range, range));
+        request.setAttribute("nbPages", productFacade.count() / range);
         request.setAttribute("currentPage", page);
     }
+
     /**
      * Handles the HTTP
      * <code>POST</code> method.
@@ -108,10 +110,20 @@ public class ManageProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getServletPath().equals("/admin/products/delete"))
-        {
-            
+        if (request.getServletPath().equals("/admin/products/delete")) {
+            String query = request.getParameter("product_id");
+            try {
+                productFacade.remove(productFacade.find(Integer.parseInt(query)));
+            } catch (Exception ex) {
+                Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+
+
         }
+
+        setProducts(request, 0);
+        request.getRequestDispatcher("/WEB-INF/view/admin/products.jsp").forward(request, response);
     }
 
     /**
