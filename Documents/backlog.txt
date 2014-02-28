@@ -1,0 +1,9 @@
+backlog :
+
+- reorganize the controller : creation of new controller from the route of MainController
+- Add the list-categories and remove-category in admin panel
+- finish the remove product in admin panel
+- create a build desktop from pieces. Pieces should be taken from the cart, much more easier for the implementation and the user interaction.
+- improve the search functionnality
+
+
