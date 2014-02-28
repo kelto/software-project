@@ -43,7 +43,7 @@
 
             <nav><!-- Defining the navigation menu -->
                 <ul>
-                    <li class="selected"><a href="<c:url value='/view'/>"/>Home</a></li>
+                    <li class="selected"><a href="<c:url value='/view'/>">Home</a></li>
                     <li><a href="#">Specials</a></li>
                     <li><a href="#">Contact us</a></li>
                     <li><a href="#">About</a></li>
@@ -61,9 +61,9 @@
             <h2>user : ${user.username} </h2>
          </c:when>
          <c:otherwise>
-            <span><b>Already a customer?</b></span> <a href="<c:url value='/login'/>"/>Please log in</a>
+            <span><b>Already a customer?</b></span> <a href="<c:url value='/login'/>">Please log in</a>
          <br>
-         <span><b>New to E-store?</b></span><a href="<c:url value='/register'/>"/>Create an account</a>   
+         <span><b>New to E-store?</b></span><a href="<c:url value='/register'/>">Create an account</a>   
          </c:otherwise>
         </c:choose>
                 </div>

@@ -19,15 +19,15 @@
                     <h5 class="p2">Welcome to the our E-Shop</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-1" class="nivo-html-caption">
+                <div id="htmlcaption-2" class="nivo-html-caption">
                     <h5 class="p2">This is promo area</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-2" class="nivo-html-caption">
+                <div id="htmlcaption-3" class="nivo-html-caption">
                     <h5 class="p2">Where you can add any feature products</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-3" class="nivo-html-caption">
+                <div id="htmlcaption-4" class="nivo-html-caption">
                     <h5 class="p2">Or something else</h5>
                     <p>Put any description here</p>
                 </div>
@@ -94,14 +94,13 @@
                                value="add to cart">   
                     </form>
                             </div>
-                            <HR WIDTH="100%" SIZE="3"> 
+                            <HR> 
                            </li>  
             </c:forEach>
                       
                      </ul>
                 </div>
             </section>
-        </div>
-  </body>                    
+        </div>                 
                         
   <%@include file="/WEB-INF/jspf/footer.jspf" %>                      

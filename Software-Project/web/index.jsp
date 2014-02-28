@@ -91,14 +91,13 @@
                                value="add to cart">   
                     </form>
                             </div>
-                            <HR WIDTH="100%" SIZE="3"> 
+                            <HR> 
                            </li>  
             </c:forEach>
                       
                      </ul>
                 </div>
             </section>
-        </div>
-  </body>                    
+        </div>                   
                         
   <%@include file="/WEB-INF/jspf/footer.jspf" %>                      
