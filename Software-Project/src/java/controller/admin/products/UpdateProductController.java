@@ -2,29 +2,24 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.admin.products;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.UserManager;
 import session.ProductFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "ManageProductController", urlPatterns = {
-    "/admin/products/*",
-    "/admin/products/delete"})
-public class ManageProductController extends HttpServlet {
+@WebServlet(name = "UpdateProductController", urlPatterns = {"/admin/product/update"})
+public class UpdateProductController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -36,10 +31,10 @@ public class ManageProductController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final static int range = 20;
     @EJB
     private ProductFacade productFacade;
-
+    private static final String VIEW = "/WEB-INF/view/admin/products.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,13 +44,13 @@ public class ManageProductController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ManageProductController</title>");
+            out.println("<title>Servlet UpdateProductController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ManageProductController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet UpdateProductController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -73,29 +68,8 @@ public class ManageProductController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String query = request.getPathInfo();
-        if (query != null && !query.isEmpty()) {
-            query = query.substring(1);
-            int page = 0;
-            try {
-                page = Integer.parseInt(query);
-            } catch (Exception ex) {
-                Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
-                page = 0;
-            }
-
-        }
-
-        setProducts(request, 0);
-        request.getRequestDispatcher("/WEB-INF/view/admin/products.jsp").forward(request, response);
-
-    }
-
-    private void setProducts(HttpServletRequest request, int page) {
-
-        request.setAttribute("products", productFacade.findRange(page * range, range));
-        request.setAttribute("nbPages", productFacade.count() / range);
-        request.setAttribute("currentPage", page);
+        productFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -110,20 +84,9 @@ public class ManageProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getServletPath().equals("/admin/products/delete")) {
-            String query = request.getParameter("product_id");
-            try {
-                productFacade.remove(productFacade.find(Integer.parseInt(query)));
-            } catch (Exception ex) {
-                Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-
-
-        }
-
-        setProducts(request, 0);
-        request.getRequestDispatcher("/WEB-INF/view/admin/products.jsp").forward(request, response);
+        
+        productFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**

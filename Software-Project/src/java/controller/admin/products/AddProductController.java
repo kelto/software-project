@@ -2,8 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.admin.products;
 
+import controller.admin.users.ManageUserController;
+import form.FormProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -14,15 +16,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import session.UserFacade;
+import session.ProductFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users","/admin/users/delete"})
-public class ManageUserController extends HttpServlet {
+@WebServlet(name = "AddProductController", urlPatterns = {"/admin/products/add"})
+public class AddProductController extends HttpServlet {
+    @EJB
+    private FormProduct formProduct;
 
     /**
      * Processes requests for both HTTP
@@ -34,10 +37,11 @@ public class ManageUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private final static int range = 20;
+    
+    private static final String VIEW = "/WEB-INF/view/admin/products.jsp";
     @EJB
-    private UserFacade userFacade;
-
+    private ProductFacade productFacade;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,13 +51,13 @@ public class ManageUserController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteUserController</title>");
+            out.println("<title>Servlet AddProductController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteUserController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddProductController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -71,11 +75,20 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        setUsers(request,0);
-
-        request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp").forward(request, response);
-
+        String query = request.getPathInfo();
+        int page = 0;
+        if(query != null && !query.isEmpty())
+        {
+            try {
+                page = Integer.parseInt(query);
+            } catch (Exception ex) {
+                Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
+                page = 0;
+            }
+        }
+            
+        productFacade.listInSession(request, page);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -90,34 +103,14 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
-
-        if (path.equals("/admin/users/delete")) {
-            String query = request.getParameter("user_id");
-            try {
-                userFacade.remove(userFacade.find(Integer.parseInt(query)));
-            } catch (Exception ex) {
-                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        } else if (path.equals("/update")) {
+        if(request.getServletPath().equals("/admin/products/add"))
+        {
+            formProduct.create(request);
+            request.setAttribute("form", formProduct);
         }
-        setUsers(request);
-        request.getRequestDispatcher("/WEB-INF/view/admin/users.jsp").forward(request, response);
-    }
-
-    private void setUsers(HttpServletRequest request) {
         
-        request.setAttribute("users", userFacade.findAll());
-        request.setAttribute("nbPages", userFacade.count()/range);
-        request.setAttribute("currentPage", 0);
-    }
-    private void setUsers(HttpServletRequest request,int page) {
-        
-        request.setAttribute("users", userFacade.findRange(page*range, range));
-        request.setAttribute("nbPages", userFacade.count()/range);
-        request.setAttribute("currentPage", page);
+        productFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
