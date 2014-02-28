@@ -34,7 +34,7 @@
             </section>
         </div>
 
-        <div id="main"><!-- Defining submain content section -->
+        <div id="submain"><!-- Defining submain content section -->
             <section id="content"><!-- Defining the content section #2 -->
                <div id="left">
                     <h3>Last Product </h3>

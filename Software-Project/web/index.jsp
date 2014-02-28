@@ -16,15 +16,15 @@
                     <h5 class="p2">Welcome to the our E-Shop</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-1" class="nivo-html-caption">
+                <div id="htmlcaption-2" class="nivo-html-caption">
                     <h5 class="p2">This is promo area</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-2" class="nivo-html-caption">
+                <div id="htmlcaption-3" class="nivo-html-caption">
                     <h5 class="p2">Where you can add any feature products</h5>
                     <p>Put any description here</p>
                 </div>
-                <div id="htmlcaption-3" class="nivo-html-caption">
+                <div id="htmlcaption-4" class="nivo-html-caption">
                     <h5 class="p2">Or something else</h5>
                     <p>Put any description here</p>
                 </div>
