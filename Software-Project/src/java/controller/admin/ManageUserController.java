@@ -6,6 +6,8 @@ package controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -95,7 +97,12 @@ public class ManageUserController extends HttpServlet {
 
         if (path.equals("/admin/users/delete")) {
             String query = request.getParameter("user_id");
-            userFacade.remove(userFacade.find(Integer.parseInt(query)));
+            try {
+                userFacade.remove(userFacade.find(Integer.parseInt(query)));
+            } catch (Exception ex) {
+                Logger.getLogger(ManageProductController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             setUsers(request);
         } else if (path.equals("/update")) {
         }
