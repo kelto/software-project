@@ -25,6 +25,7 @@ public class FormCartUpdate extends Form<Boolean> {
     //Not good yet, will think of something
     @Override
     public Boolean create(HttpServletRequest request) {
+        clear();
         HttpSession session = request.getSession();
         
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");

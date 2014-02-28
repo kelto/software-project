@@ -134,7 +134,7 @@ nav ul li a:hover, nav ul li.selected a {
     margin: 0;
     position: relative;
 }
-#category li a {
+#category .categoryButton {
     background: url("/Software-Project/img/smenup.png") no-repeat scroll 0 9px transparent;
     border-right: 1px solid #E0E0E0;
     color: #383838;
@@ -150,20 +150,34 @@ nav ul li a:hover, nav ul li.selected a {
 #category li a:hover {
     background-image: url("/Software-Project/img/smenua.png");
 }
+#selectedCategory
+{
+    background-color: #B3ADAF;
+}
+#selectedCategory span
+{
+    color: white;
+}
 
 /* main section */
-#main {
+#main, #submain {
     background-color: #fff;
     padding:20px 0;
 }
 #content {
     overflow: hidden;
 }
-#content #left, #content #right {
+#content #left, #content #right, #content #center {
     border: 1px solid #E9E9E9;
     float: left;
     margin: 0 2%;
     width: 63%;
+}
+#content #center
+{
+    width: 90%;
+    text-align: center;
+    margin-left: 5%;
 }
 #content #right {
     margin-left: 0;
@@ -387,12 +401,19 @@ nav ul li a:hover, nav ul li.selected a {
 .box.login
 {
 	height:260px;
-    width:332px;
+        width:332px;
 	position:absolute;
 	left:50%;
 	top:50%;
 	margin:-130px 0 0 -166px;
         top:440px;
+        
+}
+.box.profile
+{
+	
+        width:332px;
+	margin-top: 40px;
         
 }
 
@@ -428,6 +449,7 @@ nav ul li a:hover, nav ul li.selected a {
 	margin-right:10px;
 }
 .box input[type=text],
+.box input[type=email],
 .box input[type=password],
 .txtField,
 .cjComboBox

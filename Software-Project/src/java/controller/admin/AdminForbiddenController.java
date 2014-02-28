@@ -4,24 +4,20 @@
  */
 package controller.admin;
 
-import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.CategoryManager;
-import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
-public class AdminController extends HttpServlet {
+@WebServlet(name = "AdminForbiddenController", urlPatterns = {"/forbidden"})
+public class AdminForbiddenController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,14 +28,7 @@ public class AdminController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
      */
-    
-    @EJB
-    private CategoryFacade categoryFacade;
-    @EJB
-    private CategoryManager manager;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,10 +38,10 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet adminController</title>");            
+            out.println("<title>Servlet AdminForbiddenController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminForbiddenController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -73,17 +62,7 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        /*
-         String path = request.getPathInfo();
-        if(path.equals("/addCategory"))
-        {
-            String name = request.getParameter("name");
-            manager.create(name);
-           
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+        forbidden(request, response);
     }
 
     /**
@@ -98,15 +77,13 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        /*
-        String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
-        {
-            //TODO: implement addCategory
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+        forbidden(request, response);
+    }
+    
+    private void forbidden(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/view/error/forbidden.jsp").forward(request, response);
+    
     }
 
     /**

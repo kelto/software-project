@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.user;
 
-import entity.Category;
+import entity.User;
+import form.FormUser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -13,15 +14,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.CategoryManager;
-import session.CategoryFacade;
+import javax.servlet.http.HttpSession;
+import manager.UserManager;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
-public class AdminController extends HttpServlet {
+@WebServlet(name = "ProfileController", urlPatterns = {"/profile"})
+public class ProfileController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,13 +33,11 @@ public class AdminController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
      */
-    
     @EJB
-    private CategoryFacade categoryFacade;
+    private UserManager userManager;
     @EJB
-    private CategoryManager manager;
+    private FormUser formUser;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,13 +48,13 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet adminController</title>");            
+            out.println("<title>Servlet ProfileController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProfileController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -73,17 +72,7 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        /*
-         String path = request.getPathInfo();
-        if(path.equals("/addCategory"))
-        {
-            String name = request.getParameter("name");
-            manager.create(name);
-           
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
     }
 
     /**
@@ -98,15 +87,13 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        /*
-        String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
-        {
-            //TODO: implement addCategory
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        formUser.Update(request, user);
+        request.setAttribute("form", formUser);
+        
+        request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
+        
     }
 
     /**

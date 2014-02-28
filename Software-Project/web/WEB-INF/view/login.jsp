@@ -13,7 +13,7 @@
 <form class="box login" action="login_check" method=post>
 	<fieldset class="boxBody">
 	  <label>Username</label>
-	  <input type="text" tabindex="1" placeholder="PremiumPixel" required name="username">
+	  <input type="text" tabindex="1" placeholder="username" required name="username">
 	  <input type="password" tabindex="2" required name="password">
 	</fieldset>
 	<footer>

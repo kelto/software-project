@@ -1,0 +1,11 @@
+backlog :
+
+- reorganize the controller : creation of new controller from the route of MainController
+- Add the list-categories and remove-category in admin panel
+- create a build desktop from pieces. Pieces should be taken from the cart, much more easier for the implementation and the user interaction.
+- improve the search functionnality
+- send the page we are looking at in the form for every pages, so that we can stay on the same page. Or just store it in the session ?
+- Shouldn't delete a product, but make it unviewable. Would have problem when deleting products and someone already ordered it : foreign key constraint. Or delete on cascade ... the simple way is on cascade. Will test it.
+- see if the problem for the database come from a bad connection or a pool leak.
+- Create the add product/category in admin panel
+- Make the add product with a transaction.

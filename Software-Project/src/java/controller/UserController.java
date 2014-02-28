@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelto
  */
-@WebServlet(name = "userController", urlPatterns = {"/profile", "/checkout","/edit"})
+@WebServlet(name = "userController", urlPatterns = { "/checkout","/edit"})
 public class UserController extends HttpServlet {
 
     /**
@@ -64,12 +64,7 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         
         String userPath = request.getServletPath();
-        if(userPath.equals("/profile"))
-        {
-            request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
-            //TODO: implements the show profile functionnality
-        }
-        else if(userPath.equals("/checkout"))
+        if(userPath.equals("/checkout"))
         {
             //TODO: implement the checkout functionnality
         }

@@ -2,26 +2,30 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.admin.products;
 
-import entity.Category;
+import controller.admin.users.ManageUserController;
+import form.FormProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.CategoryManager;
-import session.CategoryFacade;
+import session.ProductFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
-public class AdminController extends HttpServlet {
+@WebServlet(name = "AddProductController", urlPatterns = {"/admin/products/add"})
+public class AddProductController extends HttpServlet {
+    @EJB
+    private FormProduct formProduct;
 
     /**
      * Processes requests for both HTTP
@@ -32,13 +36,11 @@ public class AdminController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
      */
     
+    private static final String VIEW = "/WEB-INF/view/admin/products.jsp";
     @EJB
-    private CategoryFacade categoryFacade;
-    @EJB
-    private CategoryManager manager;
+    private ProductFacade productFacade;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,10 +51,10 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet adminController</title>");            
+            out.println("<title>Servlet AddProductController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddProductController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -73,17 +75,20 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        /*
-         String path = request.getPathInfo();
-        if(path.equals("/addCategory"))
+        String query = request.getPathInfo();
+        int page = 0;
+        if(query != null && !query.isEmpty())
         {
-            String name = request.getParameter("name");
-            manager.create(name);
-           
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
+            try {
+                page = Integer.parseInt(query);
+            } catch (Exception ex) {
+                Logger.getLogger(AddProductController.class.getName()).log(Level.SEVERE, null, ex);
+                page = 0;
+            }
         }
-        * */
+            
+        productFacade.listInSession(request, page);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -98,15 +103,14 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        /*
-        String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
+        if(request.getServletPath().equals("/admin/products/add"))
         {
-            //TODO: implement addCategory
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
+            formProduct.create(request);
+            request.setAttribute("form", formProduct);
         }
-        * */
+        
+        productFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**

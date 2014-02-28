@@ -2,26 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.admin.users;
 
-import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.CategoryManager;
-import session.CategoryFacade;
+import javax.servlet.http.HttpSession;
+import session.UserFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
-public class AdminController extends HttpServlet {
+@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users","/admin/users/delete"})
+public class ManageUserController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,14 +33,12 @@ public class AdminController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
      */
-    
+    private static final String VIEW = "/WEB-INF/view/admin/users.jsp";
+    private final static int range = 20;
     @EJB
-    private CategoryFacade categoryFacade;
-    @EJB
-    private CategoryManager manager;
-    
+    private UserFacade userFacade;
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,13 +48,13 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet adminController</title>");            
+            out.println("<title>Servlet DeleteUserController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteUserController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
@@ -73,17 +72,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        /*
-         String path = request.getPathInfo();
-        if(path.equals("/addCategory"))
-        {
-            String name = request.getParameter("name");
-            manager.create(name);
-           
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+
+        setUsers(request,0);
+
+        request.getRequestDispatcher(VIEW).forward(request, response);
+
     }
 
     /**
@@ -98,15 +91,34 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        /*
-        String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
-        {
-            //TODO: implement addCategory
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
+        String path = request.getServletPath();
+
+        if (path.equals("/admin/users/delete")) {
+            String query = request.getParameter("user_id");
+            try {
+                userFacade.remove(userFacade.find(Integer.parseInt(query)));
+            } catch (Exception ex) {
+                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        } else if (path.equals("/update")) {
         }
-        * */
+        setUsers(request);
+        request.getRequestDispatcher(VIEW).forward(request, response);
+    }
+
+    private void setUsers(HttpServletRequest request) {
+        
+        request.setAttribute("users", userFacade.findAll());
+        request.setAttribute("nbPages", userFacade.count()/range);
+        request.setAttribute("currentPage", 0);
+    }
+    private void setUsers(HttpServletRequest request,int page) {
+        
+        request.setAttribute("users", userFacade.findRange(page*range, range));
+        request.setAttribute("nbPages", userFacade.count()/range);
+        request.setAttribute("currentPage", page);
     }
 
     /**

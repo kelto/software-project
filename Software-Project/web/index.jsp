@@ -1,11 +1,8 @@
-<%-- /* 
+<%-- 
     Document   : index
-    Created on : 14-Feb-2014, 19:45:20
-    Author     : andrew
-*/--%>
-
-
-
+    Created on : 27 févr. 2014, 21:37:25
+    Author     : kelto
+--%>
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 
 <div id="main">
@@ -101,6 +98,6 @@
                      </ul>
                 </div>
             </section>
-        </div>                 
+        </div>                   
                         
   <%@include file="/WEB-INF/jspf/footer.jspf" %>                      
