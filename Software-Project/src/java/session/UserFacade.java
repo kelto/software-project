@@ -8,6 +8,7 @@ import entity.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -17,6 +18,8 @@ import javax.persistence.PersistenceContext;
 public class UserFacade extends AbstractFacade<User> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
+    public static final String ATT_USER = "users";
+    private static final int DEFAULT_RANGE = 20;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -53,5 +56,11 @@ public class UserFacade extends AbstractFacade<User> {
         
         return user;
     }
+
+    @Override
+    protected String getAttName() {
+        return ATT_USER;
+    }
+    
     
 }

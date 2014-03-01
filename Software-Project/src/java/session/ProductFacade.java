@@ -37,18 +37,11 @@ public class ProductFacade extends AbstractFacade<Product> {
         return em.createQuery("SELECT p FROM Product p WHERE p.category = :category").setParameter("category",category).
                 getResultList();
     }
-    
-    public void listInSession(HttpServletRequest request, int range, int page)
-    {
-        request.getSession().setAttribute(ATT_PRODUCTS, findRange(page * range, range));
-        request.setAttribute("nbPages", count() / range);
-        request.setAttribute("currentPage", page);
+
+    @Override
+    protected String getAttName() {
+        return ATT_PRODUCTS;
     }
     
-    public void listInSession(HttpServletRequest request, int page)
-    {
-        
-        listInSession(request, DEFAULT_RANGE, page);
-    }
     
 }
