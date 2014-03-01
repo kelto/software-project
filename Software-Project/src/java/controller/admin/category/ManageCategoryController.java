@@ -6,6 +6,8 @@ package controller.admin.category;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import session.CategoryFacade;
-import session.UserFacade;
 
 /**
  *
@@ -68,7 +69,19 @@ public class ManageCategoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        categoryFacade.listInSession(request, 0);
+         String query = request.getPathInfo();
+        int page = 0;
+        if(query != null && !query.isEmpty())
+        {
+            try {
+                page = Integer.parseInt(query);
+            } catch (Exception ex) {
+                Logger.getLogger(ManageCategoryController.class.getName()).log(Level.SEVERE, null, ex);
+                page = 0;
+            }
+        }
+        
+        categoryFacade.listInSession(request, page);
         request.getRequestDispatcher(VIEW).forward(request, response);
     }
 

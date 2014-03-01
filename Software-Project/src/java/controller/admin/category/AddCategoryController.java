@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin.users;
+package controller.admin.category;
 
+import form.FormCategory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -14,15 +15,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import session.UserFacade;
+import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "ManageUserController", urlPatterns = {"/admin/users","/admin/users/delete"})
-public class ManageUserController extends HttpServlet {
+@WebServlet(name = "AddCategoryController", urlPatterns = {"/admin/category/add"})
+public class AddCategoryController extends HttpServlet {
+    @EJB
+    private FormCategory formCategory;
+    @EJB
+    private CategoryFacade categoryFacade;
+
+    private static final String VIEW = "/WEB-INF/view/admin/categories.jsp";
 
     /**
      * Processes requests for both HTTP
@@ -34,11 +40,6 @@ public class ManageUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String VIEW = "/WEB-INF/view/admin/users.jsp";
-    private final static int range = 20;
-    @EJB
-    private UserFacade userFacade;
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -48,10 +49,10 @@ public class ManageUserController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteUserController</title>");
+            out.println("<title>Servlet AddCategoryController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DeleteUserController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddCategoryController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -72,22 +73,18 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-         String query = request.getPathInfo();
+        String query = request.getPathInfo();
         int page = 0;
-        if(query != null && !query.isEmpty())
-        {
+        if (query != null && !query.isEmpty()) {
             try {
                 page = Integer.parseInt(query);
             } catch (Exception ex) {
-                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AddCategoryController.class.getName()).log(Level.SEVERE, null, ex);
                 page = 0;
             }
         }
-        userFacade.listInSession(request,page);
-
+        categoryFacade.listInSession(request, page);
         request.getRequestDispatcher(VIEW).forward(request, response);
-
     }
 
     /**
@@ -102,34 +99,13 @@ public class ManageUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
-
-        if (path.equals("/admin/users/delete")) {
-            String query = request.getParameter("user_id");
-            try {
-                userFacade.remove(userFacade.find(Integer.parseInt(query)));
-            } catch (Exception ex) {
-                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        } else if (path.equals("/update")) {
+        if (request.getServletPath().equals("/admin/products/add")) {
+            formCategory.create(request);
+            request.setAttribute("form", formCategory);
         }
-        setUsers(request);
-        request.getRequestDispatcher(VIEW).forward(request, response);
-    }
 
-    private void setUsers(HttpServletRequest request) {
-        
-        request.setAttribute("users", userFacade.findAll());
-        request.setAttribute("nbPages", userFacade.count()/range);
-        request.setAttribute("currentPage", 0);
-    }
-    private void setUsers(HttpServletRequest request,int page) {
-        
-        request.setAttribute("users", userFacade.findRange(page*range, range));
-        request.setAttribute("nbPages", userFacade.count()/range);
-        request.setAttribute("currentPage", page);
+        categoryFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
