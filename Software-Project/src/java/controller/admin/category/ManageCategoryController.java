@@ -6,11 +6,14 @@ package controller.admin.category;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.CategoryFacade;
+import session.UserFacade;
 
 /**
  *
@@ -18,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ManageCategoryController", urlPatterns = {"/admin/category", "/admin/category/delete"})
 public class ManageCategoryController extends HttpServlet {
+    @EJB
+    private CategoryFacade categoryFacade;
+    private static final String VIEW = "/WEB-INF/view/admin/categories.jsp";
 
     /**
      * Processes requests for both HTTP
@@ -62,7 +68,8 @@ public class ManageCategoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        categoryFacade.listInSession(request, 0);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -77,7 +84,7 @@ public class ManageCategoryController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+     
     }
 
     /**

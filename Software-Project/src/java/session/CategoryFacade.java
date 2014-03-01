@@ -18,7 +18,7 @@ public class CategoryFacade extends AbstractFacade<Category> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
     private static final String ATT_CATEGORIES = "categories";
-    private static final int DEFAULT_RANGE = 20;
+    
 
     @Override
     protected EntityManager getEntityManager() {
@@ -39,11 +39,6 @@ public class CategoryFacade extends AbstractFacade<Category> {
         }
         return category;
     }   
-
-    @Override
-    protected int getDefaultRange() {
-        return DEFAULT_RANGE;
-    }
 
     @Override
     protected String getAttName() {
