@@ -2,26 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.admin;
+package controller.admin.category;
 
-import entity.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import manager.CategoryManager;
 import session.CategoryFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel","/admin/add"})
-public class AdminController extends HttpServlet {
+@WebServlet(name = "ManageCategoryController", urlPatterns = {"/admin/category", "/admin/category/delete"})
+public class ManageCategoryController extends HttpServlet {
+    @EJB
+    private CategoryFacade categoryFacade;
+    private static final String VIEW = "/WEB-INF/view/admin/categories.jsp";
 
     /**
      * Processes requests for both HTTP
@@ -32,14 +35,7 @@ public class AdminController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
      */
-    
-    @EJB
-    private CategoryFacade categoryFacade;
-    @EJB
-    private CategoryManager manager;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,10 +45,10 @@ public class AdminController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet adminController</title>");            
+            out.println("<title>Servlet ManageCategoryController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet adminController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ManageCategoryController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -73,11 +69,20 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
-        if(path.equals("/admin/panel"))
-            request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        else 
-            request.getRequestDispatcher("/WEB-INF/view/admin/create.jsp").forward(request, response);
+         String query = request.getPathInfo();
+        int page = 0;
+        if(query != null && !query.isEmpty())
+        {
+            try {
+                page = Integer.parseInt(query);
+            } catch (Exception ex) {
+                Logger.getLogger(ManageCategoryController.class.getName()).log(Level.SEVERE, null, ex);
+                page = 0;
+            }
+        }
+        
+        categoryFacade.listInSession(request, page);
+        request.getRequestDispatcher(VIEW).forward(request, response);
     }
 
     /**
@@ -92,7 +97,7 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
+     
     }
 
     /**

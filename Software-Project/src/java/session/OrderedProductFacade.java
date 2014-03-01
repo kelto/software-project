@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 public class OrderedProductFacade extends AbstractFacade<OrderedProduct> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
+    private static final String ATT_ORDERED = "ordered_products";
 
     @Override
     protected EntityManager getEntityManager() {
@@ -25,6 +26,11 @@ public class OrderedProductFacade extends AbstractFacade<OrderedProduct> {
 
     public OrderedProductFacade() {
         super(OrderedProduct.class);
+    }
+
+    @Override
+    protected String getAttName() {
+        return ATT_ORDERED;
     }
     
     

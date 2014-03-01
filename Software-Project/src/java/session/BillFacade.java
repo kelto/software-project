@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 public class BillFacade extends AbstractFacade<Bill> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
+    private static final String ATT_BILL = "bills";
 
     @Override
     protected EntityManager getEntityManager() {
@@ -25,6 +26,11 @@ public class BillFacade extends AbstractFacade<Bill> {
 
     public BillFacade() {
         super(Bill.class);
+    }
+
+    @Override
+    protected String getAttName() {
+        return ATT_BILL;
     }
     
 }

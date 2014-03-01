@@ -12,30 +12,7 @@
     
  <div class="container">
     <form class="form-horizontal" action="<c:url value='purchase'/>" method="post">
-      <fieldset>
-        <legend>Customer Info</legend>
-
-        <div class="control-group">
-          <label class="control-label" for="email">E-mail</label>
-          <div class="controls">
-            <input type="text" id="email" class="span6"/>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label" for="name">Name</label>
-          <div class="controls">
-            <input type="text" id="name" class="span6"/>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label" for="address">Address</label>
-          <div class="controls">
-            <textarea id="address" rows="3" class="span6"></textarea>
-          </div>
-        </div>
-      </fieldset>
+   
 
       <fieldset>
         <legend>Payment</legend>

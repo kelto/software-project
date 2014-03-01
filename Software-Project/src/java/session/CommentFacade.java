@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 public class CommentFacade extends AbstractFacade<Comment> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
+    private static final String ATT_COMMENT = "comments";
 
     @Override
     protected EntityManager getEntityManager() {
@@ -26,5 +27,11 @@ public class CommentFacade extends AbstractFacade<Comment> {
     public CommentFacade() {
         super(Comment.class);
     }
+
+    @Override
+    protected String getAttName() {
+        return ATT_COMMENT;
+    }
+    
     
 }

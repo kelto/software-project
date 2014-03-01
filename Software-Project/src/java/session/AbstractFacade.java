@@ -6,6 +6,7 @@ package session;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -13,6 +14,7 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
+    protected static final int DEFAULT_RANGE = 20;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -68,4 +70,17 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
+    public void listInSession(HttpServletRequest request, int range, int page)
+    {
+        request.getSession().setAttribute(getAttName(), findRange(page * range, range));
+        request.setAttribute("nbPages", count() / range);
+        request.setAttribute("currentPage", page);
+    }
+    
+    public void listInSession(HttpServletRequest request, int page)
+    {
+        listInSession(request, DEFAULT_RANGE, page);
+    }
+
+    protected abstract String getAttName();
 }

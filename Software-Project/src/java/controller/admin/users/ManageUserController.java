@@ -73,7 +73,18 @@ public class ManageUserController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        setUsers(request,0);
+         String query = request.getPathInfo();
+        int page = 0;
+        if(query != null && !query.isEmpty())
+        {
+            try {
+                page = Integer.parseInt(query);
+            } catch (Exception ex) {
+                Logger.getLogger(ManageUserController.class.getName()).log(Level.SEVERE, null, ex);
+                page = 0;
+            }
+        }
+        userFacade.listInSession(request,page);
 
         request.getRequestDispatcher(VIEW).forward(request, response);
 

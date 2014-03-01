@@ -17,6 +17,8 @@ import javax.persistence.PersistenceContext;
 public class CategoryFacade extends AbstractFacade<Category> {
     @PersistenceContext(unitName = "Software-ProjectPU")
     private EntityManager em;
+    private static final String ATT_CATEGORIES = "categories";
+    
 
     @Override
     protected EntityManager getEntityManager() {
@@ -37,5 +39,11 @@ public class CategoryFacade extends AbstractFacade<Category> {
         }
         return category;
     }   
+
+    @Override
+    protected String getAttName() {
+        return ATT_CATEGORIES;
+    }
+    
     
 }

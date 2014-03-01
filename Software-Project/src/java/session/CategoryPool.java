@@ -7,6 +7,7 @@ package session;
 import entity.Category;
 import java.util.List;
 import java.util.Random;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 
 /**
@@ -15,6 +16,8 @@ import javax.ejb.Singleton;
  */
 @Singleton
 public class CategoryPool {
+    @EJB
+    private CategoryFacade categoryFacade;
 
     private List<Category> categories;
     
@@ -43,6 +46,10 @@ public class CategoryPool {
         Random r = new Random();
         int index = r.nextInt(categories.size());
         return categories.get(index);
+    }
+
+    public void reload() {
+        setCategories(categoryFacade.findAll());
     }
 
 }
