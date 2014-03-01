@@ -13,6 +13,13 @@ body {
 img {
     border: 0 none;
 }
+.removeButton{
+    display: block;
+    position: relative;
+    left: 15px;
+    width: 15px;
+}
+
 .container {
     margin:30px auto 0;
     position:relative;

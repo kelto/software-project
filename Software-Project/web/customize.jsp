@@ -78,7 +78,8 @@
                     <td class="customizeCat"><label>${category.name}</label></td>                                
                     <td class="customizeProd"><label type="text" id="${category.id}_name"></label></td>
                     <td class="customizePrice"><label type="text" id="${category.id}_price"></label></td>
-                    <td> <input type="hidden" id="${category.id}_id"></td>   
+                    <td> <button class="removeButton" id="${category.id}" onclick="" type="button">x</button></td>
+                    <td> <input type="hidden" id="${category.id}"></td>   
                 </tr>                 
            </c:forEach>
                 </table>
