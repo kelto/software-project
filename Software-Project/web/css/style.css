@@ -201,6 +201,30 @@ nav ul li a:hover, nav ul li.selected a {
     padding: 11px 0 12px 20px;
     text-transform: uppercase;
 }
+
+.customizeCat {
+   font-size: 20px;
+   padding-left: 10px;
+}
+
+.customizeProd {
+    padding-left: 30px;
+    color: blue;
+    font-size: 20px;
+}
+.totalPrice {
+    text-align: right;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 20px;
+}
+.customizePrice {
+    padding-left: 30px;
+    color: green;
+    font-size: 20px;
+}
+
 #content ul {
     list-style:none outside none;
     margin:0;
