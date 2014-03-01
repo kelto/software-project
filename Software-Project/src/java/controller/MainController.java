@@ -18,8 +18,11 @@ import session.CategoryFacade;
 import manager.OrderManager;
 import session.ProductFacade;
 import cart.ShoppingCart;
+import entity.Comment;
 import entity.User;
 import form.FormCategory;
+import java.util.ArrayList;
+import java.util.List;
 import manager.CategoryManager;
 import session.CategoryPool;
 import session.ProductPool;
@@ -29,7 +32,7 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/index","/viewCart", "/addToCart","/view","/addCategory","/purchase"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index","/viewCart", "/addToCart","/view","/addCategory","/purchase"})
 public class MainController extends HttpServlet {
 
     /**
@@ -146,6 +149,17 @@ public class MainController extends HttpServlet {
         }else if(userPath.equals("/addCategory"))
         {
             
+        }else if (userPath.equals("/viewProduct")) {
+            Product product = new Product();
+            List<Comment> comments = new ArrayList<Comment>();
+            for(int i = 0;i<5;i++)
+            {
+                Comment comment = new Comment();
+                comments.add(comment);
+            }
+            request.setAttribute("product", product);
+            request.setAttribute("comments", comments);
+            request.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(request, response);
         }else if (userPath.equals("/purchase")) {
             ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");
             

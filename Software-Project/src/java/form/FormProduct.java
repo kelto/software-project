@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
+import manager.ProductManager;
 import session.CategoryFacade;
-import session.ProductFacade;
 
 /**
  *
@@ -22,7 +22,7 @@ import session.ProductFacade;
 @Stateless
 public class FormProduct extends Form<Product> {
     @EJB
-    private ProductFacade productFacade;
+    private ProductManager productManager;
     @EJB
     private CategoryFacade categoryFacade;
 
@@ -51,7 +51,7 @@ public class FormProduct extends Form<Product> {
         try {
             prices = priceValidation(getValue(request, BUYING),getValue(request,SELLING));
         } catch (Exception e) {
-            addErrors("price", e.getMessage());
+            addErrors("prices", e.getMessage());
         }
         Category category = null;
         try {
@@ -70,7 +70,7 @@ public class FormProduct extends Form<Product> {
             product.setName(name);
             product.setCategoryid(category);
             try {
-                productFacade.create(product);
+                productManager.addProduct(product);
                 result = "Product created.";
             } catch (Exception e) {
                 Logger.getLogger(FormProduct.class.getName()).log(Level.SEVERE, null, e);

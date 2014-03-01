@@ -50,7 +50,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<c:url value='/admin/categories'/>" class="categoryButton" >
+                            <a href="<c:url value='/admin/category'/>" class="categoryButton" >
                                 <span class="categoryText">
                                     Categories
                                 </span>
@@ -60,6 +60,13 @@
                             <a href="<c:url value='/admin/products'/>" class="categoryButton" >
                                 <span class="categoryText">
                                     Products
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<c:url value='/admin/add'/>" class="categoryButton" >
+                                <span class="categoryText">
+                                    Create
                                 </span>
                             </a>
                         </li>
