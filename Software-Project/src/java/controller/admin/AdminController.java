@@ -20,7 +20,7 @@ import session.CategoryFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "adminController", urlPatterns = {"/admin/panel"})
+@WebServlet(name = "adminController", urlPatterns = {"/admin/panel","/admin/add"})
 public class AdminController extends HttpServlet {
 
     /**
@@ -73,17 +73,11 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
-        /*
-         String path = request.getPathInfo();
-        if(path.equals("/addCategory"))
-        {
-            String name = request.getParameter("name");
-            manager.create(name);
-           
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+        String path = request.getServletPath();
+        if(path.equals("/admin/panel"))
+            request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
+        else 
+            request.getRequestDispatcher("/WEB-INF/view/admin/create.jsp").forward(request, response);
     }
 
     /**
@@ -98,15 +92,7 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        /*
-        String userPath = request.getServletPath();
-        if(userPath.equals("/addCategory"))
-        {
-            //TODO: implement addCategory
-            getServletContext().setAttribute("categories", categoryFacade.findAll());
-        }
-        * */
+       request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
     }
 
     /**

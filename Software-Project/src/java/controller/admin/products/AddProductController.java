@@ -110,7 +110,7 @@ public class AddProductController extends HttpServlet {
         }
         
         productFacade.listInSession(request, 0);
-        request.getRequestDispatcher(VIEW).forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/admin/create.jsp").forward(request, response);
     }
 
     /**
