@@ -26,7 +26,7 @@ public class FormProduct extends Form<Product> {
     @EJB
     private CategoryFacade categoryFacade;
 
-    private static final String NAME = "name",
+    private static final String NAME = "product_name",
             DESCRIPTION = "description",
             BUYING = "buying_price",
             SELLING = "selling_price",
@@ -47,7 +47,7 @@ public class FormProduct extends Form<Product> {
         } catch (Exception e) {
             addErrors(DESCRIPTION, e.getMessage());
         }
-        double[] prices = {0.0,0.0};
+        BigDecimal[] prices = {null,null};
         try {
             prices = priceValidation(getValue(request, BUYING),getValue(request,SELLING));
         } catch (Exception e) {
@@ -65,13 +65,15 @@ public class FormProduct extends Form<Product> {
         if(!hasError())
         {
             product = new Product();
-            product.setBuyingPrice(new BigDecimal(prices[0]));
+            
+            product.setBuyingPrice(prices[0]);
+            product.setSellingPrice(prices[1]);
             product.setDescription(description);
             product.setName(name);
             product.setCategoryid(category);
             try {
-                productManager.addProduct(product);
-                result = "Product created.";
+                product = productManager.addProduct(product);
+                result = (product == null ? "Failed to create Product." : "Product created.");
             } catch (Exception e) {
                 Logger.getLogger(FormProduct.class.getName()).log(Level.SEVERE, null, e);
                 product = null;
@@ -101,25 +103,25 @@ public class FormProduct extends Form<Product> {
             throw new Exception("The description of the product should be at least 10 characters.");
     }
 
-    private double[] priceValidation(String buying, String selling) throws Exception {
-        double b_price,s_price;
+    private BigDecimal[] priceValidation(String buying, String selling) throws Exception {
+        BigDecimal b_price,s_price;
         try {
-            b_price = Double.parseDouble(buying);
-            s_price = Double.parseDouble(selling);
+            b_price = new BigDecimal(buying);
+            s_price = new BigDecimal(selling);
         } catch (Exception e) {
             throw new Exception("You must enter a number for the price");
         }
-        if(b_price>s_price)
+        if(b_price.compareTo(s_price)>0)
             throw new Exception("The buying price can't be superior to the selling price.");
-        double[] prices = {b_price,s_price};
+        BigDecimal[] prices = {b_price,s_price};
         return prices;
     }
 
     private Category categoryValidation(String categoryId) throws Exception {
-        int id = -1;
+        short id = -1;
         Category category = null;
         try {
-            id = Integer.parseInt(categoryId);
+            id = Short.parseShort(categoryId);
         } catch (Exception e) {
             throw new Exception("Wrong input for category !");
         }

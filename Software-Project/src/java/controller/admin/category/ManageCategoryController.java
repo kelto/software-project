@@ -20,7 +20,7 @@ import session.CategoryFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "ManageCategoryController", urlPatterns = {"/admin/category", "/admin/category/delete"})
+@WebServlet(name = "ManageCategoryController", urlPatterns = {"/admin/category/*", "/admin/category/delete"})
 public class ManageCategoryController extends HttpServlet {
     @EJB
     private CategoryFacade categoryFacade;

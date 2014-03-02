@@ -60,8 +60,8 @@ public class ShoppingCartItem {
     {
         if(!(object instanceof ShoppingCartItem))
             return false;
-        ShoppingCartItem item = (ShoppingCartItem) object;
-        return this.item.equals(item.getProduct());
+        ShoppingCartItem scItem = (ShoppingCartItem) object;
+        return this.item.equals(scItem.getProduct());
     }
     
 }

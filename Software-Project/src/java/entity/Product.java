@@ -68,7 +68,6 @@ public class Product implements Serializable {
     @Column(name = "description")
     private String description;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "last_update")
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastUpdate;

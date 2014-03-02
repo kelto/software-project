@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import manager.CategoryManager;
 import session.CategoryFacade;
+import session.CommentFacade;
+import session.ProductFacade;
+import session.UserFacade;
 
 /**
  *
@@ -22,6 +25,12 @@ import session.CategoryFacade;
  */
 @WebServlet(name = "adminController", urlPatterns = {"/admin/panel","/admin/add"})
 public class AdminController extends HttpServlet {
+    @EJB
+    private CommentFacade commentFacade;
+    @EJB
+    private ProductFacade productFacade;
+    @EJB
+    private UserFacade userFacade;
 
     /**
      * Processes requests for both HTTP
@@ -75,7 +84,12 @@ public class AdminController extends HttpServlet {
             throws ServletException, IOException {
         String path = request.getServletPath();
         if(path.equals("/admin/panel"))
+        {
+            request.setAttribute("nbUsers", userFacade.count());
+            request.setAttribute("nbProducts", productFacade.count());
+            request.setAttribute("nbComments",commentFacade.count());
             request.getRequestDispatcher("/WEB-INF/view/admin/panel.jsp").forward(request, response);
+        }
         else 
             request.getRequestDispatcher("/WEB-INF/view/admin/create.jsp").forward(request, response);
     }

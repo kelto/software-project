@@ -99,13 +99,13 @@ public class AddCategoryController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getServletPath().equals("/admin/products/add")) {
+        if (request.getServletPath().equals("/admin/category/add")) {
             formCategory.create(request);
             request.setAttribute("form", formCategory);
         }
 
         categoryFacade.listInSession(request, 0);
-        request.getRequestDispatcher(VIEW).forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/admin/create.jsp").forward(request, response);
     }
 
     /**

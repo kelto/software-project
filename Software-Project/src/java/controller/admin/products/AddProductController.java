@@ -4,7 +4,7 @@
  */
 package controller.admin.products;
 
-import controller.admin.users.ManageUserController;
+import entity.Product;
 import form.FormProduct;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,6 +41,7 @@ public class AddProductController extends HttpServlet {
     private static final String VIEW = "/WEB-INF/view/admin/products.jsp";
     @EJB
     private ProductFacade productFacade;
+    
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -105,7 +106,7 @@ public class AddProductController extends HttpServlet {
             throws ServletException, IOException {
         if(request.getServletPath().equals("/admin/products/add"))
         {
-            formProduct.create(request);
+            Product product = formProduct.create(request);
             request.setAttribute("form", formProduct);
         }
         

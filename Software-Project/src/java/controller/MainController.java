@@ -152,13 +152,18 @@ public class MainController extends HttpServlet {
         }else if (userPath.equals("/viewProduct")) {
             Product product = new Product();
             List<Comment> comments = new ArrayList<Comment>();
+            User user = userFacade.findAll().get(0);
             for(int i = 0;i<5;i++)
             {
                 Comment comment = new Comment();
+                comment.setId(i);
+                comment.setUserid(user);
+                comment.setComment("This a comment !! let's rate this product.");
+                comment.setScore((short)4);
                 comments.add(comment);
             }
+            product.setCommentList(comments);
             request.setAttribute("product", product);
-            request.setAttribute("comments", comments);
             request.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(request, response);
         }else if (userPath.equals("/purchase")) {
             ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");

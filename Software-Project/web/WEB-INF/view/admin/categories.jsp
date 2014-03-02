@@ -18,7 +18,7 @@
                 </p>
             </c:forEach>
                 <p><c:forEach begin="0" end="${nbPages}" varStatus="loop">
-                    <a href="<c:url value='/admin/users/category/${loop.count}'/>">${loop.count}</a></c:forEach></p>
+                    <a href="<c:url value='/admin/category/${loop.count}'/>">${loop.count}</a></c:forEach></p>
         </div>
 </div>
 </section>

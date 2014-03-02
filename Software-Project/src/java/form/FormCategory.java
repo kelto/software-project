@@ -18,15 +18,16 @@ import manager.CategoryManager;
 public class FormCategory extends Form<Category> {
     @EJB
     private CategoryManager manager;
+    private static final String NAME = "category_name";
 
     @Override
     public Category create(HttpServletRequest request) {
         clear();
-        String name = getValue(request, "name");
+        String name = getValue(request, NAME);
         try {
             nameValidation(name);
         } catch (Exception e) {
-            addErrors("name", e.getMessage());
+            addErrors(NAME, e.getMessage());
         }
         Category category = null;
         

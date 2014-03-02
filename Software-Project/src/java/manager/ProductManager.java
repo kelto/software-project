@@ -5,6 +5,7 @@
 package manager;
 
 import entity.Product;
+import java.math.BigDecimal;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -13,6 +14,8 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import session.CategoryPool;
 import session.ProductFacade;
 
@@ -29,19 +32,24 @@ public class ProductManager {
     private ProductFacade productFacade;
     @Resource
     private SessionContext context;
+    @PersistenceContext(unitName = "Software-ProjectPU")
+    private EntityManager em;
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void addProduct(Product product)
+    public Product addProduct(Product product)
     {
         try
         {
-            productFacade.create(product);
+            
+            em.persist(product);
             categoryPool.reload();
+            return product;
         } catch (Exception e)
         {
             context.setRollbackOnly();
+            return null;
         }
     }
 

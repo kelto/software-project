@@ -1,0 +1,6 @@
+-- -----------------------------------------------------
+-- INSERT Product Storage
+-- -----------------------------------------------------
+INSERT INTO `Product` ( `name`, `buying_price`, `selling_price`, `description`, `Category_id`) VALUES
+( '', '', '', '', SELECT id FROM Category WHERE name = `Storage`);
+

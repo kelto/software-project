@@ -10,7 +10,7 @@
             
  <form  action="<c:url value="/admin/products/add"/>" method="post">
         <h3>Add Category</h3>        
-        <label for="name">product name</label><input type="text" id = "name" name="name" /><br /><span class="error">${form.errors.name}</span>
+        <label for="name">product name</label><input type="text" id = "name" name="product_name" /><br /><span class="error">${form.errors.name}</span>
         <label for="description">product description</label><textarea name="description"></textarea> <br /><span class="error">${form.errors.description}</span>
     <label for="buying">buying price</label><input type="text" id = "buying" name="buying_price" /><br /><span class="error">${form.errors.prices}</span>
     <label for="selling">selling price</label><input type="text" id = "selling" name="selling_price" /><br /><span class="error">${form.errors.prices}</span>
@@ -29,7 +29,7 @@
             
             <form action="<c:url value="/admin/category/add"/>" method="post">
         <h3>Add Category</h3>        
-        <label for="category_name">name</label><input type="text" id = "category_name" name="name" /><br />
+        <label for="category_name">name</label><input type="text" id = "category_name" name="category_name" /><br />
     
     <input type="submit" id="CreateRecord" value="CreateRecord" />
     </form>
