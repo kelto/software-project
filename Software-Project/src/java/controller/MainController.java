@@ -33,7 +33,7 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index","/viewCart", "/addToCart","/view","/addCategory","/purchase","/search"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index", "/addToCart","/view","/search"})
 public class MainController extends HttpServlet {
     @EJB
     private ProductManager productManager;
@@ -139,15 +139,12 @@ public class MainController extends HttpServlet {
             if(search!=null && !search.isEmpty())
             {
                 List<Product> searchResult = productManager.search(search);
-                request.setAttribute("searchResult", searchResult);
-                userPath="/listProduct";
+                request.setAttribute("listProducts", searchResult);
+                userPath="/category";
             }
 
         }
-        else if(userPath.equals("/"))
-        {
-            userPath = "/index";
-        }
+        
         else if(userPath.equals("/index"))
         {
             userPath = "/index";
@@ -155,9 +152,6 @@ public class MainController extends HttpServlet {
         else if(userPath.equals("/view"))
         {
             userPath = "/index";
-        }else if(userPath.equals("/addCategory"))
-        {
-            
         }else if (userPath.equals("/viewProduct")) {
             Product product = new Product();
             List<Comment> comments = new ArrayList<Comment>();
@@ -174,25 +168,6 @@ public class MainController extends HttpServlet {
             product.setCommentList(comments);
             request.setAttribute("product", product);
             request.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(request, response);
-        }else if (userPath.equals("/purchase")) {
-            ShoppingCart cart = (ShoppingCart)session.getAttribute("cart");
-            
-            if (cart != null) {
-                
-        
-            //int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
-            User user = (User) session.getAttribute("user");
-            int orderId = orderManager.placeOrder(user, cart);
-        
-            request.setAttribute("orderId", orderId);
-            session.setAttribute("orderId", orderId);
-            String purchaseError = orderId == -1 ? "failed" : "success";
-            session.setAttribute("purchaseError", purchaseError);
-            request.getRequestDispatcher("/WEB-INF/view/done.jsp").forward(request, response);
-    }
-
-    userPath = "/category";
-            
         }
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";
@@ -222,27 +197,7 @@ public class MainController extends HttpServlet {
         HttpSession session = request.getSession();
         ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
         // if addToCart action is called
-        if (userPath.equals("/addToCart")) {
-            // TODO: Implement add product to cart action
-            if(cart== null)
-            {
-                cart = new ShoppingCart();
-                session.setAttribute("cart", cart);
-            }
-            String productId = request.getParameter("productId");
-            if(! productId.isEmpty())
-            {
-                Product product = productFacade.find(Integer.parseInt(productId));
-                cart.addItem(product);
-            }
-            userPath = "/category";
-
-        // if updateCart action is called
-        } else if (userPath.equals("/updateCart")) {
-            // TODO: Implement update cart action
-
-        // if purchase action is called
-        } else if (userPath.equals("/purchase")) {
+         if (userPath.equals("/purchase")) {
             
             if (cart != null) {
 
@@ -255,7 +210,7 @@ public class MainController extends HttpServlet {
         
         //int orderId = orderManager.placeOrder(name,email,address,ccNumber,cart);
         User user = (User) session.getAttribute("user");
-        int orderId = orderManager.placeOrder(user, cart);
+        //int orderId = orderManager.placeOrder(user, cart);
     }
 
     userPath = "/category";

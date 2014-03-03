@@ -6,10 +6,13 @@ package manager;
 
 import cart.ShoppingCartItem;
 import cart.ShoppingCart;
+import entity.Customize;
 import entity.OrderedProduct;
 import entity.OrderedProductPK;
+import entity.Product;
 import entity.User;
 import entity.UserOrder;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Resource;
@@ -37,24 +40,49 @@ public class OrderManager {
 
     
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public int placeOrder(User user, ShoppingCart cart)
+    public UserOrder placeOrder(User user, ShoppingCart cart, Credential credential)
     {
         
          try 
         {
-            
+            if (!askForPayment(credential)) {
+                throw new Exception("Payment failed.");
+            }
             UserOrder order = addOrder(user, cart);
             addOrderedItems(order, cart);
             em.flush();
-            return order.getId();
+            return order;
             
         } catch (Exception e) {
             context.setRollbackOnly();
-            return -1;
+            return null;
         }
     }
     
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public UserOrder mountPC(User user, Customize customize, Credential credential) {
+         try 
+        {
+            if (!askForPayment(credential)) {
+                throw new Exception("Payment failed.");
+            }
+            UserOrder order = addMountOrder(user,customize);
+            addOrderedItems(order, customize.getProducts());
+            em.flush();
+            return order;
+            
+        } catch (Exception e) {
+            context.setRollbackOnly();
+            return null;
+        }
+    }
 
+    //Won't implement the function.
+    private boolean askForPayment(Credential credential)
+    {
+        return true;
+    }
+    
     private UserOrder addOrder(User user, ShoppingCart cart) {
         UserOrder order = new UserOrder();
         order.setUserid(user);
@@ -82,6 +110,42 @@ public class OrderManager {
            
            OrderedProduct orderedProduct = new OrderedProduct(pk);
            orderedProduct.setQuantity(item.getQuantity());
+           
+           em.persist(orderedProduct);
+       }
+    }
+
+    
+
+    private UserOrder addMountOrder(User user, Customize custom) {
+        UserOrder order = new UserOrder();
+        order.setUserid(user);
+        
+       
+        order.setAmount(custom.getPrice());
+        
+        Random r = new Random();
+        int i = r.nextInt(999999999);
+        order.setConfirmationNumber(i);
+        
+        em.persist(order);
+        return order;
+    }
+
+    private void addOrderedItems(UserOrder order, List<Product> products) {
+        em.flush();
+       
+       
+       for(Product p : products)
+       {
+           int product_id = p.getId();
+           
+           OrderedProductPK pk = new OrderedProductPK();
+           pk.setProductid(product_id);
+           pk.setUserorderid(order.getId());
+           
+           OrderedProduct orderedProduct = new OrderedProduct(pk);
+           orderedProduct.setQuantity((short)1);
            
            em.persist(orderedProduct);
        }

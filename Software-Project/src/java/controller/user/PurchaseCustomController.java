@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller.cart;
+package controller.user;
 
-import cart.ShoppingCart;
-import entity.Product;
-import form.FormCartUpdate;
+import entity.Customize;
+import entity.UserOrder;
+import form.FormPurchase;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
@@ -16,16 +16,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import session.ProductFacade;
 
 /**
  *
  * @author kelto
  */
-@WebServlet(name = "CartController", urlPatterns = {"/cart", "/add", "/update"})
-public class CartController extends HttpServlet {
+@WebServlet(name = "PurchaseCustomController", urlPatterns = {"/purchaseCustom"})
+public class PurchaseCustomController extends HttpServlet {
     @EJB
-    private FormCartUpdate formCartUpdate;
+    private FormPurchase formPurchase;
 
     /**
      * Processes requests for both HTTP
@@ -37,10 +36,6 @@ public class CartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    @EJB
-    private ProductFacade productFacade;
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -50,13 +45,13 @@ public class CartController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CartController</title>");
+            out.println("<title>Servlet PurchaseCustomController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CartController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PurchaseCustomController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
+        } finally {            
             out.close();
         }
     }
@@ -74,19 +69,7 @@ public class CartController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // We assume that the GET method will be /view. If /add or /update is called in GET,
-        // it's a good thing that it's redirect here.
-        HttpSession session = request.getSession();
-        String clear = request.getParameter("clear");
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-        createCart(session, cart);
-
-        if ((clear != null) && clear.equals("true")) {
-
-            cart.clear();
-        }
-
-        request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/view/purchaseCustomize.jsp").forward(request, response);
     }
 
     /**
@@ -101,42 +84,20 @@ public class CartController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
         HttpSession session = request.getSession();
-        ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-        createCart(session, cart);
-        if (path.equals("/add")) {
-            if(cart== null)
-            {
-                cart = new ShoppingCart();
-                session.setAttribute("cart", cart);
-            }
-            String productId = request.getParameter("productId");
-            if (!productId.isEmpty()) {
-                Product product = productFacade.find(Integer.parseInt(productId));
-                if(product != null)
-                    cart.addItem(product);
-            }
-            request.getRequestDispatcher("/WEB-INF/view/category.jsp").forward(request, response);
-
-        } else if (path.equals("/update")) {
-            boolean result = false;
-            if(cart!=null)
-                result = formCartUpdate.create(request);
-            
-        } 
-        request.getRequestDispatcher("/WEB-INF/view/cart.jsp").forward(request, response);
-        
-    }
-
-    private void createCart(HttpSession session, ShoppingCart cart) {
-
-        if (cart == null) {
-            cart = new ShoppingCart();
-            session.setAttribute("cart", cart);
+        Customize custom = (Customize) session.getAttribute("customize");
+        boolean success = false;
+        if (custom != null) {
+            UserOrder order = formPurchase.createMount(request);
+            request.setAttribute("order", order);
+            success = (order == null ? false : true);
+            request.setAttribute("form", formPurchase);
+            if(success)
+                session.removeAttribute("customize");
         }
+        request.setAttribute("success", success);
+        
+        request.getRequestDispatcher("/WEB-INF/view/purchaseDone.jsp").forward(request, response);
     }
 
     /**

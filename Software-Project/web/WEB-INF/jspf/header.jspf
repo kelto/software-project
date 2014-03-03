@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="cart_info">
-                        <a href="<c:url value='/viewCart'/>"><img src="/Software-Project/img/cart.png" border="0" alt="View Cart"></a> 
+                        <a href="<c:url value='/cart'/>"><img src="/Software-Project/img/cart.png" border="0" alt="View Cart"></a> 
                             <c:choose>
                                 <c:when test="${cart.numberItems > 1}">
                                 <p>Your shopping cart contains ${cart.numberItems} items.</p>

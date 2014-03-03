@@ -37,29 +37,29 @@
                     <h3>Last Product </h3>
                     <ul>
  
-                        <c:forEach var="product" items="${productsPool.topSellMock}">
+                        <c:forEach var="item" items="${cart.items}">
 			
                             <li>
                             <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post4.jpg"></a></div>
                             <div class="info">
-                                <a class="title" href="#">${product.name}</a>
-                                <p class="description">${product.description}</p>
+                                <a class="title" href="#">${item.product.name}</a>
+                                <p class="description">${item.product.description}</p>
                                 <div class="price">
-                                    <span class="st">Our price:</span><strong>$${product.sellingPrice}</strong>
+                                    <span class="st">Our price:</span><strong>$${item.product.sellingPrice}</strong>
                                 </div>
                                 <form name="prod" onsubmit="addToPC()">                              
                                    <input type="hidden"
                                           class="price"
-                                          value="${product.sellingPrice}">
+                                          value="${item.product.sellingPrice}">
                                    <input type="hidden"
                                           class="productId"
                                           value="2">
                                    <input type="hidden"
                                           class="categoryId"
-                                          value="${product.categoryid.id}">
+                                          value="${item.product.categoryid.id}">
                                    
                                    <button type="button"
-                                           class="buttonAdd">add to PC</button>
+                                           class="buttonAdd" id="${item.product.id}">add to PC</button>
                                
                                  </form>
                             </div>
@@ -71,21 +71,21 @@
   
        <div id="right">
        <h3>Customize PC</h3>
-       <form action="/customize" method="post">
+       <form action="<c:url value='/customize'/>" method="post">
            <table id="cust">
            <c:forEach var="category" items="${categoriesPool.categories}">          
                 <tr>
                     <td class="customizeCat"><label>${category.name}</label></td>                                
                     <td class="customizeProd"><label type="text" id="${category.id}_name"></label></td>
                     <td class="customizePrice"><label type="text" id="${category.id}_price"></label></td>
-                    <td> <button class="removeButton" id="${category.id}" onclick="" type="button">x</button></td>
-                    <td> <input type="hidden" id="${category.id}"></td>   
+                    <td> <button class="removeButton" id="${category.id}_remove" type="button">x</button></td>
+                    <td> <input type="hidden" id="${category.id}_id" name="${category.name}" value=""></td>   
                 </tr>                 
            </c:forEach>
                 </table>
            <hr>
            <label class="totalPrice" id="totPrice"></label>
-           
+           <input type="submit" value="Create">
        </form>
     </div>
             </section>
@@ -106,10 +106,14 @@
         var  prid = (e.target.previousSibling.previousSibling.previousSibling.previousSibling.value);   
         //product price
         var price = (e.target.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value);  
-        
-      document.getElementById(catid+"_name").innerHTML = pname;    
+        var pId = e.target.id;
+      document.getElementById(catid+"_name").innerHTML = pId;    
       document.getElementById(catid+"_price").innerHTML = price; 
-      document.getElementById(catid+"_id").value = prid; 
+      document.getElementById(catid+"_id").value = pId; 
+      //alert(pId);
+      //document.getElementById(catid+"_hidden").value = pId;
+      //$("#"+catid+"_hidden").val(3);
+      
       updateTotal();
      };
      

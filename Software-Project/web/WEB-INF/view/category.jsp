@@ -23,7 +23,7 @@
                             <div class="price">
                                 <span class="st">Our price:</span><strong>$${product.sellingPrice}</strong>
                             </div>
-                            <form action="<c:url value='/addToCart'/>" method="post">
+                            <form action="<c:url value='/add'/>" method="post">
                                 <input type="hidden"
                                        name="productId"
                                        value="${product.id}">

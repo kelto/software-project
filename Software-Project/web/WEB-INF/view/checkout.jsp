@@ -11,7 +11,7 @@
    
     
  <div class="container">
-    <form class="form-horizontal" action="<c:url value='purchase'/>" method="post">
+    <form class="form-horizontal" action="<c:url value='/purchase'/>" method="post">
    
 
       <fieldset>
@@ -20,12 +20,11 @@
         <div class="control-group">
           <label class="control-label" for="card_type">Card Type</label>
           <div class="controls">
-            <select id="card_type">
-              <option></option>
-              <option>Visa</option>
-              <option>Mastercard</option>
-              <option>Visa Debit</option>
-              <option>Laser</option>
+            <select id="card_type" name="credit_type">
+                <option value="visa">Visa</option>
+              <option value=";astercard">Mastercard</option>
+              <option value="visadebit">Visa Debit</option>
+              <option value="laser">Laser</option>
             </select>
           </div>
         </div>
@@ -33,14 +32,14 @@
         <div class="control-group">
           <label class="control-label" for="card_number">Card Number</label>
           <div class="controls">
-            <input type="text" id="card_number" class="span4" />
+              <input type="text" id="card_number" class="span4" name="creditcard" />
           </div>
         </div>
 
         <div class="control-group">
           <label class="control-label" for="cardholder_name">Cardholder Name</label>
           <div class="controls">
-            <input type="text" id="cardholder_name" class="span5" />
+            <input type="text" id="cardholder_name" class="span5" name="username" />
             
           </div>
         </div>
@@ -48,7 +47,7 @@
         <div class="control-group">
           <label class="control-label" for="verification_code">Verification Code</label>
           <div class="controls">
-            <input type="text" id="verification_code" class="span1" />
+            <input type="text" id="verification_code" class="span1" name="cvn" />
           </div>
         </div>
       </fieldset>
