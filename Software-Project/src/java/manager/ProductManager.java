@@ -6,6 +6,7 @@ package manager;
 
 import entity.Product;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -51,6 +52,17 @@ public class ProductManager {
             context.setRollbackOnly();
             return null;
         }
+    }
+
+    public List<Product> search(String search) {
+        List<Product> result;
+        try {
+            result = em.createQuery("SELECT p FROM Product p WHERE p.name LIKE CONCAT('%',CONCAT(:search,'%'))").setParameter("search",search).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = null;
+        }
+        return result;
     }
 
 }

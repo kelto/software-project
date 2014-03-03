@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kelto
  */
-@WebServlet(name = "TestQuery", urlPatterns = {"/TestQuery/*"})
+@WebServlet(name = "TestQuery", urlPatterns = {"/TestQuery"})
 public class TestQuery extends HttpServlet {
 
     /**
@@ -44,6 +44,7 @@ public class TestQuery extends HttpServlet {
             out.println("<h1>Servlet TestQuery at " + request.getContextPath() + "</h1>");
             out.println(request.getPathInfo());
             out.println("query : " + request.getQueryString());
+            out.println("param : "+request.getParameter("search"));
             String arg;
             out.println("</body>");
             out.println("</html>");
