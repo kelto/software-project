@@ -45,6 +45,7 @@
                     <ul>
                         <li class="selected"><a href="<c:url value='/view'/>">Home</a></li>
                         <li><a href="<c:url value="/admin/panel"/>">Admin</a></li>
+                        <li><a href="<c:url value="/customize"/>">customize</a></li>
                         <li><a href="#">Contact us</a></li>
                         <li><a href="#">About</a></li>
 
