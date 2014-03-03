@@ -54,18 +54,6 @@ public class OrderManager {
         }
     }
     
-    
-    private User addUser(String name, String email, String address, String ccNumber) {
-        User user = new User();
-        user.setUsername(name);
-        user.setEmail(email);
-        user.setAddress(address);
-        //TODO : see where to put the credit card number.
-        
-        //Really needed ? not sure ...
-        em.persist(user);
-        return user;
-    }
 
     private UserOrder addOrder(User user, ShoppingCart cart) {
         UserOrder order = new UserOrder();

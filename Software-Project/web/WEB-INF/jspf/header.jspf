@@ -92,10 +92,10 @@
 
 
                     <section id="search"><!-- Search form -->
-                        <form action="#" onsubmit="return false;" method="get">
+                        <form action="<c:url value='/search'/>" method="get">
                             <input type="text" onfocus="if (this.value == 'Search..')
                                     this.value = ''" onblur="if (this.value == '')
-                                    this.value = 'Search..'" value="Search.." name="q">
+                                    this.value = 'Search..'" value="Search.." name="search">
                             <input type="submit" value="Search">
                         </form>
 

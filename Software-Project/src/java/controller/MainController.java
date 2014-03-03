@@ -24,6 +24,7 @@ import form.FormCategory;
 import java.util.ArrayList;
 import java.util.List;
 import manager.CategoryManager;
+import manager.ProductManager;
 import session.CategoryPool;
 import session.ProductPool;
 import session.UserFacade;
@@ -32,8 +33,10 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index","/viewCart", "/addToCart","/view","/addCategory","/purchase"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index","/viewCart", "/addToCart","/view","/addCategory","/purchase","/search"})
 public class MainController extends HttpServlet {
+    @EJB
+    private ProductManager productManager;
 
     /**
      * Processes requests for both HTTP
@@ -131,8 +134,14 @@ public class MainController extends HttpServlet {
             // TODO: Implement checkout page request
 
         // if user switches language
-        } else if (userPath.equals("/chooseLanguage")) {
-            // TODO: Implement language request
+        } else if (userPath.equals("/search")) {
+            String search = request.getParameter("search");
+            if(search!=null && !search.isEmpty())
+            {
+                List<Product> searchResult = productManager.search(search);
+                request.setAttribute("searchResult", searchResult);
+                userPath="/listProduct";
+            }
 
         }
         else if(userPath.equals("/"))
