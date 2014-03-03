@@ -14,19 +14,19 @@
                 </div>
                 <div id="htmlcaption-1" class="nivo-html-caption">
                     <h5 class="p2">Welcome to the our E-Shop</h5>
-                    <p>Put any description here</p>
+                    <p></p>
                 </div>
                 <div id="htmlcaption-2" class="nivo-html-caption">
-                    <h5 class="p2">This is promo area</h5>
-                    <p>Put any description here</p>
+                    <h5 class="p2">20% off on all laptops this weekend !!</h5>
+                    <p></p>
                 </div>
                 <div id="htmlcaption-3" class="nivo-html-caption">
-                    <h5 class="p2">Where you can add any feature products</h5>
-                    <p>Put any description here</p>
+                    <h5 class="p2">Buy one get one free on all hard disks </h5>
+                    <p></p>
                 </div>
                 <div id="htmlcaption-4" class="nivo-html-caption">
-                    <h5 class="p2">Or something else</h5>
-                    <p>Put any description here</p>
+                    <h5 class="p2">We will double Ram on all Pc purchases over 600</h5>
+                    <p></p>
                 </div>
             </section>
         </div>

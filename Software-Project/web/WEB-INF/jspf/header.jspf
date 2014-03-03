@@ -59,6 +59,7 @@
                             <c:when test="${! empty user }" >
                                 <a href="<c:url value='/profile'/>"/>View Your Profile</a>     
                                 <h2>user : ${user.username} </h2>
+                                <a href="<c:url value='/logout'/>"/>Logout</a>  
                             </c:when>
                             <c:otherwise>
                                 <span><b>Already a customer?</b></span> <a href="<c:url value='/login'/>">Please log in</a>
