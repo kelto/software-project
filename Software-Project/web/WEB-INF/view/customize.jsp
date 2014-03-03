@@ -34,7 +34,7 @@
         <div id="submain"><!-- Defining submain content section -->
             <section id="content"><!-- Defining the content section #2 -->
                <div id="left">
-                    <h3>Last Product </h3>
+                    <h3>Cart items </h3>
                     <ul>
  
                         <c:forEach var="item" items="${cart.items}">
@@ -105,14 +105,12 @@
         //product id
         var  prid = (e.target.previousSibling.previousSibling.previousSibling.previousSibling.value);   
         //product price
-        var price = (e.target.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value);  
+        var price = (e.target.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.previousSibling.value);
+        
         var pId = e.target.id;
       document.getElementById(catid+"_name").innerHTML = pId;    
       document.getElementById(catid+"_price").innerHTML = price; 
       document.getElementById(catid+"_id").value = pId; 
-      //alert(pId);
-      //document.getElementById(catid+"_hidden").value = pId;
-      //$("#"+catid+"_hidden").val(3);
       
       updateTotal();
      };
@@ -121,13 +119,13 @@
   }
   
  function updateTotal(){    
-        var price = 0;     
+        var price = 40;     
         var table = document.getElementById("cust");    
         var rows = table.rows.length;   
         for(var i=0; i<rows; i++)
         {
            if(table.rows[i].cells[2].firstChild.innerHTML !== "")
-                price = price + parseInt(table.rows[i].cells[2].firstChild.innerHTML);
+                price = price + parseFloat(table.rows[i].cells[2].firstChild.innerHTML);
         }
        document.getElementById("totPrice").innerHTML = "Total price: $" + price;
   }
