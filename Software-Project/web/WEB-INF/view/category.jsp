@@ -18,7 +18,9 @@
                         <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post3.jpg"></a>
                         </div>
                         <div class="info">
-                            <a class="title" href="#">${product.name}</a>
+                            <a class="title" href="<c:url value="/product">
+  <c:param name="productId" value="${product.id}"/>
+                   </c:url>">${product.name}</a>
                             <p>${product.description}</p>
                             <div class="price">
                                 <span class="st">Our price:</span><strong>$${product.sellingPrice}</strong>

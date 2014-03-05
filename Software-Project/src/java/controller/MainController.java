@@ -33,7 +33,7 @@ import session.UserFacade;
  *
  * @author kelto
  */
-@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index", "/addToCart","/view","/search"})
+@WebServlet(name = "MainController", loadOnStartup = 1, urlPatterns = {"/viewProduct","/index", "/product","/view","/search"})
 public class MainController extends HttpServlet {
     @EJB
     private ProductManager productManager;
@@ -118,23 +118,7 @@ public class MainController extends HttpServlet {
          String userPath = request.getServletPath();
          HttpSession session = request.getSession();
          
-        if (userPath.equals("/viewCart")) {
-            // TODO: Implement cart page request
-            String clear = request.getParameter("clear");
-
-            if ((clear != null) && clear.equals("true")) {
-
-                ShoppingCart cart = (ShoppingCart) session.getAttribute("cart");
-                cart.clear();
-            }
-            userPath = "/cart";
-
-        // if checkout page is requested
-        } else if (userPath.equals("/checkout")) {
-            // TODO: Implement checkout page request
-
-        // if user switches language
-        } else if (userPath.equals("/search")) {
+       if (userPath.equals("/search")) {
             String search = request.getParameter("search");
             if(search!=null && !search.isEmpty())
             {
@@ -145,9 +129,33 @@ public class MainController extends HttpServlet {
 
         }
         
-        else if(userPath.equals("/index"))
+        else if(userPath.equals("/product"))
         {
-            userPath = "/index";
+            String param = request.getParameter("productId");
+            Product product = null;
+            if(param != null && ! param.isEmpty())
+            {
+                int id = -1;
+                try {
+                    id = Integer.parseInt(param);
+                    product = productFacade.find(id);
+                    request.setAttribute("product", product);
+                } catch (Exception e) {
+                    id = -1;
+                    product = null;
+                    e.printStackTrace();
+                }
+                
+                
+            }
+            if(product != null)
+                request.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(request, response);
+            else
+            {
+                request.setAttribute("error", "This product doesn't exist. Can't show the product page of an empty product.");
+                request.getRequestDispatcher("/WEB-INF/view/error.jsp").forward(request, response);
+            }
+                
         }
         else if(userPath.equals("/view"))
         {
@@ -215,20 +223,7 @@ public class MainController extends HttpServlet {
 
     userPath = "/category";
             
-        }else if(userPath.equals("/addCategory"))
-        {
-            formCategory.create(request);
-            if(formCategory.hasError())
-            {
-                //do something here ... error page ?
-            }
-        } else if(userPath.equals("/removeCategory"))
-        {       
-            //Need to add controll if category contains products. They will be removed.
-            short id = Short.parseShort(request.getParameter("categoryID"));
-            categoryManager.remove(id);
-        } 
-
+        }
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";

@@ -32,7 +32,9 @@
 
             <td> <div class="img"><a href="#"><img alt="" src="/Software-Project/img/post2.jpg"></a></div></td>
 
-            <td>${product.name}</td>
+            <td><a href="<c:url value="/product">
+  <c:param name="productId" value="${product.id}"/>
+                   </c:url>">${product.name}</a></td>
             
             <td>
                 
@@ -71,7 +73,7 @@
         <%-- clear cart widget --%>
         <c:if test="${!empty cart && cart.numberItems != 0}">
             <h4 id="subtotal">subtotal: &euro; ${cart.total}</h4>
-            <c:url var="url" value="viewCart">
+            <c:url var="url" value="/cart">
                 <c:param name="clear" value="true"/>
             </c:url>
 

@@ -6,17 +6,17 @@
 
 package controller.comment;
 
-import entity.User;
+import entity.Comment;
 import form.FormComment;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -79,9 +79,14 @@ public class AddCommentController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        formComment.create(request);
+        
+        Comment comment = formComment.create(request);
         request.setAttribute("form", formComment);
-        request.getRequestDispatcher("/WEB-INF/view/commentDone.jsp").forward(request, response);
+        request.setAttribute("product", comment.getProductid());
+        List<Comment> comments = comment.getProductid().getCommentList();
+        comments.add(comment);
+        request.setAttribute("ListComment",comments );
+        request.getRequestDispatcher("/WEB-INF/view/product.jsp").forward(request, response);
     }
 
     /**

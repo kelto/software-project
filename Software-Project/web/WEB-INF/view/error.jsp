@@ -12,6 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>This request couldn't be handle by the server</h1>
+        <p> Reason : {error}
+        </p>
     </body>
 </html>
